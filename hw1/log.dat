@@ -1,0 +1,1032 @@
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+timing brute force...
+for n = 1000
+0.0973980426788
+avg of 1 trials:  0.0973980426788
+for n = 2000
+0.388459920883
+avg of 1 trials:  0.388459920883
+for n = 3000
+0.880108833313
+avg of 1 trials:  0.880108833313
+for n = 4000
+1.58551597595
+avg of 1 trials:  1.58551597595
+for n = 5000
+2.42469596863
+avg of 1 trials:  2.42469596863
+for n = 10000
+9.86799001694
+avg of 1 trials:  9.86799001694
+for n = 20000
+40.9239168167
+avg of 1 trials:  40.9239168167
+[0.09739804267883301, 0.3884599208831787, 0.8801088333129883, 1.5855159759521484, 2.4246959686279297, 9.867990016937256, 40.923916816711426]
+timing naive d & c...
+for n = 1000
+0.092719078064
+avg of 1 trials:  0.092719078064
+for n = 2000
+0.381031990051
+avg of 1 trials:  0.381031990051
+for n = 3000
+0.84619307518
+avg of 1 trials:  0.84619307518
+for n = 4000
+1.54994511604
+avg of 1 trials:  1.54994511604
+for n = 5000
+2.38850498199
+avg of 1 trials:  2.38850498199
+for n = 10000
+10.0350580215
+avg of 1 trials:  10.0350580215
+for n = 20000
+40.2069780827
+avg of 1 trials:  40.2069780827
+[0.09271907806396484, 0.38103199005126953, 0.8461930751800537, 1.5499451160430908, 2.388504981994629, 10.03505802154541, 40.20697808265686]
+timing merge & count...
+for n = 1000
+0.0957918167114
+avg of 1 trials:  0.0957918167114
+for n = 2000
+0.378238201141
+avg of 1 trials:  0.378238201141
+for n = 3000
+0.877903938293
+avg of 1 trials:  0.877903938293
+for n = 4000
+1.54503488541
+avg of 1 trials:  1.54503488541
+for n = 5000
+2.43214511871
+avg of 1 trials:  2.43214511871
+for n = 10000
+9.81536412239
+avg of 1 trials:  9.81536412239
+for n = 20000
+40.2037520409
+avg of 1 trials:  40.2037520409
+[0.09579181671142578, 0.3782382011413574, 0.877903938293457, 1.5450348854064941, 2.432145118713379, 9.815364122390747, 40.20375204086304]
+saving results...
+loading results...
+generating graphs...
+best-fit: [slope,intercept] 2.01462283182 -16.2556212988
+f() = ( e ^ -16.2556212988 ) * n ^ 2.01462283182
+best-fit: [slope,intercept] 2.02884022046 -16.39523794
+f() = ( e ^ -16.39523794 ) * n ^ 2.02884022046
+best-fit: [slope,intercept] 2.01705705891 -16.2890437359
+f() = ( e ^ -16.2890437359 ) * n ^ 2.01705705891
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+mbrute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 96erge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passebrute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 96brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+timing brute force...
+for n = 1000
+0.0958950519562
+avg of 1 trials:  0.0958950519562
+for n = 2000
+0.354955911636
+avg of 1 trials:  0.354955911636
+for n = 3000
+0.812402009964
+avg of 1 trials:  0.812402009964
+for n = 4000
+1.45810198784
+avg of 1 trials:  1.45810198784
+for n = 5000
+2.23899292946
+avg of 1 trials:  2.23899292946
+for n = 10000
+8.96654582024
+avg of 1 trials:  8.96654582024
+for n = 20000
+40.7197828293
+avg of 1 trials:  40.7197828293
+for n = 30000
+91.6727209091
+avg of 1 trials:  91.6727209091
+[0.09589505195617676, 0.35495591163635254, 0.8124020099639893, 1.4581019878387451, 2.238992929458618, 8.966545820236206, 40.71978282928467, 91.67272090911865]
+timing naive d & c...
+for n = 1000
+0.0935180187225
+avg of 1 trials:  0.0935180187225
+for n = 2000
+0.371491909027
+avg of 1 trials:  0.371491909027
+for n = 3000
+0.844084978104
+avg of 1 d: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+timing brute force...
+for n = 1000
+0.0958950519562
+avg of 1 trials:  0.0958950519562
+for n = 2000
+0.354955911636
+avg of 1 trials:  0.354955911636
+for n = 3000
+0.812402009964
+avg of 1 trials:  0.812402009964
+for n = 4000
+1.45810198784
+avg of 1 trials:  1.45810198784
+for n = 5000
+2.23899292946
+avg of 1 trials:  2.23899292946
+for n = 10000
+8.96654582024
+avg of 1 trials:  8.96654582024
+for n = 20000
+40.7197828293
+avg of 1 trials:  40.7197828293
+for n = 30000
+91.6727209091
+avg of 1 trials:  91.6727209091
+[0.09589505195617676, 0.35495591163635254, 0.8124020099639893, 1.4581019878387451, 2.238992929458618, 8.966545820236206, 40.71978282928467, 91.67272090911865]
+timing naive d & c...
+for n = 1000
+0.0935180187225
+avg of 1 trials:  0.0935180187225
+for n = 2000
+0.371491909027
+avg of 1 trials:  0.371491909027
+for n = 3000
+0.844084978104
+avg of 1 trials:  0.844084978104
+for n = 4000
+1.52623200417
+avg of 1 trials:  1.52623200417
+for n = 5000
+2.31717896461
+avg of 1 trials:  2.31717896461
+for n = 10000
+9.52616000175
+avg of 1 trials:  9.52616000175
+for n = 20000
+8.797645568847656e-05
+75
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+timing brute force...
+for n = 1000
+0.0958950519562
+avg of 1 trials:  0.0958950519562
+for n = 2000
+0.354955911636
+avg of 1 trials:  0.354955911636
+for n = 3000
+0.812402009964
+avg of 1 trials:  0.812402009964
+for n = 4000
+1.45810198784
+avg of 1 trials:  1.45810198784
+for n = 5000
+2.23899292946
+avg of 1 trials:  2.23899292946
+for n = 10000
+8.96654582024
+avg of 1 trials:  8.96654582024
+for n = 20000
+40.7197828293
+avg of 1 trials:  40.7197828293
+for n = 30000
+91.6727209091
+avg of 1 trials:  91.6727209091
+[0.09589505195617676, 0.35495591163635254, 0.8124020099639893, 1.4581019878387451, 2.238992929458618, 8.966545820236206, 40.71978282928467, 91.67272090911865]
+timing naive d & c...
+for n = 1000
+0.0935180187225
+avg of 1 trials:  0.0935180187225
+for n = 2000
+0.371491909027
+avg of 1 trials:  0.371491909027
+for n = 3000
+0.844084978104
+avg of 1 trials:  0.844084978104
+for n = 4000
+1.52623200417
+avg of 1 trials:  1.52623200417
+for n = 5000
+2.31717896461
+avg of 1 trials:  2.31717896461
+for n = 10000
+9.52616000175
+avg of 1 trials:  9.52616000175
+for n = 20000
+8.797645568847656e-05
+75
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+timing brute force...
+for n = 1000
+0.0958950519562
+avg of 1 trials:  0.0958950519562
+for n = 2000
+0.354955911636
+avg of 1 trials:  0.354955911636
+for n = 3000
+0.812402009964
+avg of 1 trials:  0.812402009964
+for n = 4000
+1.45810198784
+avg of 1 trials:  1.45810198784
+for n = 5000
+2.23899292946
+avg of 1 trials:  2.23899292946
+for n = 10000
+8.96654582024
+avg of 1 trials:  8.96654582024
+for n = 20000
+40.7197828293
+avg of 1 trials:  40.7197828293
+for n = 30000
+91.6727209091
+avg of 1 trials:  91.6727209091
+[0.09589505195617676, 0.35495591163635254, 0.8124020099639893, 1.4581019878387451, 2.238992929458618, 8.966545820236206, 40.71978282928467, 91.67272090911865]
+timing naive d & c...
+for n = 1000
+0.0935180187225
+avg of 1 trials:  0.0935180187225
+for n = 2000
+0.371491909027
+avg of 1 trials:  0.371491909027
+for n = 3000
+0.844084978104
+avg of 1 trials:  0.844084978104
+for n = 4000
+1.52623200417
+avg of 1 trials:  1.52623200417
+for n = 5000
+2.31717896461
+avg of 1 trials:  2.31717896461
+for n = 10000
+9.52616000175
+avg of 1 trials:  9.52616000175
+for n = 20000
+8.797645568847656e-05
+trials:  0.844084978104
+for n = 4000
+1.52623200417
+avg of 1 trials:  1.52623200417
+for n = 5000
+2.31717896461
+avg of 1 trials:  2.31717896461
+for n = 10000
+9.52616000175
+avg of 1 trials:  9.52616000175
+for n = 20000
+8.797645568847656e-05
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+timing brute force...
+for n = 1000
+0.0958950519562
+avg of 1 trials:  0.0958950519562
+for n = 2000
+0.354955911636
+avg of 1 trials:  0.354955911636
+for n = 3000
+0.812402009964
+avg of 1 trials:  0.812402009964
+for n = 4000
+1.45810198784
+avg of 1 trials:  1.45810198784
+for n = 5000
+2.23899292946
+avg of 1 trials:  2.23899292946
+for n = 10000
+8.96654582024
+avg of 1 trials:  8.96654582024
+for n = 20000
+40.7197828293
+avg of 1 trials:  40.7197828293
+for n = 30000
+91.6727209091
+avg of 1 trials:  91.6727209091
+[0.09589505195617676, 0.35495591163635254, 0.8124020099639893, 1.4581019878387451, 2.238992929458618, 8.966545820236206, 40.71978282928467, 91.67272090911865]
+timing naive d & c...
+for n = 1000
+0.0935180187225
+avg of 1 trials:  0.0935180187225
+for n = 2000
+0.371491909027
+avg of 1 trials:  0.371491909027
+for n = 3000
+0.844084978104
+avg of 1 trials:  0.844084978104
+for n = 4000
+1.52623200417
+avg of 1 trials:  1.52623200417
+for n = 5000
+2.31717896461
+avg of 1 trials:  2.31717896461
+for n = 10000
+9.52616000175
+avg of 1 trials:  9.52616000175
+for n = 20000
+8.797645568847656e-05
+brute force passed: 0 9670 9670
+brute force passed: 1 10567 10567
+brute force passed: 2 9282 9282
+brute force passed: 3 9269 9269
+brute force passed: 4 9675 9675
+brute force passed: 5 10378 10378
+brute force passed: 6 9911 9911
+brute force passed: 7 9790 9790
+brute force passed: 8 9580 9580
+brute force passed: 9 9965 9965
+naive_d_and_c passed: 0 9670 9670
+naive_d_and_c passed: 1 10567 10567
+naive_d_and_c passed: 2 9282 9282
+naive_d_and_c passed: 3 9269 9269
+naive_d_and_c passed: 4 9675 9675
+naive_d_and_c passed: 5 10378 10378
+naive_d_and_c passed: 6 9911 9911
+naive_d_and_c passed: 7 9790 9790
+naive_d_and_c passed: 8 9580 9580
+naive_d_and_c passed: 9 9965 9965
+merge_and_count passed: 0 9670 9670
+merge_and_count passed: 1 10567 10567
+merge_and_count passed: 2 9282 9282
+merge_and_count passed: 3 9269 9269
+merge_and_count passed: 4 9675 9675
+merge_and_count passed: 5 10378 10378
+merge_and_count passed: 6 9911 9911
+merge_and_count passed: 7 9790 9790
+merge_and_count passed: 8 9580 9580
+merge_and_count passed: 9 9965 9965
+passed all tests!
+generating many random inputs...
+timing brute force...
+for n = 1000
+0.0958950519562
+avg of 1 trials:  0.0958950519562
+for n = 2000
+0.354955911636
+avg of 1 trials:  0.354955911636
+for n = 3000
+0.812402009964
+avg of 1 trials:  0.812402009964
+for n = 4000
+1.45810198784
+avg of 1 trials:  1.45810198784
+for n = 5000
+2.23899292946
+avg of 1 trials:  2.23899292946
+for n = 10000
+8.96654582024
+avg of 1 trials:  8.96654582024
+for n = 20000
+40.7197828293
+avg of 1 trials:  40.7197828293
+for n = 30000
+91.6727209091
+avg of 1 trials:  91.6727209091
+[0.09589505195617676, 0.35495591163635254, 0.8124020099639893, 1.4581019878387451, 2.238992929458618, 8.966545820236206, 40.71978282928467, 91.67272090911865]
+timing naive d & c...
+for n = 1000
+0.0935180187225
+avg of 1 trials:  0.0935180187225
+for n = 2000
+0.371491909027
+avg of 1 trials:  0.371491909027
+for n = 3000
+0.844084978104
+avg of 1 trials:  0.844084978104
+for n = 4000
+1.52623200417
+avg of 1 trials:  1.52623200417
+for n = 5000
+2.31717896461
+avg of 1 trials:  2.31717896461
+for n = 10000
+9.52616000175
+avg of 1 trials:  9.52616000175
+for n = 20000
+8.797645568847656e-05
