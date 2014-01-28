@@ -1,6 +1,5 @@
 import math
 import random
-import sys
 
 merge_count = 0 #counter variable for the number of inversions in the merge_and_count algorithm
 
@@ -83,10 +82,8 @@ def main():
     array = get_random_array_of_size(10)
     
     print brute_force(array)
-
-    divide_array(array)
+    divide_array(array) #sorts array and puts the number of inversions in merge_count
     print merge_count
-    
     print div_and_conq(array)
 
 
