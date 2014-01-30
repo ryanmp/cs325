@@ -1,0 +1,116 @@
+\documentclass[letterpaper,10pt,titlepage,fleqn]{article}
+
+%example of setting the fleqn parameter to the article class -- the below sets the offset from flush left (fl)
+\setlength{\mathindent}{1cm}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm} 
+\usepackage{esint}
+\usepackage{nopageno}
+\usepackage{booktabs}                            
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+%the following sets the geometry of the page
+\usepackage{geometry}
+\geometry{textheight=9in, textwidth=6.5in}
+\pagestyle{fancy}
+% random comment
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+\usepackage{hyperref}
+\usepackage{textcomp}
+\usepackage{listings}
+\def\name{Best CS325 Group}
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs311 ``operating systems'' files filesystem I/O},
+  pdftitle = {Pertinent Information},
+  pdfsubject = {Virtual Reality Lab},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+\fboxsep=5mm%padding thickness
+\fboxrule=4pt%border thickness
+
+\begin{document}
+\lstset{language=Python} 
+
+\title{Programming Assignment #1 - CS325}
+\date{January 29, 2014}
+\maketitle
+%to remove page numbers, set the page style to empty
+
+\section*{Pseudocode}
+\hrule
+\begin{centering}
+
+\underline{\large{\textbf{Brute Force:}}}\\
+\end{centering}
+\begin{lstlisting}
+%Brute force pseudocode goes here
+\end{lstlisting}
+
+\begin{centering}
+\underline{\large{\textbf{Naive Divide and Conquer:}}}\\
+\end{centering}
+\begin{lstlisting}
+%Naive divide and conquer pseudocode goes here
+\end{lstlisting}
+
+\begin{centering}
+\underline{\large{\textbf{Merge and Count:}}}\\
+\end{centering}
+\begin{lstlisting}
+%Merge and count  pseudocode goes here
+\end{lstlisting}
+
+\section*{Correctness Proof}
+\hrule
+%Correctness proof goes here
+
+\section*{Asymptotic Analysis of Run Time}
+\hrule
+\begin{centering}
+\underline{\large{\textbf{Brute Force:}}}\\
+\end{centering}
+It has two for loops of size n duh
+
+\begin{centering}
+\underline{\large{\textbf{Naive Divide and Conquer:}}}\\
+\end{centering}
+T(n) = this class is difficult
+
+\begin{centering}
+\underline{\large{\textbf{Merge and Count:}}}\\
+\end{centering}
+T(n) = wow such recursion
+
+
+\section*{Testing}
+\hrule
+Results and shit
+
+\section*{Extrapolation and Interpretation}
+\hrule
+\begin{itemize}
+\item Largest input item solvable in an hour:
+\item Slope of lines in log-log plot:
+\item Discrepancy between actual and asymptotic:
+\end{itemize}
+
+
+\end{document}
