@@ -53,7 +53,7 @@
 
 \author{
 	Josh LASTNAME? \and
-	Jaron Thatcher \and
+	Jaron LASTNAME? \and
 	Ryan Phillips
 }
 
@@ -65,7 +65,7 @@
 \hrule
 \begin{centering}
 
-\underline{\large{\textbf{Brute Force:}}}\\\\\\
+\underline{\large{\textbf{Brute Force:}}}\\
 \end{centering}
 \begin{lstlisting}
 BruteForce(arr)
@@ -78,7 +78,7 @@ BruteForce(arr)
 \end{lstlisting}
 
 \begin{centering}
-\underline{\large{\textbf{Naive Divide and Conquer:}}}\\\\\\
+\underline{\large{\textbf{Naive Divide and Conquer:}}}\\
 \end{centering}
 \begin{lstlisting}
 NaiveDivideAndConquer(arr)
@@ -100,7 +100,7 @@ NaiveDivideAndConquer(arr)
 \end{lstlisting}
 
 \begin{centering}
-\underline{\large{\textbf{Merge and Count:}}}\\\\\\
+\underline{\large{\textbf{Merge and Count:}}}\\
 \end{centering}
 
 \begin{lstlisting}
