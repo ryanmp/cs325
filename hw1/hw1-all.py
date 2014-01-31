@@ -198,7 +198,31 @@ def test_correctness(_file):
 		return True
 
 
+def test_correctness_final(_file):
+	results = []
+	f = open(_file)
+	lines_raw = f.readlines()
+	test_arr = []
+	for i in range(0,len(lines_raw)):
+		temp = []
+		temp = lines_raw[i].split(',')
+		temp = map(int, temp)
+		test_arr.append(temp)
+
+	for i in range(0,len(lines_raw)):
+		results.append(brute_force(test_arr[i]))
+		results.append(naive_d_and_c(test_arr[i]))
+		results.append(merge_and_count(test_arr[i]))
+
+	return results
+			
+
 def main():
+
+	results0 = test_correctness_final('test_in.txt')
+	print results0
+
+	
 	if (test_correctness("verify.txt")): print "passed all tests!"
 	else: "failed correctness tests! Uh oh!" 
 
