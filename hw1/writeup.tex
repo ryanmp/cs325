@@ -49,7 +49,14 @@
 \begin{document}
 \lstset{language=Python} 
 
-\title{Programming Assignment #1 - CS325}
+\title{Programming Assignment \#1 - CS325}
+
+\author{
+	Josh LASTNAME? \and
+	Jaron LASTNAME? \and
+	Ryan Phillips
+}
+
 \date{January 29, 2014}
 \maketitle
 %to remove page numbers, set the page style to empty
@@ -61,21 +68,63 @@
 \underline{\large{\textbf{Brute Force:}}}\\
 \end{centering}
 \begin{lstlisting}
-%Brute force pseudocode goes here
+BruteForce(arr)
+  count = 0
+  for i in 0 to arr.length
+    for j in i to arr.length
+	if arr[i] > arr[j]:
+        count++ 
+  return count
 \end{lstlisting}
 
 \begin{centering}
 \underline{\large{\textbf{Naive Divide and Conquer:}}}\\
 \end{centering}
 \begin{lstlisting}
-%Naive divide and conquer pseudocode goes here
+NaiveDivideAndConquer(arr)
+  count = 0
+  if len(arr) < 2:
+    return count
+  middle = length(list_in)/2
+  left = arr[:middle] // slice off half of the array
+  right = arr[middle:]
+  // count inversions between left and right halves
+  for i in range (0,len(left)):
+    for j in range (0,len(right)):
+      if left[i] > right[j]:
+	  count++
+  // and count internal inversions recursively
+  count += NaiveDivideAndConquer(left)
+  count += NaiveDivideAndConquer(right)
+  return count
 \end{lstlisting}
 
 \begin{centering}
 \underline{\large{\textbf{Merge and Count:}}}\\
 \end{centering}
+
 \begin{lstlisting}
-%Merge and count  pseudocode goes here
+MergeAndCount(arr,0)
+  results = []
+  // base case
+  if len(x) < 2:
+    return x, count
+  middle =len(x)/2
+  // recursive calls
+  left, count = MergeAndCount(x[:middle],count)
+  right, count = MergeAndCount(x[middle:],count)
+  i, j = 0, 0
+  while i < length(left) and j < length(right):
+    if left[i] > right[j]:
+      results.append(right[j])
+      count += length(left) - i
+      j++
+    else:
+      results.append(left[i])
+      i++
+    results += left[i:]
+    results += right[j:]
+    return results, count
 \end{lstlisting}
 
 \section*{Correctness Proof}
