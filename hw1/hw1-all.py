@@ -1,4 +1,4 @@
-#Joshua Villwock, Ryan Phillips, 
+#Joshua Villwock, Ryan Phillips, Jaron Alan
 #CS325: Analysis of Algotithms
 #1/25/2014
 #Implmentation Assignment 1
