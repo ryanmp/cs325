@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #Joshua Villwock, Ryan Phillips, Jaron Alan
+=======
+#Joshua Villwock, Ryan Phillips, Jaron Thatcher
+>>>>>>> 2e41002027976e22d1f577c39da8a75c99358e09
 #CS325: Analysis of Algotithms
 #1/25/2014
 #Implmentation Assignment 1
@@ -122,6 +126,10 @@ def test_timing(_verbose,which,test_arr):
 
 def show_graphs(_results1,_results2,_results3,_n):
 
+	_results1 = [0.03626370429992676, 0.1470473051071167, 0.33706371784210204, 0.6011320114135742, 0.9445984840393067, 3.846377897262573, 16.156464290618896, 37.681616806983946, 70.29044330120087, 115.75034708976746]
+	_results2 = [0.03712019920349121, 0.14641458988189698, 0.33380799293518065, 0.5920280933380127, 0.9311999082565308, 3.780233311653137, 15.46792380809784, 36.150787115097046, 66.38889260292054, 107.12109808921814]
+	_results3 = [0.003688812255859375, 0.007952690124511719, 0.012450504302978515, 0.01710178852081299, 0.022072505950927735, 0.047310400009155276, 0.10067009925842285, 0.15592021942138673, 0.21513760089874268, 0.2736771821975708]
+
 	# plot raw data
 	pylab.loglog(_n,_results1,'ro',basex=10,basey=10, label="brute force")
 	pylab.loglog(_n,_results2,'bo',basex=10,basey=10, label="naive divide and conquer")
@@ -155,6 +163,23 @@ def show_graphs(_results1,_results2,_results3,_n):
 	pylab.loglog(t3, s3,'g',basex=10,basey=10,label='g')
 
 	pylab.show()
+
+
+def show_graphs2(_results1,_results2,_results3,_n):
+
+	_results1 = [0.03626370429992676, 0.1470473051071167, 0.33706371784210204, 0.6011320114135742, 0.9445984840393067, 3.846377897262573, 16.156464290618896, 37.681616806983946, 70.29044330120087, 115.75034708976746]
+	_results2 = [0.03712019920349121, 0.14641458988189698, 0.33380799293518065, 0.5920280933380127, 0.9311999082565308, 3.780233311653137, 15.46792380809784, 36.150787115097046, 66.38889260292054, 107.12109808921814]
+	_results3 = [0.003688812255859375, 0.007952690124511719, 0.012450504302978515, 0.01710178852081299, 0.022072505950927735, 0.047310400009155276, 0.10067009925842285, 0.15592021942138673, 0.21513760089874268, 0.2736771821975708]
+
+	pylab.xlabel('n')
+	pylab.ylabel('Time (s)')
+	pylab.legend(loc='lower right')
+
+	pylab.plot(_n,_results1,'r', label="brute force")
+	pylab.plot(_n,_results2,'g', label="brute force")
+	pylab.plot(_n,_results3,'b', label="brute force")
+	pylab.show()
+	
 
 
 def test_correctness1(_file):
@@ -220,6 +245,11 @@ def test_correctness2(_file):
 
 def main():
 
+
+	print "generating many random inputs..."
+	test_arr = gen_test_arr()
+
+	'''
 	if (test_correctness1("verify.txt")): print "passed all tests!"
 	else: "failed correctness tests! Uh oh!" 
 
@@ -227,8 +257,7 @@ def main():
 	print results0
 
 	
-	print "generating many random inputs..."
-	test_arr = gen_test_arr()
+
 
 	debug = True
 	print 'timing brute force...'
@@ -237,11 +266,12 @@ def main():
 	results2 = test_timing(debug,1,test_arr)
 	print 'timing merge & count...'
 	results3 = test_timing(debug,2,test_arr)
+	'''
 	
 	print 'saving results...'
-	pickle.dump( results1, open( "results1.p", "wb" ) )
-	pickle.dump( results2, open( "results2.p", "wb" ) )
-	pickle.dump( results3, open( "results3.p", "wb" ) )
+	#pickle.dump( results1, open( "results1.p", "wb" ) )
+	#pickle.dump( results2, open( "results2.p", "wb" ) )
+	#pickle.dump( results3, open( "results3.p", "wb" ) )
 
 	print 'loading results...'
 	results1 = pickle.load( open( "results1.p", "rb" ) )
@@ -249,6 +279,8 @@ def main():
 	results3 = pickle.load( open( "results3.p", "rb" ) )
 
 	print 'generating graphs...' 
-	show_graphs(results1,results2,results3,n_vals)
+	#show_graphs(results1,results2,results3,n_vals)
+
+	show_graphs2(results1,results2,results3,n_vals)
 
 main()
