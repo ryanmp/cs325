@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#Joshua Villwock, Ryan Phillips, Jaron Alan
-=======
 #Joshua Villwock, Ryan Phillips, Jaron Thatcher
->>>>>>> 2e41002027976e22d1f577c39da8a75c99358e09
 #CS325: Analysis of Algotithms
 #1/25/2014
 #Implmentation Assignment 1
@@ -131,9 +127,9 @@ def show_graphs(_results1,_results2,_results3,_n):
 	_results3 = [0.003688812255859375, 0.007952690124511719, 0.012450504302978515, 0.01710178852081299, 0.022072505950927735, 0.047310400009155276, 0.10067009925842285, 0.15592021942138673, 0.21513760089874268, 0.2736771821975708]
 
 	# plot raw data
-	pylab.loglog(_n,_results1,'ro',basex=10,basey=10, label="brute force")
-	pylab.loglog(_n,_results2,'bo',basex=10,basey=10, label="naive divide and conquer")
-	pylab.loglog(_n,_results3,'go',basex=10,basey=10, label="merge and count")
+	pylab.loglog(_n,_results1,'ro',basex=10,basey=10, label="Brute Force")
+	pylab.loglog(_n,_results2,'bo',basex=10,basey=10, label="Naive Divide & Conquer")
+	pylab.loglog(_n,_results3,'go',basex=10,basey=10, label="Merge & Count")
 	
 	# add labels and legend
 	pylab.xlabel('n')
@@ -175,9 +171,9 @@ def show_graphs2(_results1,_results2,_results3,_n):
 	pylab.ylabel('Time (s)')
 	pylab.legend(loc='lower right')
 
-	pylab.plot(_n,_results1,'r', label="brute force")
-	pylab.plot(_n,_results2,'g', label="brute force")
-	pylab.plot(_n,_results3,'b', label="brute force")
+	pylab.plot(_n,_results1,'r', label="Brute Force")
+	pylab.plot(_n,_results2,'g', label="Naive Divide & Conquer")
+	pylab.plot(_n,_results3,'b', label="Merge & Count")
 	pylab.show()
 	
 
@@ -279,8 +275,8 @@ def main():
 	results3 = pickle.load( open( "results3.p", "rb" ) )
 
 	print 'generating graphs...' 
-	#show_graphs(results1,results2,results3,n_vals)
+	show_graphs(results1,results2,results3,n_vals)
 
-	show_graphs2(results1,results2,results3,n_vals)
+	#show_graphs2(results1,results2,results3,n_vals)
 
 main()

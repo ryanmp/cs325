@@ -173,7 +173,9 @@ Results:
 \section*{Extrapolation and Interpretation}
 \hrule
 
-Slope of lines in log-log plot:
+\begin{centering}
+\textbf{Slope of lines in log-log plot:}
+\end{centering}
 
 The equation for the best fit line on the log-log plot (calculated using numpy.polyfit() has the following form:
 
@@ -181,43 +183,61 @@ f(n) = e^y-intercept * n^slope
 
 Brute Force
 \begin{itemize}
-\item slope: 2.014
-\item y-intercept: -16.3
+\item slope: 2.05692581355
+\item y-intercept: -17.5588327907
 \end{itemize}
 
-Naive Divide & Conquer
+Naive Divide \& Conquer:
 \begin{itemize}
-\item slope: 1.89
-\item y-intercept: -15.3
+\item slope: 2.03626014268
+\item y-intercept: -17.3982172216
 \end{itemize}
 
-<<<<<<< HEAD
+Merge \& Count:
+\begin{itemize}
+\item slope: 1.10025742067
+\item y-intercept: -13.1947528938
+\end{itemize}
+
+\begin{centering}
+\textbf{Largest input item solvable in an hour:}
+\end{centering}
+
+Extrapolation using the best fit function from the previous section: 
+
+f(n) = Runtime = 1 hr = e^y-intercept * n^slope
+
+Solving for n, using the values from the above chart, yields the following numbers: 
+
+
+Brute Force:
+122,802,000
+
+
+Naive Divide \& Conquer:
+
+Merge \& Count:
+
+\begin{centering}
+\textbf{Discrepancy between actual and asymptotic:}
+\end{centering}
+
+
+
+
 \section*{Empirical Analysis of Run Time}
 \hrule
+
+\textbf{Linear Plot:}
+\vskip 0.04in
+\begin{center}
+  \includegraphics[width=3in]{input_time.png}
+\end{center}
 
 \textbf{Log-log Plot:}
 \vskip 0.04in
 \begin{center}
-  \includegraphics[width=3in]{loglog.ps}
+  \includegraphics[width=3in]{loglog.png}
 \end{center}
-
-\textbf{Input size vs. Time:}
-\vskip 0.04in
-\begin{center}
-  \includegraphics[width=3in]{input_time.ps}
-\end{center}
-=======
-Merge & Count
-\begin{itemize}
-\item slope: 1.10
-\item y-intercept: -12.3
-\end{itemize}
-
-Largest input item solvable in an hour:
-
-Discrepancy between actual and asymptotic:
-
->>>>>>> 2e41002027976e22d1f577c39da8a75c99358e09
-
 
 \end{document}
