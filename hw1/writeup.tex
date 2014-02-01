@@ -139,6 +139,18 @@ MergeAndCount(arr,0)
 \textbf{Naive Divide and Conquer:}
 \end{centering}
 
+Pre-explanation:
+
+The Naïve divide \& Conquer which we were tasked to develop is fairly simple once you know how it works:  It splits the list into 2 halves, then brute forces the inversions between the first half and the second half, but NOT inversions within any one half.  It then continues recursively by calling itself on the 2 resulting half-lists.  Eventually each list contains either 1 or 0 elements, at which point, there are no inversions in that list, and it returns.
+
+Proof by contradiction:
+
+Assume that the result of the master divide \& conquer is incorrect.  There are only 2 ways this could happen:  Either the recursive calls return an incorrect result, or the checking the two halves of the list against each other is incorrect.
+
+Base case:  The only way the recursive calls could be incorrect is if the base case (when no more recursion is needed) is wrong.  In this case, that is when the list has 0 or 1 elements.  A single element obviously cannot have any inversions, and our code returns that.
+        
+The other case is if our code that brute-forces the halves was incorrect, or missed some numbers:  Our algorithm simply does a brute-force on the entire range where i is in the first half, and j is in the second half.  The recursive calls take care of where i and j are in the same half, so all the bases are covered here.  We can assume that brute-forcing those numbers is correct, since this was talked about extensively in class, and is logically sound. (merely comparing every i with every j for any inversions)
+
 \begin{centering}
 \textbf{Merge and Count:}
 \end{centering}
