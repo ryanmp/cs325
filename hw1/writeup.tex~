@@ -53,7 +53,7 @@
 
 \author{
 	Josh LASTNAME? \and
-	Jaron LASTNAME? \and
+	Jaron Thatcher \and
 	Ryan Phillips
 }
 
@@ -65,7 +65,7 @@
 \hrule
 \begin{centering}
 
-\underline{\large{\textbf{Brute Force:}}}\\
+\textbf{Brute Force:}
 \end{centering}
 \begin{lstlisting}
 BruteForce(arr)
@@ -78,7 +78,7 @@ BruteForce(arr)
 \end{lstlisting}
 
 \begin{centering}
-\underline{\large{\textbf{Naive Divide and Conquer:}}}\\
+\textbf{Naive Divide and Conquer:}
 \end{centering}
 \begin{lstlisting}
 NaiveDivideAndConquer(arr)
@@ -100,7 +100,7 @@ NaiveDivideAndConquer(arr)
 \end{lstlisting}
 
 \begin{centering}
-\underline{\large{\textbf{Merge and Count:}}}\\
+\textbf{Merge and Count:}
 \end{centering}
 
 \begin{lstlisting}
@@ -134,24 +134,29 @@ MergeAndCount(arr,0)
 \section*{Asymptotic Analysis of Run Time}
 \hrule
 \begin{centering}
-\underline{\large{\textbf{Brute Force:}}}\\
+\textbf{Brute Force:}
 \end{centering}
 It has two for loops of size n duh
 
 \begin{centering}
-\underline{\large{\textbf{Naive Divide and Conquer:}}}\\
+\textbf{Naive Divide and Conquer:}
 \end{centering}
 T(n) = this class is difficult
 
 \begin{centering}
-\underline{\large{\textbf{Merge and Count:}}}\\
+\textbf{Merge and Count:}
 \end{centering}
 T(n) = wow such recursion
 
 
 \section*{Testing}
 \hrule
-Results and shit
+The first test for correctness was performed using the provided file ``verify.txt''. It was assumed that the last value of each row was the expected number of inversions, so all 3 algorithms were run on each row of values (excluding the last), and this was compared to the expected value. This can be performed via: ``test\_correctness1(``verify.txt'')''.
+
+The second test for correctness used the second provided file ``test\_in.txt''. Since no expected values were given, the results were just printed out. All 3 algorithms gave the same value, so this is a good indication. The results have been included below, with just a single value given (number of inversions) for each row in the test file. This test can be run by calling the function ``test\_correctness2(``test\_in.txt'')''.
+
+Results:
+252180, 250488, 243785, 247021, 250925, 256485, 249876, 253356, 255204, 247071
 
 \section*{Extrapolation and Interpretation}
 \hrule
@@ -160,6 +165,19 @@ Results and shit
 \item Slope of lines in log-log plot:
 \item Discrepancy between actual and asymptotic:
 \end{itemize}
+
+\section*{Empirical Analysis of Run Time}
+\hrule
+
+\vskip 0.04in
+\begin{center}
+  \includegraphics[width=3in]{loglog.ps}
+\end{center}
+
+\vskip 0.04in
+\begin{center}
+  \includegraphics[width=3in]{input_time.ps}
+\end{center}
 
 
 \end{document}
