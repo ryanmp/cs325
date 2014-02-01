@@ -57,7 +57,7 @@
 	Ryan Phillips
 }
 
-\date{January 29, 2014}
+\date{January 31, 2014}
 \maketitle
 %to remove page numbers, set the page style to empty
 \section*{Introduction}
@@ -208,12 +208,12 @@ Telescoping:
 
 General Pattern: T(n/2^n) + ncn
 
-  When T(n) = T(n/(2^n) + ncn
+When T(n) = T(n/(2^n) + ncn
 
-  You have two subproblems of size n
-  Plus linear time combination
+You have two subproblems of size n
+Plus linear time combination
 
-  AKA: O(n log n)
+AKA: O(n log n)
 \end{lstlisting}
 
 \section*{Testing}
@@ -232,7 +232,7 @@ Results:
 \textbf{Slope of lines in log-log plot:}
 \end{centering}
 
-The equation for the best fit line on the log-log plot (calculated using numpy.polyfit() has the following form:
+The equation for the best fit line on the log-log plot (calculated using numpy.polyfit()) has the following form:
 
 f(n) = e\textsuperscript{y-intercept} * n\textsuperscript{slope}
 
@@ -280,21 +280,14 @@ The slopes of the first two best fit lines on the log-log graph are very close t
 
 \section*{Empirical Analysis of Run Time}
 \hrule
-
 \textbf{Linear Plot:}
 \vskip 0.04in
 \begin{center}
-
-\includegraphics[width=5in]{input_time.png}
-
+\includegraphics[width=4.5in]{input_time.png}
 \end{center}
-
 \textbf{Log-log Plot:}
 \vskip 0.04in
 \begin{center}
-
-\includegraphics[width=5in]{loglog.png}
-
+\includegraphics[width=4.5in]{loglog.png}
 \end{center}
-
 \end{document}

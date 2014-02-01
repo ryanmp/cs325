@@ -1,6 +1,6 @@
 #Joshua Villwock, Ryan Phillips, Jaron Thatcher
 #CS325: Analysis of Algotithms
-#1/25/2014
+#1/31/2014
 #Implmentation Assignment 1
 
 from random import shuffle
