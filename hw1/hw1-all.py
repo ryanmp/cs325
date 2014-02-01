@@ -157,7 +157,7 @@ def show_graphs(_results1,_results2,_results3,_n):
 	pylab.show()
 
 
-def test_correctness(_file):
+def test_correctness1(_file):
 	expected_values = []
 
 	#convert verify.txt into a more friendly format
@@ -198,7 +198,8 @@ def test_correctness(_file):
 		return True
 
 
-def test_correctness_final(_file):
+def test_correctness2(_file):
+
 	results = []
 	f = open(_file)
 	lines_raw = f.readlines()
@@ -219,13 +220,13 @@ def test_correctness_final(_file):
 
 def main():
 
-	results0 = test_correctness_final('test_in.txt')
+	if (test_correctness1("verify.txt")): print "passed all tests!"
+	else: "failed correctness tests! Uh oh!" 
+
+	results0 = test_correctness2('test_in.txt')
 	print results0
 
 	
-	if (test_correctness("verify.txt")): print "passed all tests!"
-	else: "failed correctness tests! Uh oh!" 
-
 	print "generating many random inputs..."
 	test_arr = gen_test_arr()
 
