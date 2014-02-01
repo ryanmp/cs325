@@ -132,39 +132,87 @@ MergeAndCount(arr,0)
     return results, count
 \end{lstlisting}
 
-\section*{Correctness Proof}
+\section*{Correctness Proofs}
 \hrule
-%Correctness proof goes here
+
+\begin{centering}
+\textbf{Naive Divide and Conquer:}
+\end{centering}
+
+\begin{centering}
+\textbf{Merge and Count:}
+\end{centering}
+
+Pre-explanation:
+
+Merge \& Count works by simply running mergesort on the list, and counting how many times elements are inverted.  Mergesort works (code actually flows in the other direction, as it is recursive, however it makes more sense conceptually this way) by splitting the Length N list into n separate elements, then continues to combine those into n/2 lists of 2n length.  It does this by comparing the existing ``lists'' (singlets) and moving the smallest of the first elements of either list into the new list, thereby sorting them.
+
+Proof by contradiction:
+
+Assume that one of the resulting lists is incorrect.  If one of the lists obtained by combining smaller lists was not sorted, then mergesort would no longer work, and therefore the inversion counting would also be incorrect.  The only way for this to happen is for the smaller sub-lists to be incorrectly sorted, (since we assume they are sorted, and only look at the first elements in either) and the only way for those to be incorrectly sorted is if exactly what we are talking about right now is true.  Eventually we get to the base case, where each sub-list is only 1 element, but it is impossible to mess this up, since there is no way for a single-element list to not be sorted.
 
 \section*{Asymptotic Analysis of Run Time}
 \hrule
 \begin{centering}
 \textbf{Brute Force:}
 \end{centering}
-It has two for loops of size n duh
+It uses two nested loops, with the lower bound of the inner set to the current value of the outer. 
+
+This has a runtime of: 
+
+(n2 + n) / 2 
+
+Which can also be expressed as:
+
+O(n^2)
 
 \begin{centering}
 \textbf{Naive Divide and Conquer:}
 \end{centering}
-T(n) = this class is difficult
+
+\begin{lstlisting}
+
+Recurence Relation:
+
+T(n) = O(n/2)^2 + 2T(n/2)
+T(n) = (n^2)/4 + 2T(n/2) // 1st
+
+Telescoping: 
+
+T(n/2) = ((n/2)^2 / 4) + 2T(n/4) = n^2 / 16 + 2T(n/4) // 2nd
+
+General form:
+
+T(n) = (1/2)*(-1+n)n + (n + c)/2
+
+Since we have the following terms: (1/2)*n^2 + (1/2)n
+
+This can be simplified as just: O(n^2)
+
+\end{lstlisting}
 
 \begin{centering}
 \textbf{Merge and Count:}
 \end{centering}
-T(n) = T(n/2) + O(n) \\
-T(n) = T(n/2) + cn //1st recursion \\
-    -Telescoping \\
-        -[T(n/4) + cn] + cn = T(n/4) + 2cn //2 \\
-          -[T(n/8) + cn] + 2cn = T(n/8) = 3cn //3 \\
-\\
-    -General Pattern: T(n/2^n) + ncn\\
 
-    When T(n) = T(n/(2^n) + ncn\\
-        -You have two subproblems of size n\\
-        -Plus linear time combination\\
-\\
-        -AKA: O(n log n)\\
+\begin{lstlisting}
+T(n) = T(n/2) + O(n) 
+T(n) = T(n/2) + cn // 1st recursion 
 
+Telescoping:
+
+[T(n/4) + cn] + cn = T(n/4) + 2cn // 2 
+[T(n/8) + cn] + 2cn = T(n/8) = 3cn // 3 
+
+General Pattern: T(n/2^n) + ncn
+
+  When T(n) = T(n/(2^n) + ncn
+
+  You have two subproblems of size n
+  Plus linear time combination
+
+  AKA: O(n log n)
+\end{lstlisting}
 
 \section*{Testing}
 \hrule
@@ -184,7 +232,7 @@ Results:
 
 The equation for the best fit line on the log-log plot (calculated using numpy.polyfit() has the following form:
 
-f(n) = e^y-intercept * n^slope
+f(n) = e\textsuperscript{y-intercept} * n\textsuperscript{slope}
 
 Brute Force
 \begin{itemize}
@@ -224,12 +272,7 @@ Merge \& Count: 275733290
 \textbf{Discrepancy between actual and asymptotic:}
 \end{centering}
 
-<<<<<<< HEAD
-The slopes of the best fit function lines on the log-log plot were both very close to 2 for the first two algorithms, and about 1.1 for the last. This is what is expected, so no real discrepency to report.
-=======
-
 \newpage
->>>>>>> fc8e91077fdbf1f8d253318d545901ef101e6698
 
 \section*{Empirical Analysis of Run Time}
 \hrule
@@ -237,21 +280,17 @@ The slopes of the best fit function lines on the log-log plot were both very clo
 \textbf{Linear Plot:}
 \vskip 0.04in
 \begin{center}
-<<<<<<< HEAD
-  \includegraphics[width=5in]{loglog.ps}
-=======
-  \includegraphics[width=5in]{input_time.png}
->>>>>>> e051b98abde0a369d0f5adfb9c3e1c535362f174
+
+\includegraphics[width=5in]{input_time.png}
+
 \end{center}
 
 \textbf{Log-log Plot:}
 \vskip 0.04in
 \begin{center}
-<<<<<<< HEAD
-  \includegraphics[width=5in]{input_time.ps}
-=======
-  \includegraphics[width=5in]{loglog.png}
->>>>>>> e051b98abde0a369d0f5adfb9c3e1c535362f174
+
+\includegraphics[width=5in]{loglog.png}
+
 \end{center}
 
 \end{document}
