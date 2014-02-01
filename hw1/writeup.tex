@@ -146,7 +146,19 @@ T(n) = this class is difficult
 \begin{centering}
 \textbf{Merge and Count:}
 \end{centering}
-T(n) = wow such recursion
+T(n) = T(n/2) + O(n) 
+T(n) = T(n/2) + cn //1st recursion
+    -Telescoping
+        -[T(n/4) + cn] + cn = T(n/4) + 2cn //2
+          -[T(n/8) + cn] + 2cn = T(n/8) = 3cn //3
+
+    -General Pattern: T(n/2^n) + ncn
+
+    When T(n) = T(n/(2^n) + ncn
+        -You have two subproblems of size n
+        -Plus linear time combination
+
+        -AKA: O(n log n)
 
 
 \section*{Testing}
