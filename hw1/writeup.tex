@@ -52,7 +52,7 @@
 \title{Programming Assignment \#1 - CS325}
 
 \author{
-	Josh LASTNAME? \and
+	Joshua Villwock \and
 	Jaron Thatcher \and
 	Ryan Phillips
 }
@@ -160,11 +160,35 @@ Results:
 
 \section*{Extrapolation and Interpretation}
 \hrule
+
+Slope of lines in log-log plot:
+
+The equation for the best fit line on the log-log plot (calculated using numpy.polyfit() has the following form:
+
+f(n) = e^y-intercept * n^slope
+
+Brute Force
 \begin{itemize}
-\item Largest input item solvable in an hour:
-\item Slope of lines in log-log plot:
-\item Discrepancy between actual and asymptotic:
+\item slope: 2.014
+\item y-intercept: -16.3
 \end{itemize}
+
+Naive Divide & Conquer
+\begin{itemize}
+\item slope: 1.89
+\item y-intercept: -15.3
+\end{itemize}
+
+Merge & Count
+\begin{itemize}
+\item slope: 1.10
+\item y-intercept: -12.3
+\end{itemize}
+
+Largest input item solvable in an hour:
+
+Discrepancy between actual and asymptotic:
+
 
 
 \end{document}
