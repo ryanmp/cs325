@@ -158,13 +158,15 @@ Assume that one of the resulting lists is incorrect.  If one of the lists obtain
 \end{centering}
 It uses two nested loops, with the lower bound of the inner set to the current value of the outer. 
 
+\begin{lstlisting}
 This has a runtime of: 
 
-(n2 + n) / 2 
+(n^2 + n) / 2 
 
 Which can also be expressed as:
 
 O(n^2)
+\end{lstlisting}
 
 \begin{centering}
 \textbf{Naive Divide and Conquer:}
@@ -172,7 +174,7 @@ O(n^2)
 
 \begin{lstlisting}
 
-Recurence Relation:
+Recurrence Relation:
 
 T(n) = O(n/2)^2 + 2T(n/2)
 T(n) = (n^2)/4 + 2T(n/2) // 1st
@@ -234,7 +236,7 @@ The equation for the best fit line on the log-log plot (calculated using numpy.p
 
 f(n) = e\textsuperscript{y-intercept} * n\textsuperscript{slope}
 
-Brute Force
+Brute Force:
 \begin{itemize}
 \item slope: 2.05692581355
 \item y-intercept: -17.5588327907
@@ -271,6 +273,8 @@ Merge \& Count: 275733290
 \begin{centering}
 \textbf{Discrepancy between actual and asymptotic:}
 \end{centering}
+
+The slopes of the first two best fit lines on the log-log graph are very close to 2, and the third is just over 1.1. This matches up with what is expected - i.e. there is no real discrepency to report.
 
 \newpage
 
