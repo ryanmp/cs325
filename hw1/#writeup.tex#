@@ -151,19 +151,19 @@ T(n) = this class is difficult
 \begin{centering}
 \textbf{Merge and Count:}
 \end{centering}
-T(n) = T(n/2) + O(n) \\
-T(n) = T(n/2) + cn //1st recursion \\
-    -Telescoping \\
-        -[T(n/4) + cn] + cn = T(n/4) + 2cn //2 \\
-          -[T(n/8) + cn] + 2cn = T(n/8) = 3cn //3 \\
-\\
-    -General Pattern: T(n/2^n) + ncn\\
+T(n) = T(n/2) + O(n) 
+T(n) = T(n/2) + cn //1st recursion
+    -Telescoping
+        -[T(n/4) + cn] + cn = T(n/4) + 2cn //2
+          -[T(n/8) + cn] + 2cn = T(n/8) = 3cn //3
 
-    When T(n) = T(n/(2^n) + ncn\\
-        -You have two subproblems of size n\\
-        -Plus linear time combination\\
-\\
-        -AKA: O(n log n)\\
+    -General Pattern: T(n/2^n) + ncn
+
+    When T(n) = T(n/(2^n) + ncn
+        -You have two subproblems of size n
+        -Plus linear time combination
+
+        -AKA: O(n log n)
 
 
 \section*{Testing}
@@ -210,26 +210,28 @@ Merge \& Count:
 
 Extrapolation using the best fit function from the previous section: 
 
-f(n) = Runtime = 1 hr = e\textsuperscript{y-intercept} * n\textsuperscript{slope}
+f(n) = Runtime = 1 hr = e^y-intercept * n^slope
 
 Solving for n, using the values from the above chart, yields the following numbers: 
 
-Brute Force: 265410
+Brute Force:
 
-Naive Divide \& Conquer: 299864
+265410
 
-Merge \& Count: 275733290
+Naive Divide \& Conquer:
+
+299864
+
+Merge \& Count:
+
+275733290.
 
 \begin{centering}
 \textbf{Discrepancy between actual and asymptotic:}
 \end{centering}
 
-<<<<<<< HEAD
-The slopes of the best fit function lines on the log-log plot were both very close to 2 for the first two algorithms, and about 1.1 for the last. This is what is expected, so no real discrepency to report.
-=======
 
-\newpage
->>>>>>> fc8e91077fdbf1f8d253318d545901ef101e6698
+
 
 \section*{Empirical Analysis of Run Time}
 \hrule
