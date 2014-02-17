@@ -29,7 +29,7 @@ def brute_force1(x):
 				max_sum = new_sum
 	return max_sum
 
-# faster than brute_force1 when input array length is > 350
+# sometimes faster than brute_force1
 def brute_force2(x): 
 	max_sum = -sys.maxint - 1;
 	l = len(x)
