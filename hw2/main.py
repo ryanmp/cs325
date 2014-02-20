@@ -9,28 +9,29 @@ t1 = [31,-41,59,26,-53,58,97,-93,-23,84] # 187
 t2 = [random.randint(-100,100) for r in xrange(10)]
 
 
-min_test = 100
-max_test = 800
-test_iter = 100
+min_test = 500
+max_test = 2000
+test_iter = 500
 
+num_trials = 1
 
 #[algo][array_size][trial #]
 # setting up our test result array
-test_results = [[[1 for x in xrange(10)] for x in range(min_test,max_test+min_test,test_iter)] for x in xrange(3)]
+test_results = [[[1 for x in xrange(num_trials)] for x in range(min_test,max_test+min_test,test_iter)] for x in xrange(3)]
 
 def test():
 	for idx, x in enumerate(range(min_test,max_test+min_test,test_iter)):
-		for y in xrange(10):
+		for y in xrange(num_trials):
 			print 'testing',x,'trial',y
 			t0 = [random.randint(-100,100) for r in xrange(x)]
 			test_results[0][idx][y] = timeit.Timer(lambda: brute_force2(t0)).timeit(1)
-			#test_results[1][idx][y] = timeit.Timer(lambda: div_and_conq0(t0)).timeit(1)
+			test_results[1][idx][y] = timeit.Timer(lambda: div_and_conq0(t0)).timeit(1)
 			test_results[2][idx][y] = timeit.Timer(lambda: dynamic_prog0(t0)).timeit(1)
 
 def show_graphs():
 
 	# n values (input array sizes)
-	_n = [[x for i in xrange(10)] for x in range(min_test,max_test+min_test,test_iter)]
+	_n = [[x for i in xrange(num_trials)] for x in range(min_test,max_test+min_test,test_iter)]
 	_n = list(itertools.chain(*_n))
 
 	# flatten 2d array
@@ -40,7 +41,7 @@ def show_graphs():
 
 	# plot raw data
 	pylab.loglog(_n,_results1,'ro',basex=10,basey=10, label="Brute Force")
-	#pylab.loglog(_n,_results2,'bo',basex=10,basey=10, label="Naive Divide & Conquer")
+	pylab.loglog(_n,_results2,'bo',basex=10,basey=10, label="Divide & Conquer")
 	pylab.loglog(_n,_results3,'go',basex=10,basey=10, label="Dynamic Programming")
 	
 	# add labels and legend
@@ -70,7 +71,7 @@ def show_graphs():
 
 	pylab.show()
 
-
-test()
-show_graphs()
-
+def main():
+	test()
+	show_graphs()
+main()
