@@ -9,8 +9,8 @@ t1 = [31,-41,59,26,-53,58,97,-93,-23,84] # 187
 t2 = [random.randint(-100,100) for r in xrange(10)]
 
 
-min_test = 500
-max_test = 2000
+min_test = 10
+max_test = 5010
 test_iter = 500
 
 num_trials = 1
@@ -65,13 +65,45 @@ def show_graphs():
 	s3 = (2.71828**intercept3)*t3**slope3
 	pylab.loglog(t3, s3,'g',basex=10,basey=10,label='')
 
+	print slope, slope2, slope3
+
 	pylab.legend(loc='upper left')
 
-	pylab.axis('tight')
+	#pylab.axis('tight')
 
 	pylab.show()
 
 def main():
 	test()
 	show_graphs()
-main()
+
+#main()
+
+def test_correctness(_file):
+	expected_values = []
+
+	#convert verify.txt into a more friendly format
+	f = open(_file)
+	lines_raw = f.readlines()
+	test_arr = []
+	for i in range(0,len(lines_raw)):
+		temp = []
+		temp = lines_raw[i].split(',')
+		temp = map(int, temp)
+		expected_values.append(temp[len(temp)-1])
+		test_arr.append(temp[:len(temp)-1])
+
+	for i in xrange(len(expected_values)):
+		out = brute_force2(test_arr[i])
+		#print out, expected_values[i]
+		assert(out == expected_values[i])
+		out = div_and_conq0(test_arr[i])
+		#print out, expected_values[i]
+		assert(out == expected_values[i])
+		out = dynamic_prog0(test_arr[i])
+		#print out, expected_values[i]
+		assert(out == expected_values[i])
+
+	print "passed all tests!"
+
+test_correctness('verify_2.txt')
