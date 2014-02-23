@@ -57,7 +57,7 @@
 	Ryan Phillips
 }
 
-\date{February 16, 2014}
+\date{February 25, 2014}
 \maketitle
 %to remove page numbers, set the page style to empty
 
@@ -71,17 +71,13 @@
 \hrule
 
 In this writeup, we will both assess time complexity and prove three algorithms designed to solve the Maximum Subarray problem. 
+\par
 
-"In computer science, the maximum subarray problem is the task of finding the contiguous subarray within a one-dimensional array of numbers (containing at least one positive number) which has the largest sum. For example, for the sequence of values −2, 1, −3, 4, −1, 2, 1, −5, 4; the contiguous subarray with the largest sum is 4, −1, 2, 1, with sum 6."
+According to Wikipedia:
 
+\par
 
-
-
-
-
-
-
-
+`In computer science, the maximum subarray problem is the task of finding the contiguous subarray within a one-dimensional array of numbers (containing at least one positive number) which has the largest sum. For example, for the sequence of values −2, 1, −3, 4, −1, 2, 1, −5, 4; the contiguous subarray with the largest sum is 4, −1, 2, 1, with sum 6.'
 
 \section*{Pseudocode}
 \hrule
@@ -90,18 +86,85 @@ In this writeup, we will both assess time complexity and prove three algorithms 
     \textbf{Brute Force:}
     \end{centering}
     \begin{lstlisting}%brute force pseudocode goes here
+
+    def brute_force(x): 
+      max_sum = 0
+      l = len(x)
+      for i in xrange(l):
+        new_sum = 0
+        for j in range(i,l):
+          new_sum += x[j] 
+          if new_sum > max_sum: max_sum = new_sum
+      return max_sum
+
     \end{lstlisting}
 
     \begin{centering}
     \textbf{Divide and Conquer:}
     \end{centering}
     \begin{lstlisting}%divide and conquer pseudocode goes here
+
+    def div_and_conq(x):
+      max_sum = 0
+      def inner(x,max_sum):    
+
+        if (len(x) <= 1): # base case
+          if sum(x) > max_sum:
+            max_sum = sum(x)
+          return max_sum
+
+        mid = int(len(x)/2) # split into two halves
+        l = x[:mid]
+        r = x[mid:]
+
+        max_sum = max(max_sum, sum(l)) # is left half max?
+        max_sum = max(max_sum, sum(r)) # is right half max?
+
+        # does max consists of suffix+prefix?
+        suffix_sum = 0 
+        max_suffix_sum = 0
+        for i in range(mid-1,-1,-1):
+          suffix_sum += x[i]
+          max_suffix_sum = max(max_suffix_sum, suffix_sum)
+        prefix_sum = 0
+        max_prefix_sum = 0
+        for i in range(mid,len(x)):
+          prefix_sum += x[i]
+          max_prefix_sum = max(max_prefix_sum, prefix_sum)
+        max_sum = max(max_sum, max_suffix_sum + max_prefix_sum)
+
+        # recursive calls
+        ret = inner(l,max_sum) 
+        if (ret != None):
+          max_sum = max(ret,max_sum)
+        ret = inner(r,max_sum)  
+        if (ret != None):
+          max_sum = max(ret,max_sum)  
+
+        return max_sum # end of inner function
+
+      return inner(x,max_sum)
+
     \end{lstlisting}
 
     \begin{centering}
     \textbf{Dynamic Programming:}
     \end{centering}
     \begin{lstlisting}%dynamic programming pseudocode goes here
+
+    def dynamic_prog(x):
+      this_sub_arr_sum = 0 
+      max_sum = 0
+      for i in x:
+        if this_sub_arr_sum + i > 0: 
+          this_sub_arr_sum = this_sub_arr_sum + i
+        else:
+          this_sub_arr_sum = 0
+        if this_sub_arr_sum > max_sum:
+          max_sum = this_sub_arr_sum
+
+      return max_sum
+
     \end{lstlisting}
 
 
@@ -163,8 +226,33 @@ In this writeup, we will both assess time complexity and prove three algorithms 
 
 
 
-\section*{Extrapolation and Interpretation}
+\section*{Empirical Testing of Correctness}
 \hrule
+
+Correctness of the three algorithms was verified using the provided file of test cases verify\_2.txt. See the function `test\_correctness' in main.py for details. 
+
+Here is the output from the final text input file (name.txt):
+
+\begin{itemize}
+\item OUTPUT HERE (TODO)
+\end{itemize}
+
+ \newpage
+
+\section*{Empirical Analysis of Run Time}
+\hrule
+\textbf{Linear Plot:}
+\vskip 0.04in
+\begin{center}
+\includegraphics[width=4.5in]{linear.png}
+\end{center}
+\textbf{Log-log Plot:}
+\vskip 0.04in
+\begin{center}
+\includegraphics[width=4.5in]{loglog.png}
+\end{center}
+
+\newpage
 
 \begin{centering}
 \textbf{Slope of lines in log-log plot:}
@@ -176,48 +264,27 @@ f(n) = e\textsuperscript{y-intercept} * n\textsuperscript{slope}
 
 Brute Force:
 \begin{itemize}
-\item slope: 2.05692581355
-\item y-intercept: -17.5588327907
+\item slope: 2.0177140011
 \end{itemize}
 
-Naive Divide \& Conquer:
+Divide \& Conquer:
 \begin{itemize}
-\item slope: 2.03626014268
-\item y-intercept: -17.3982172216
+\item slope: 1.09279503259
 \end{itemize}
 
-Merge \& Count:
+Dynamic Programming:
 \begin{itemize}
-\item slope: 1.10025742067
-\item y-intercept: -13.1947528938
+\item slope: .996887276493
 \end{itemize}
 
 \begin{centering}
-\textbf{Largest input item solvable in an hour:}
+\textbf{Performance Comparison}
 \end{centering}
 
+`In your report, present and compare the empirical run time results of the
+three different algorithms. Provide a discussion of the comparative benefits and
+drawbacks of different algorithms.'
 
 
 
-
-\begin{centering}
-\textbf{Discrepancy between actual and asymptotic:}
-\end{centering}
-
-The slopes of the first two best fit lines on the log-log graph are very close to 2, and the third is just over 1.1. This matches up with what is expected - i.e. there is no real discrepency to report.
-
-\newpage
-
-\section*{Empirical Analysis of Run Time}
-\hrule
-\textbf{Linear Plot:}
-\vskip 0.04in
-\begin{center}
-\includegraphics[width=4.5in]{input_time.png}
-\end{center}
-\textbf{Log-log Plot:}
-\vskip 0.04in
-\begin{center}
-\includegraphics[width=4.5in]{loglog.png}
-\end{center}
 \end{document}
