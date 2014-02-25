@@ -1,0 +1,56 @@
+\section*{Asymptotic Analysis of Run Time}
+\hrule
+\begin{centering}
+\textbf{Brute Force:}
+\end{centering}
+It uses two nested loops, so it has a runtime of:
+
+O(n^2)
+
+\begin{centering}
+\textbf{Divide and Conquer:}
+\end{centering}
+
+\begin{lstlisting}
+
+Recurrence Relation:
+
+T(n) = O(n) + 2T(n/2)
+
+Telescoping:
+
+T(n/2) = O(n/2) + 2T(n/4) //For first expansion
+T(n/4) = O(n/4) + 2T(n/8) //For second expansion
+
+T(n) = O(n) + 2(O(n/2) + 2T(n/4)) //first expansion
+T(n) = O(n) + 2O(n/2) + 4T(n/4) //simplify
+T(n) = O(n) + 2O(n/2) + 4(O(n/4) + 2T(n/8)) //second expansion
+T(n) = O(n) + 2O(n/2) + 4O(n/4) + 8T(n/8) //simplify
+
+Written as summation:
+
+2cO(n/2c) where c=1 > c-1  + 2^cT(n/2^c)  where c->infinity
+
+Solve the recurrence relation:
+
+T(n) = (Cn/2) + (n log(n)/log(2))
+
+Get rid of constants:
+
+T(n) = n + n log n
+T(n) = n log n
+
+\end{lstlisting}
+
+\begin{centering}
+\textbf{Dynamic Programming:}
+\end{centering}
+
+The dynamic programming solution is deceptively simple.
+
+Basically, it steps through the array, counting as it goes, but if it reaches a negative total, it will restart, as that will cause the solution to be on one side or the other.
+This allows us to only step through the entire array one, no matter how big it is.
+
+Therefore, it is O(n)
+
+\end{lstlisting}
