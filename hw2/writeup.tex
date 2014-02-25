@@ -220,17 +220,42 @@ Brute force consists mainly of two nested loops. The outer loop covers the range
 
 In big-O notation, the 1/2 can be factored out and we drop the c since we are just concerned with the dominant term. The result is: O(n^2).
 
-
-
 \begin{centering}
 \textbf{Divide and Conquer:}
 \end{centering}
 
 %divide and conquer asymptotic runtime here
 
-TODO - finished by Josh already?
+\begin{lstlisting}
 
+Recurrence Relation:
 
+T(n) = O(n) + 2T(n/2)
+
+Telescoping:
+
+T(n/2) = O(n/2) + 2T(n/4) //For first expansion
+T(n/4) = O(n/4) + 2T(n/8) //For second expansion
+
+T(n) = O(n) + 2(O(n/2) + 2T(n/4)) //first expansion
+T(n) = O(n) + 2O(n/2) + 4T(n/4) //simplify
+T(n) = O(n) + 2O(n/2) + 4(O(n/4) + 2T(n/8)) //second expansion
+T(n) = O(n) + 2O(n/2) + 4O(n/4) + 8T(n/8) //simplify
+
+Written as summation:
+
+2cO(n/2c) where c=1 > c-1  + 2^cT(n/2^c)  where c->infinity
+
+Solve the recurrence relation:
+
+T(n) = (Cn/2) + (n log(n)/log(2))
+
+Get rid of constants:
+
+T(n) = n + n log n
+T(n) = n log n
+
+\end{lstlisting}
 
 \begin{centering}
 \textbf{Dynamic Programming:}
@@ -238,20 +263,44 @@ TODO - finished by Josh already?
 
 %dynamic programming asymptotic runtime here
 
-This dynamic algorithm only needs to traverse the array of once. The other lines outside of this single loop happen in constant time. So the algorithm only requires O(n). 
+The dynamic programming solution is deceptively simple.
 
+Basically, it steps through the array, counting as it goes, but if it reaches a negative total, it will restart, as that will cause the solution to be on one side or the other.
+This allows us to only step through the entire array one, no matter how big it is. This means that the algorithm only needs to traverse the array once. The other lines outside of this single loop happen in constant time. 
 
+Therefore, it is O(n).
 
 \section*{Empirical Testing of Correctness}
 \hrule
 
 Correctness of the three algorithms was verified using the provided file of test cases verify\_2.txt. See the function `test\_correctness' in main.py for details. 
 
-Here is the output from the final text input file (name.txt):
+As for the final text input, assuming the text file we were given was formatted as to provide one test array per line, we have 20 test cases to process. Here is the output from running the three algorithms on test\_in\_2.txt:
 
-\begin{itemize}
-\item OUTPUT HERE (TODO)
-\end{itemize}
+\begin{lstlisting}
+
+test case 1  : 4711  4711  4711
+test case 2  : 8932  8932  8932
+test case 3  : 11242 11242 11242
+test case 4  : 22557 22557 22557
+test case 5  : 9097  9097  9097
+test case 6  : 23875 23875 23875
+test case 7  : 6145  6145  6145
+test case 8  : 6957  6957  6957
+test case 9  : 13734 13734 13734
+test case 10 : 14808 14808 14808
+test case 11 : 7654  7654  7654
+test case 12 : 7723  7723  7723
+test case 13 : 5877  5877  5877
+test case 14 : 8898  8898  8898
+test case 15 : 10265 10265 10265
+test case 16 : 10285 10285 10285
+test case 17 : 21605 21605 21605
+test case 18 : 5396  5396  5396
+test case 19 : 16430 16430 16430
+test case 20 : 8929  8929  8929
+
+\end{lstlisting}
 
 \newpage
 

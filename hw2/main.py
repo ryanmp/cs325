@@ -36,7 +36,7 @@ def test():
 def test_correctness(_file):
 	expected_values = []
 
-	#convert verify.txt into a more friendly format
+	#convert input text file
 	f = open(_file)
 	lines_raw = f.readlines()
 	test_arr = []
@@ -59,6 +59,25 @@ def test_correctness(_file):
 		assert(out == expected_values[i])
 
 	print "passed all tests!"
+
+def test_correctness2(_file):
+
+	#convert input file
+	f = open(_file)
+	lines_raw = f.readlines()
+	test_arr = []
+	for i in range(0,len(lines_raw)):
+		temp = []
+		temp = lines_raw[i].split(',')
+		temp = map(int, temp)
+		test_arr.append(temp)
+
+	for i in xrange(len(test_arr)):
+		out1 = brute_force2(test_arr[i])
+		out2 = div_and_conq0(test_arr[i])
+		out3 = dynamic_prog0(test_arr[i])
+
+		print 'test case',i+1,':',out1,out2,out3
 
 
 def show_graphs(test_results):
@@ -207,12 +226,13 @@ def memory_tests():
 # comment/comment based on what tests you want to run
 def main(test_results2):
 
-	test_correctness('verify_2.txt')
+	#test_correctness('verify_2.txt')
+	test_correctness2('test_in_2.txt')
 
-	test() #performance tests
-	pickle.dump( test_results, open( "results.p", "wb" ) ) #save
+	#test() #performance tests
+	#pickle.dump( test_results, open( "results.p", "wb" ) ) #save
 	#test_results = pickle.load( open( "results.p", "rb" ) ) #load
-	show_graphs(test_results)
+	#show_graphs(test_results)
 	#show_graphs2(test_results)
 
 	#memory_tests()
