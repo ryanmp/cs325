@@ -85,6 +85,9 @@ According to Wikipedia:
 
     \textbf{Brute Force:}
     \end{centering}
+
+    \lstset{ numbers=left }
+
     \begin{lstlisting}%brute force pseudocode goes here
 
     def brute_force(x): 
@@ -167,18 +170,26 @@ According to Wikipedia:
 
     \end{lstlisting}
 
-
-
-
-
-
-
-
-
-
+\lstset{ numbers=none }
 
 \section*{Correctness Proofs}
 \hrule
+
+\begin{centering}
+\textbf{Brute Force:}
+\end{centering}
+
+In order to prove the correctness of brute force, we can show how to construct the definition of this problem from the code itself. Consider lines 5 \& 6. This loop can be represented by the following summation:
+
+$\sum\limits_{k=i}^{l} x[k]$
+
+Then lines 5 and 8 keep track of the max, allowing us to add in a max() type function. Since this is inside the loop, it checks the max as the sum is modified, as to include the whole range of n in the upper bound for a possible max array. Lastly, including line 4, add in a range for the lower index of the above sum. Including the max and additional loop in our above sum, we are left with something like this:
+
+$max \sum\limits_{k=i}^{l} x[k],$ where i is less than l, \& i/l range from 1 to n.
+
+This is the same as the definition of the maximum subarray problem.
+
+Additionally, to approach this from another angle, brute-force tries every possible contigious sub-array, so it's guaranteed to arrive at the maximum one.
 
 \begin{centering}
 \textbf{Divide and Conquer:}
@@ -198,33 +209,38 @@ TODO
 
 \section*{Asymptotic Analysis of Run Time}
 \hrule
+
 \begin{centering}
 \textbf{Brute Force:}
 \end{centering}
 
-\begin{lstlisting}%brute force asymptotic runtime goes here
+%brute force asymptotic runtime goes here
 
-TODO
+Brute force consists mainly of two nested loops. The outer loop covers the range of n, and the inner loop covers the range from the current index of the outer loop to n. The outer loop contributes n to T(n) and the inner loop contributes n/2. Since they are nested, this means they are multiplied. This gives us: T(n) = n*n/2 + c.
 
-\end{lstlisting}
+In big-O notation, the 1/2 can be factored out and we drop the c since we are just concerned with the dominant term. The result is: O(n^2).
+
+
 
 \begin{centering}
 \textbf{Divide and Conquer:}
 \end{centering}
 
-\begin{lstlisting}%divide and conquer asymptotic runtime here
+%divide and conquer asymptotic runtime here
 
-TODO
+TODO - finished by Josh already?
 
-\end{lstlisting}
+
 
 \begin{centering}
 \textbf{Dynamic Programming:}
 \end{centering}
 
-\begin{lstlisting}%dynamic programming asymptotic runtime here
+%dynamic programming asymptotic runtime here
 
-\end{lstlisting}
+This dynamic algorithm only needs to traverse the array of once. The other lines outside of this single loop happen in constant time. So the algorithm only requires O(n). 
+
+
 
 \section*{Empirical Testing of Correctness}
 \hrule

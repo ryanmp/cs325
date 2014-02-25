@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  22 FEB 2014 18:37
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  24 FEB 2014 20:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -743,63 +743,78 @@ Missing character: There is no ’ in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no ˆ in font cmr10!
 Missing character: There is no ’ in font cmr10!
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 97.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 100.
+
  (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 97.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 100.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.131         for 
-                  i in range(mid,len(x)): [1] [2] [3]
-<linear.png, id=101, 578.16pt x 433.62pt>
+l.134         for 
+                  i in range(mid,len(x)): [1] [2]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.221 ...th the dominant term. The result is: O(n^
+                                                  2).
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.222 
+      
+? 
+[3] <linear.png, id=101, 578.16pt x 433.62pt>
 File: linear.png Graphic file (type png)
  <use linear.png>
-Package pdftex.def Info: linear.png used on input line 247.
+Package pdftex.def Info: linear.png used on input line 263.
 (pdftex.def)             Requested size: 325.215pt x 243.91064pt.
 
 <loglog.png, id=103, 578.16pt x 433.62pt>
 File: loglog.png Graphic file (type png)
  <use loglog.png>
-Package pdftex.def Info: loglog.png used on input line 252.
+Package pdftex.def Info: loglog.png used on input line 268.
 (pdftex.def)             Requested size: 325.215pt x 243.91064pt.
  [4 <./linear.png> <./loglog.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 290.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 304.
  [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 290.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 304.
  (./writeup.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 290.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 290.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 304.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 304.
 Package rerunfilecheck Info: File `writeup.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 290.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 304.
  ) 
 Here is how much of TeX's memory you used:
- 11433 strings out of 493488
- 163240 string characters out of 3141326
- 335563 words of memory out of 3000000
+ 11430 strings out of 493488
+ 163201 string characters out of 3141326
+ 336563 words of memory out of 3000000
  14476 multiletter control sequences out of 15000+200000
  12632 words of font info for 53 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,12n,72p,563b,1646s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,12n,72p,563b,1644s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
-/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
-r/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
-local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
-cal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
-/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
-texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/t
-exlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on writeup.pdf (6 pages, 173771 bytes).
+/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
+/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
+ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local
+/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/te
+xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
+live/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
+ive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on writeup.pdf (6 pages, 193267 bytes).
 PDF statistics:
- 169 PDF objects out of 1000 (max. 8388607)
- 145 compressed objects within 2 object streams
- 79 named destinations out of 1000 (max. 500000)
+ 173 PDF objects out of 1000 (max. 8388607)
+ 147 compressed objects within 2 object streams
+ 76 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
