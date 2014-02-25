@@ -177,26 +177,24 @@ According to Wikipedia:
 
 
 
-    \section*{Correctness Proofs}
-    \hrule
+\section*{Correctness Proofs}
+\hrule
 
-    \begin{centering}
-    \textbf{Divide and Conquer:}
-    \end{centering}
+\begin{centering}
+\textbf{Divide and Conquer:}
+\end{centering}
 
-    %divide and conquer proof goes here
+%divide and conquer proof goes here
 
-    \begin{centering}
-    \textbf{Dynamic Programming:}
-    \end{centering}
+TODO
 
-    %dynamic programming proof goes here
+\begin{centering}
+\textbf{Dynamic Programming:}
+\end{centering}
 
+%dynamic programming proof goes here
 
-
-
-
-
+TODO
 
 \section*{Asymptotic Analysis of Run Time}
 \hrule
@@ -206,6 +204,8 @@ According to Wikipedia:
 
 \begin{lstlisting}%brute force asymptotic runtime goes here
 
+TODO
+
 \end{lstlisting}
 
 \begin{centering}
@@ -213,6 +213,8 @@ According to Wikipedia:
 \end{centering}
 
 \begin{lstlisting}%divide and conquer asymptotic runtime here
+
+TODO
 
 \end{lstlisting}
 
@@ -223,8 +225,6 @@ According to Wikipedia:
 \begin{lstlisting}%dynamic programming asymptotic runtime here
 
 \end{lstlisting}
-
-
 
 \section*{Empirical Testing of Correctness}
 \hrule
@@ -237,7 +237,7 @@ Here is the output from the final text input file (name.txt):
 \item OUTPUT HERE (TODO)
 \end{itemize}
 
- \newpage
+\newpage
 
 \section*{Empirical Analysis of Run Time}
 \hrule
@@ -281,10 +281,8 @@ Dynamic Programming:
 \textbf{Performance Comparison}
 \end{centering}
 
-`In your report, present and compare the empirical run time results of the
-three different algorithms. Provide a discussion of the comparative benefits and
-drawbacks of different algorithms.'
+Over the range of array sizes under test, Divide and Conquer always performs better than Brute Force, and the Dynamic Programming algorithm always performs better than Divide and Conquer. Sometimes it's necessary to use more temporary memory in order to get performance gains, especially in the case of dynamic programming. But that's not the case here. Some memory usage tests were performed as well, but the results were boring (i.e. no noticeable differences between the algorithms) and don't warrant a graph. 
 
-
+So in conclusion - for solving the maximum subarray problem, you probably should always use some version of the dynamic programming algorithm presented here.
 
 \end{document}

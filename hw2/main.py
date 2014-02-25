@@ -5,20 +5,23 @@ from div_and_conq import *
 from dynamic_prog import *
 import cPickle as pickle
 
-# test cases
-t1 = [31,-41,59,26,-53,58,97,-93,-23,84] # 187
-t2 = [random.randint(-100,100) for r in xrange(10)]
-
+# https://pypi.python.org/packages/source/g/guppy/guppy-0.1.10.tar.gz
+# this is really unnecessary for this project
+# just don't run the memory test and comment out the next line
+from guppy import hpy
 
 min_test = 1000
 max_test = 10000
 test_iter = 1000
-
 num_trials = 10
 
 #[algo][array_size][trial #]
 # setting up our test result array
 test_results = [[[1 for x in xrange(num_trials)] for x in range(min_test,max_test+min_test,test_iter)] for x in xrange(3)]
+
+#for mem test
+test_results2 = [[[1 for x in xrange(num_trials)] for x in range(min_test,max_test+min_test,test_iter)] for x in xrange(3)]
+
 
 def test():
 	for idx, x in enumerate(range(min_test,max_test+min_test,test_iter)):
@@ -103,6 +106,7 @@ def show_graphs(test_results):
 
 	pylab.show()
 
+# oh yeah, need a quick linear graph
 def show_graphs2(test_results):
 
 	# n values (input array sizes)
@@ -125,23 +129,98 @@ def show_graphs2(test_results):
 
 	pylab.show()
 
+# for mem usage
+def show_graphs3(test_results2):
+
+	# n values (input array sizes)
+	_n = [[x for i in xrange(num_trials)] for x in range(min_test,max_test+min_test,test_iter)]
+	_n = list(itertools.chain(*_n))
+
+	# flatten 2d array
+	_results1 = list(itertools.chain(*test_results2[0]))
+	_results2 = list(itertools.chain(*test_results2[1]))
+	_results3 = list(itertools.chain(*test_results2[2]))
 
 
-def main():
+	print _results1
+	print _results2
+	print _results3
+
+	print _n
+
+	pylab.xlabel('n')
+	pylab.ylabel('mem usage (bytes)')
+
+	pylab.ylim(150000, 200000)
+
+	pylab.plot(_n,_results1, 'r', label="Brute Force")
+	pylab.plot(_n,_results2, 'g', label="Divide & Conquer")
+	pylab.plot(_n,_results3, 'b', label="Dynamic Programming")
+
+
+	pylab.legend(loc='lower right')
+
+
+
+	pylab.show()
+
+
+def memory_tests():
+
+	h = hpy()
+
+	for idx, x in enumerate(range(min_test,max_test+min_test,test_iter)):
+		for y in xrange(num_trials):
+			print 'testing',x,'trial',y
+			t0 = [random.randint(-100,100) for r in xrange(x)]
+
+			h = hpy()
+			h.setref()
+			brute_force2(t0)
+			hp = h.heap()
+			total = 0
+			for i in xrange(len(hp)):
+				total += hp[i].size
+				test_results2[0][idx][y] = total
+			print total
+
+			h = hpy()
+			h.setref()
+			div_and_conq0(t0)
+			hp = h.heap()
+			total = 0
+			for i in xrange(len(hp)):
+				total += hp[i].size
+				test_results2[1][idx][y] = total
+			print total
+
+			h = hpy()
+			h.setref()
+			dynamic_prog0(t0)
+			hp = h.heap()
+			total = 0
+			for i in xrange(len(hp)):
+				total += hp[i].size
+				test_results2[2][idx][y] = total
+			print total
+
+# comment/comment based on what tests you want to run
+def main(test_results2):
 
 	test_correctness('verify_2.txt')
 
-	#test()
-	#save
-	#pickle.dump( test_results, open( "results.p", "wb" ) )
-
-	#load
-	test_results = pickle.load( open( "results.p", "rb" ) )
-
+	test() #performance tests
+	pickle.dump( test_results, open( "results.p", "wb" ) ) #save
+	#test_results = pickle.load( open( "results.p", "rb" ) ) #load
 	show_graphs(test_results)
-	show_graphs2(test_results)
+	#show_graphs2(test_results)
 
-main()
+	#memory_tests()
+	#pickle.dump( test_results2, open( "results_mem.p", "wb" ) )
+	#test_results2 = pickle.load( open( "results_mem.p", "rb" ) )
+	#show_graphs3(test_results2)
+
+main(test_results2)
 
 
 
