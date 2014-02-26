@@ -185,7 +185,7 @@ $\sum\limits_{k=i}^{l} x[k]$
 
 Then lines 5 and 8 keep track of the max, allowing us to add in a max() type function. Since this is inside the loop, it checks the max as the sum is modified, as to include the whole range of n in the upper bound for a possible max array. Lastly, including line 4, add in a range for the lower index of the above sum. Including the max and additional loop in our above sum, we are left with something like this:
 
-$max \sum\limits_{k=i}^{l} x[k], where i is less than l, \& i/l range from 1 to n.$
+$max \sum\limits_{k=i}^{l} x[k],$ where i is less than l, \& i/l range from 1 to n.
 
 This is the same as the definition of the maximum subarray problem.
 
@@ -243,8 +243,6 @@ T(n) = O(n) + 2O(n/2) + 4(O(n/4) + 2T(n/8)) //second expansion
 T(n) = O(n) + 2O(n/2) + 4O(n/4) + 8T(n/8) //simplify
 
 Written as summation:
-
-2cO(n/2c)
 
 $\sum\limits_{k=i}^{c-1} 2cO(n/c)$ + 2^cT(n/2^c)  where c->infinity
 
