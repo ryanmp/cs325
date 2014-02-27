@@ -197,9 +197,15 @@ Additionally, to approach this from another angle, brute-force tries every possi
 
 %divide and conquer proof goes here
 
-\textbf{Proof:}
+Our algorithm first handles the base case for when the list is less than or equal to 2 elements, easily finding the max sub-array.  After that, it splits the array in half, yielding 2 separate arrays.  There are only 3 locations in which the answer can be found:
 
-This algorithm works by originally setting the max number to the sum of all numbers in the array. It then splits the array in half and checks the sum of the left half, right half, and sums that cross the middle of the array. If any of these sums are greater than the original sum, it then changes the value of max and we have a new maximum subarray.
+1.  Fully in the first half.  2.  Fully in the second Half.  3.  Or a sub-array spanning the first half and second half.  Our algorithm tries all 3 of these, and uses whatever it finds produces the largest sub-array.
+
+for 1 and 2, our code simply takes that Half, and recursively calls itself.  Hence, if we can prove our 3 works, the rest of the algorithm will work, since everything is eventually covered by either the base case, or this.
+
+In order to find the largest sub-array possible that crosses the border, our code iteratively steps outwards from the middle, both directions, one at a time.  It keeps track of the largest subarray it has found yet, as a subarray may get smaller before it gets bigger (negative numbers in the middle)  Once it hits the end, it will go the other direction, and see how large it can get that direction.
+
+Since the recursion relies on the ability for either the base case or the cross-center parts to work, there are no other positions the answer could be in, except those covered.
 
 
 
@@ -212,8 +218,6 @@ This algorithm works by originally setting the max number to the sum of all numb
 \end{centering}
 
 %dynamic programming proof goes here
-
-\textbf{Proof}
 
 A maximum subarray can not possible have a negative sum. Our algorithm starts from the first item and tracks the sum along the way. If the sum at some point becomes negative, it means the whole sequence can contain the biggest sum but cannot be a part of anything bigger.
 
@@ -230,7 +234,7 @@ If we iteratively compute the sums, avoiding negatives, it is impossible to miss
 
 Brute force consists mainly of two nested loops. The outer loop covers the range of n, and the inner loop covers the range from the current index of the outer loop to n. The outer loop contributes n to T(n) and the inner loop contributes n/2. Since they are nested, this means they are multiplied. This gives us: T(n) = n*n/2 + c.
 
-In big-O notation, the 1/2 can be factored out and we drop the c since we are just concerned with the dominant term. The result is: O(n^2).
+In big-O notation, the 1/2 can be factored out and we drop the c since we are just concerned with the dominant term. The result is: O(n\^2).
 
 \begin{centering}
 \textbf{Divide and Conquer:}
@@ -320,11 +324,14 @@ test case 20 : 8929  8929  8929
 \hrule
 \textbf{Linear Plot:}
 \vskip 0.04in
+
 \begin{center}
 \includegraphics[width=4.5in]{linear.png}
 \end{center}
+
 \textbf{Log-log Plot:}
 \vskip 0.04in
+
 \begin{center}
 \includegraphics[width=4.5in]{loglog.png}
 \end{center}
