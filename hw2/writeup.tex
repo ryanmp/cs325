@@ -197,15 +197,12 @@ Additionally, to approach this from another angle, brute-force tries every possi
 
 %divide and conquer proof goes here
 
-\textbf{Pre-explanation:} 
+\textbf{Proof:}
 
-The divide and conquer algorithm works by splitting the array in half, finding the middle of the two smaller arrays, and then proceeding to do so until it hits the base case - n = 1. While doing this it finds the maximum subarray of each smaller array and then combines to get the maximum subarray of the entire array.
+This algorithm works by originally setting the max number to the sum of all numbers in the array. It then splits the array in half and checks the sum of the left half, right half, and sums that cross the middle of the array. If any of these sums are greater than the original sum, it then changes the value of max and we have a new maximum subarray.
 
-\textbf{Proof by contradiction:}
 
-Base Case: size of array = 1
 
-With an array of size 1, there is only one possible subarray, which our program will return correctly.
 
 
 
@@ -215,10 +212,6 @@ With an array of size 1, there is only one possible subarray, which our program 
 \end{centering}
 
 %dynamic programming proof goes here
-
-\textbf{Pre-explanation:}
-
-This algorithm works by iteratively computing the maximum subarray ending at each position. While iterating, the new max subarray will consist of one more element than the previous.
 
 \textbf{Proof}
 
