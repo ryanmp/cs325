@@ -1,1 +1,0 @@
-![such algorithms](wow.jpeg)
