@@ -216,7 +216,13 @@ With an array of size 1, there is only one possible subarray, which our program 
 
 %dynamic programming proof goes here
 
-A maximum subarray could not possible have a negative sum. Our algorithm starts from the first item and tracks the sum along the way. If the sum at some point becomes negative, it means the whole sequence can contain the biggest sum but cannot be a part of anything bigger.
+\textbf{Pre-explanation:}
+
+This algorithm works by iteratively computing the maximum subarray ending at each position. While iterating, the new max subarray will consist of one more element than the previous.
+
+\textbf{Proof}
+
+A maximum subarray can not possible have a negative sum. Our algorithm starts from the first item and tracks the sum along the way. If the sum at some point becomes negative, it means the whole sequence can contain the biggest sum but cannot be a part of anything bigger.
 
 If we iteratively compute the sums, avoiding negatives, it is impossible to miss the maximum, since if the maximum were the sum of [k, n], it would mean that the sum of [0, k-1] is negative.
 
