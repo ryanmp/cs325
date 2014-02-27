@@ -197,7 +197,18 @@ Additionally, to approach this from another angle, brute-force tries every possi
 
 %divide and conquer proof goes here
 
-TODO
+\textbf{Pre-explanation:} 
+
+The divide and conquer algorithm works by splitting the array in half, finding the middle of the two smaller arrays, and then proceeding to do so until it hits the base case - n = 1. While doing this it finds the maximum subarray of each smaller array and then combines to get the maximum subarray of the entire array.
+
+\textbf{Proof by contradiction:}
+
+Base Case: size of array = 1
+
+With an array of size 1, there is only one possible subarray, which our program will return correctly.
+
+
+
 
 \begin{centering}
 \textbf{Dynamic Programming:}
@@ -205,7 +216,9 @@ TODO
 
 %dynamic programming proof goes here
 
-TODO
+A maximum subarray could not possible have a negative sum. Our algorithm starts from the first item and tracks the sum along the way. If the sum at some point becomes negative, it means the whole sequence can contain the biggest sum but cannot be a part of anything bigger.
+
+If we iteratively compute the sums, avoiding negatives, it is impossible to miss the maximum, since if the maximum were the sum of [k, n], it would mean that the sum of [0, k-1] is negative.
 
 \section*{Asymptotic Analysis of Run Time}
 \hrule
