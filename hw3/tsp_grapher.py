@@ -2,17 +2,33 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_route(cities, route):
-    X, Y = [],[]
-    for i in route:
-        X.append([cities[i][0]])
-        Y.append([cities[i][1]])
+	X, Y = [],[]
+	for i in route:
+		X.append([cities[i][0]])
+		Y.append([cities[i][1]])
 
-    X.append([cities[route[0]][0]])
-    Y.append([cities[route[0]][1]])    
+	X.append([cities[route[0]][0]])
+	Y.append([cities[route[0]][1]])    
 
-    plt.plot(X, Y, 'bo-')
-    plt.show()
-    
+	plt.plot(X, Y, 'bo-')
+	plt.show()
+	
+def plot_routes(cities, routes):
+
+	styles = ['ro-','go:','bo--','co-.']
+	widths = [1.0,3.0,2.0]
+
+	for idx, route in enumerate(routes):
+		X, Y = [],[]
+		for i in route:
+			X.append([cities[i][0]])
+			Y.append([cities[i][1]])
+
+		X.append([cities[route[0]][0]])
+		Y.append([cities[route[0]][1]])    
+		plt.plot(X, Y, styles[idx], linewidth=widths[idx])
+
+	plt.show()
 
 def plot_timing(_ts, _ranges, algos):
 	slopes, intercepts = [], []

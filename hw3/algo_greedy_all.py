@@ -1,10 +1,14 @@
 import sys, math
-
 from helpers import *
 
 '''
 
 from a starting city, it continually adds the next closest city to the route
+
+this algo on average should return shorter routes than algo_greedy since it runs algo_greedy
+on every possible start city.
+
+But the trade off is that it's slower by a factor of n.
 
 '''
 
