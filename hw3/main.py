@@ -7,14 +7,12 @@ from algo_exact import *
 from algo_fastdumb import *
 from algo_greedy import *
 
-n0 = 2     #n0 - n1 the range of input sizes you want to calculate,
-n1 = 240   #And then try.
-seed = "0" #Seeds RNG
-set = []   #Don't touch.  used to init random list
+n0 = 2     #Minimum input size to try
+n1 = 240   #Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
-	random.seed(seed)
+	random.seed("0")    #Seeds the RNG.  This causes us to use the same test set every run.
 	set = []
 	for i in xrange(_n):
 		set.append((random.randrange(1,_range),random.randrange(1,_range)))
