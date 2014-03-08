@@ -1,5 +1,7 @@
 import sys, math
 
+from helpers import *
+
 '''
 
 from a starting city, it continually adds the next closest city to the route
@@ -8,10 +10,10 @@ from a starting city, it continually adds the next closest city to the route
 
 def algo_greedy_all(cities):
 
-    shortest_route_so_far = sys.maxint
+    shortest_route_dist = sys.maxint
+    best_route = []
 
-    for i in xrange(0,len(cities)):
-
+    for i in xrange(0,len(cities)-1):
         route = [cities[i]]
         unvisited = cities[:i+0] + cities[i+1:]
 
@@ -30,17 +32,11 @@ def algo_greedy_all(cities):
         for i in route:
             route2.append(cities.index(i))
 
-        test_length = route_length2(cities,route2)
-        if (test_length < shortest_route_so_far):
-            shortest_route_so_far = test_length
+        test_length = route_length(cities,route2)
 
-    return route2
+        if (test_length < shortest_route_dist):
+            shortest_route_dist = test_length
+            best_route = route2
 
+    return best_route
 
-def route_length2(cities,_route):
-    distance = 0
-    for i in xrange(len(_route)-1):
-        idx1 = _route[i]
-        idx2 = _route[i+1]
-        distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
-    return distance

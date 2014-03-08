@@ -1,5 +1,7 @@
 import itertools, sys, math
 
+from helpers import *
+
 '''
 
 calculates the length of every possible route (list gen via itertools permutations)
@@ -19,11 +21,3 @@ def algo_exact(cities):
 			shortest_path_idx = i
 
 	return all_routes[shortest_path_idx]
-
-def route_length(cities,route):
-	distance = 0
-	for i in xrange(len(route)-1):
-		idx1 = route[i]
-		idx2 = route[i+1]
-		distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
-	return distance
