@@ -1,6 +1,7 @@
 import sys, math, numpy
 from helpers import *
 
+
 '''
 
 creates a list of all distances

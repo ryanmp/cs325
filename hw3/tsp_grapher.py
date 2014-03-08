@@ -41,7 +41,13 @@ def plot_timing(_ts, _ranges, algos):
 	plt.legend(loc='upper left')
 	plt.xlabel('n')
 	plt.ylabel('time (s)')
+
+	plt.xlim([_ranges[0][0],_ranges[0][-1]])
+
 	plt.show()
+
+
+
 	return slopes, intercepts
 	
 

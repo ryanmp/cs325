@@ -7,12 +7,13 @@ from algo_exact import *
 from algo_fastdumb import *
 from algo_greedy import *
 from algo_greedy_all import *
+from algo_greedy_segmented import *
 from algo_inverse_prim import *
 
 from helpers import *
 
-n0 = 3    #Minimum input size to try
-n1 = 80    #Maximum input size to try
+n0 = 5  	#Minimum input size to try
+n1 = 50	    #Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
@@ -51,10 +52,16 @@ def time_algo(f, n0, n1):
 def batch_algo(f, n0, n1):
 	ret = []
 	timings = []
+
+	#t1 = generate_test_set2("ok",n1,1000)
+
 	for i in xrange(n0,n1):
-		t1 = return_set(i)
+		t2 = return_set(i)
+
+		#t2 = t1[:n1]
+
 		start_time = time.time()
-		ret.append( route_length( t1, f(t1) ) )
+		ret.append( route_length( t2, f(t2) ) )
 		timings.append(time.time()-start_time)
 
 	return ret, [i for i in range(n0,n1)], f, timings
@@ -77,11 +84,18 @@ def batch_compare_algos(*arg):
 
 #{ number of cities, [algo1, algo2, etc] }
 def compare_algos(_n, _algos):
-	cities0 = return_set(_n)
+	#cities0 = return_set(_n)
+
+	cities0 = generate_test_set2("ok",_n,1000)
+
 	all_routes = []
 	for _algo in _algos:
 		all_routes.append(_algo(cities0))
+	for i in all_routes:
+		print route_length(cities0,i)
+
 	tsp_grapher.plot_routes(cities0,all_routes)
+
 
 # not even close... need much better curve fitting, including exponential forms,
 # and factorial too.. (rather than just linear {slope and intecept}) but I can't
@@ -91,27 +105,34 @@ def estimate_runtime(input_size, slope, intercept):
 	print str(datetime.timedelta(seconds=out))
 
 
+def generate_test_set2(_seed,_n,_range):
+	random.seed(_seed)
+	ret = []
+	for i in xrange(_n):
+		ret.append((random.randrange(1,_range),random.randrange(1,_range)))
+	return ret
+
 def main():
 
 	#initialize random inputs:
-	generate_test_set(n1,100)
+	generate_test_set(n1,4000)
 
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
 	# (using the default range+seed declared up in the global variable)
-	batch_compare_algos(algo_greedy,algo_greedy_all)
+	batch_compare_algos(algo_greedy,algo_greedy_all,algo_greedy_segmented)
 
 	# this will plot the resultant route from each algorithm for
 	# a given city set size (using the default seed)
-	compare_algos(25,[algo_greedy,algo_greedy_all])
+	compare_algos(15,[algo_greedy,algo_greedy_all,algo_greedy_segmented])
 
-	'''
+	
 	#cities1 = parse_input("in/example-input-1.txt")
-	cities1 = return_set(9)
+	#cities1 = return_set(5)
 
-	route = algo_greedy(cities1)
-	tsp_grapher.plot_route(cities1,route)
-	print route_length(cities1, route), route
-	'''
+	#route = algo_greedy_segmented(cities1)
+	#tsp_grapher.plot_route(cities1,route)
+	#print route_length(cities1, route), route
+	
 
 main()
