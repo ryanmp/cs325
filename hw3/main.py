@@ -70,10 +70,10 @@ def estimate_runtime(input_size, slope, intercept):
 #initialize random inputs:
 generate_test_set(n1,100)
 
+'''
 #cities1 = parse_input("in/example-input-1.txt")
 cities1 = return_set(9)
 
-'''
 route = algo_greedy(cities1)
 tsp_grapher.plot_route(cities1,route)
 print route_length(cities1, route), route
