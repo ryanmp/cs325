@@ -9,11 +9,12 @@ from algo_greedy import *
 from algo_greedy_all import *
 from algo_greedy_segmented import *
 from algo_inverse_prim import *
+from algo_improve_rev import *
 
 from helpers import *
 
-n0 = 5  	#Minimum input size to try
-n1 = 50	    #Maximum input size to try
+n0 = 300 		#Minimum input size to try
+n1 = 305	    #Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
@@ -120,19 +121,23 @@ def main():
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
 	# (using the default range+seed declared up in the global variable)
-	batch_compare_algos(algo_greedy,algo_greedy_all,algo_greedy_segmented)
+	#batch_compare_algos(algo_greedy_all,algo_greedy,algo_greedy_segmented)
 
 	# this will plot the resultant route from each algorithm for
 	# a given city set size (using the default seed)
-	compare_algos(15,[algo_greedy,algo_greedy_all,algo_greedy_segmented])
+	#compare_algos(15,[algo_greedy_all,algo_greedy_segmented])
 
 	
 	#cities1 = parse_input("in/example-input-1.txt")
-	#cities1 = return_set(5)
-
-	#route = algo_greedy_segmented(cities1)
+	cities1 = return_set(150)
+	route = algo_greedy_all(cities1)
 	#tsp_grapher.plot_route(cities1,route)
-	#print route_length(cities1, route), route
+	print route_length(cities1, route), "ok"
+	route = algo_improve_rev(cities1,route,2)
+	route = algo_improve_rev(cities1,route,3)
+	route = algo_improve_rev(cities1,route,4)
+	route = algo_improve_rev(cities1,route,2)
+	print route_length(cities1, route), "HERE,"
 	
 
 main()

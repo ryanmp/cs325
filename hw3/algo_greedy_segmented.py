@@ -7,19 +7,20 @@ from algo_greedy import *
 '''
 uses algo_greedy on subsets of city (broken up via a grid),
 then uses algo_greedy on the average center of these subsets to decide how to put them back together
+additionally it tries every rotation/reversal when recombining the subsets
 
-todo:
 
-connecting the subsets still often results in long edges (at the connection)
-try rotating the subset until these connecting edges are minimized?
 
 '''
 
 def algo_greedy_segmented(cities):
 
     #how many divisions should we use??
-    grid_div_x = 4
-    grid_div_y = 4
+    #the success of this algorithm is largely dependent on these values,
+    #but i have no clue how to pick the proper 
+    #number of divions for an input
+    grid_div_x = 30
+    grid_div_y = 30
 
     villages = [[[] for i in xrange(grid_div_y)] for i in xrange(grid_div_x)]
     village_routes = []
@@ -86,7 +87,11 @@ def algo_greedy_segmented(cities):
     return best_route
     '''
 
+    shortest_route_dist =  sys.maxint
+
     ret = []
+
+    #print village_routes
 
     # we need to recombine these sub routes in a smarter way(by avg location perhaps?)
     #ret = list(itertools.chain(*village_routes))
@@ -95,9 +100,24 @@ def algo_greedy_segmented(cities):
     temp = algo_greedy(village_centers)
 
     for i in temp:
-        ret.append(village_routes[i])
+        tmp = village_routes[i]
+        ret.append(tmp)
 
-    ret = list(itertools.chain(*ret))
+    ret2 = list(itertools.chain(*ret))
+    default_distance = route_length(cities,ret2)
 
-    return ret
+    for idx1 in xrange(len(temp)):
+        for i in range(0,len(ret[idx1])):
+            for j in range(2):
+                revert = ret[idx1]
+                ret[idx1] = ret[idx1][i:] + ret[idx1][:i]
+                if (j == 1): ret[idx1].reverse()
+                ret3 = list(itertools.chain(*ret))
+                new_distance = route_length(cities,ret3)
+                if new_distance > default_distance:
+                    ret[idx1] = revert
+    
+    ret4 = list(itertools.chain(*ret))
+
+    return ret4
 
