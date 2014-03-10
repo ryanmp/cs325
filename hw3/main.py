@@ -133,6 +133,9 @@ def main():
 	route = algo_greedy_all(cities1)
 	#tsp_grapher.plot_route(cities1,route)
 	print route_length(cities1, route), "ok"
+
+	#for i in xrange(2,len(cities1))
+
 	route = algo_improve_rev(cities1,route,2)
 	route = algo_improve_rev(cities1,route,3)
 	route = algo_improve_rev(cities1,route,4)
