@@ -2,6 +2,9 @@ import asyncore, socket, json, signal, threading
 from time import sleep
 from sys import stdout, exit
 
+from helpers import *
+from algo_greedy import *
+
 #change these values only
 DEBUG = True
 #change these values only
@@ -25,18 +28,17 @@ S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 
 def signal_handler(signum, frame):
-	server.sendKill();
-	if signum == 2:
-		signum = 'Control-c'
-	print 'SHUTDOWN!  Reason:', signum
-	#sleep(1)
-	#exit()
-
-def sendKill(self):
+	if DEBUG == True:
+		client.t.stop()
+		exit()
 	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
 
+def dealGreedyWork(self, payload):
+	data = json.loads(payload)
+	
+
 #main class which handles the async part of the client.
-#It then calls out, and starts up the actuall processing thread
+#It then calls out, and starts up the actual processing thread
 class AsyncClient(asyncore.dispatcher):
 	buffer = ""
 	t = None
@@ -75,7 +77,7 @@ class AsyncClient(asyncore.dispatcher):
 			elif data['id'] == S_SERV_KIL:
 				print "Our server is shutting down! :("
 				sleep(10)
-				exit()		#quit
+				exit()
 			elif data['id'] == S_WORK_GRE:
 				payload = data['payload']
 				dealGreedyWork(self, payload)
@@ -110,25 +112,12 @@ class SenderThread(threading.Thread):
 
 	#What the thread actually does
 	def run(self):
-		global each
-		self.client.sendJson(1, each)
-	
-	#called when we receive an assignment of a range of numbers from the server
-	def dealRangeAggignment(self, beginning):
-		global currNum
-		global each
-		currNum = beginning
-		print 'now fiding perfect numbers between', beginning, 'and', beginning+each
-		t1 = time.time()
-		findPerfectNumbers(self, beginning, 'false')
-		t2 = time.time()
-		#this is optional, but makes the amount the client asks for adaptive.
-		#That is, as numbers get harder to compute, Each client will do less at a time.
-		if t2-t1 < 10:
-			each += 5
-		elif t2-t1 > 20:
-			each -= 5
-		#This actually requests more
+		if (self._stop == True):
+			exit()
+		#self.client.sendJson(C_REQ_WORK, 'client connecting...')
+		#sleep(5)
+		self.client.sendJson(0, 'client connecting...')
+		sleep(1)
 		self.run()
 
 #Initialize by asking for remote host info
