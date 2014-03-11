@@ -92,7 +92,8 @@ class PacketHandler(asynchat.async_chat):
 		self.data = ""
 		self.sock = _sock
 		self.addr = addr
-		print "handler set up!"
+		if DEBUG:
+			print "New client connecting:", addr
 
 	def collect_incoming_data(self, data):
 		self.data = self.data + data

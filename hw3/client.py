@@ -88,7 +88,6 @@ class AsyncClient(asynchat.async_chat):
 		self.set_terminator("\r\n\r\n")
 		self.request = None
 		self.data = ""
-		self.shutdown = 0 #think can be removed
 		self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connect( (host, PORT) )
 		self.t = SenderThread(self)
