@@ -18,7 +18,7 @@ connectionSocketList = []
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
-C_SEND_RES = 2  #C -> S #Rend result
+C_SEND_RES = 2  #C -> S #Send result
 C_REQ_UPDT = 3  #C -> S #Request meta-info update
 ##Server Packets##
 S_SEND_UPD = 10 #S -> C #Send meta-info update
@@ -49,7 +49,7 @@ def createJson(self, id, payload):
 #I think this is obsolete now, keeping to be safe.
 def dealKeepAlive(self, payload):
 	print 'replying to keep-alive from:', self.addr
-	self.send( createJson(self, 0, payload) )
+	self.send( createJson(self, KEEP_ALIVE, payload + " reply") )
 
 #Client asked for a range of numbers they should check
 #Send them however many they asked for
@@ -164,12 +164,6 @@ class AsyncServer(asyncore.dispatcher):
 	def handle_close():
 		print self.addr, 'has disconnecteed!'
 		self.close()
-		#for _socketobject in connectionSocketList:
-		#	if _socketobject.getpeername()[0] == self.sock.getpeername()[0]
-		#		print 'derp'
-		#		connectionSocketList.remove(self.sock)
-		#	else
-		#		print 'herp'
 
 #set up signal handler(s)
 signal.signal(signal.SIGINT, signal_handler)
