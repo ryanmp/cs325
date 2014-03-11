@@ -8,21 +8,36 @@ def route_length(cities,route):
 	for i in xrange(len(route)-1):
 		idx1 = route[i]
 		idx2 = route[i+1]
+
 		distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
 	
 	#connect back to start
 	idx1 = route[-1]
 	idx2 = route[0]
+
 	distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
 
 	return distance
 
-def path_length(cities,route):
+def route_length_final(cities,route):
 	distance = 0
 	for i in xrange(len(route)-1):
 		idx1 = route[i]
 		idx2 = route[i+1]
-		distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
+
+		dy = cities[idx2][0] - cities[idx1][0] # now we are calculating it the same way as tsp-verifier
+		dx = cities[idx2][1] - cities[idx1][1]
+		distance += int(round(math.sqrt(dx*dx + dy*dy)))
+		#distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
+	
+	#connect back to start
+	idx1 = route[-1]
+	idx2 = route[0]
+	dy = cities[idx2][0] - cities[idx1][0]
+	dx = cities[idx2][1] - cities[idx1][1]
+	distance += int(round(math.sqrt(dx*dx + dy*dy)))
+	#distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
+
 	return distance
 
 def generate_test_set(_list_length,_max_int):

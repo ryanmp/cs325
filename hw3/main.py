@@ -1,6 +1,4 @@
-import tsp_grapher
-import timeit, datetime, time
-
+import timeit, datetime, time, os
 from functools import partial
 
 #these work properly
@@ -17,15 +15,16 @@ from algo_inverse_prim import *
 from algo_improve_rev import *
 from algo_improve_swap import *
 
-
 from tree import * #basic tree data structure
 from algo_mst import * 
 
 from helpers import *
+import tsp_grapher
 
-n0 = 3 		#Minimum input size to try
-n1 = 60	    #Maximum input size to try
+#import tsp-verifier #naming convention error!
 
+n0 = 4 #Minimum input size to try
+n1 = 45	#Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
@@ -108,7 +107,6 @@ def compare_algos(_n, _algos):
 
 	tsp_grapher.plot_routes(cities0,all_routes)
 
-
 # not even close... need much better curve fitting, including exponential forms,
 # and factorial too.. (rather than just linear {slope and intecept}) but I can't
 # find such a thing...
@@ -116,13 +114,31 @@ def estimate_runtime(input_size, slope, intercept):
 	out = (2.71828**intercept)*slope**input_size
 	print str(datetime.timedelta(seconds=out))
 
-
 def generate_test_set2(_seed,_n,_range):
 	random.seed(_seed)
 	ret = []
 	for i in xrange(_n):
 		ret.append((random.randrange(1,_range),random.randrange(1,_range)))
 	return ret
+
+def format_output(cities, route, file_name):
+	#create a file
+	f = open(file_name, "wb")
+
+	#first line is the route length as an int
+	#i'm using a new route_length function, because tsp-verifier needs
+	#a lot of rounding
+	route_length_str = str(int(route_length_final(cities,route)))+"\n"
+	f.write(route_length_str)
+
+	#write each city in route as new line
+	for i in route:
+		f.write(str(i)+"\n")
+	f.close()
+
+def run_verifier(cities_txt,route_txt):
+	path = os.getcwd() + "/"
+	os.system("python tsp-verifier.py "+path+cities_txt+" "+path+route_txt)
 
 def main():
 
@@ -132,16 +148,22 @@ def main():
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
 	# (using the default range+seed declared up in the global variable)
-	batch_compare_algos(algo_greedy_all,algo_mst)
+	#batch_compare_algos(algo_greedy_all,algo_mst)
 
 	# this will plot the resultant route from each algorithm for
 	# a given city set size (using the default seed)
 	#compare_algos(15,[algo_greedy_all,algo_greedy_segmented])
 
-	#cities1 = parse_input("in/example-input-1.txt")
-	cities1 = return_set(70)
-	#route = algo_mst(cities1)
-	#tsp_grapher.plot_route(cities1,route)
+	#cities1 = return_set(25)
+	cities1 = parse_input("in/example-input-1.txt")
+
+	route = algo_greedy_all(cities1)
+
+	format_output(cities1, route, "out.txt")
+	run_verifier("in/example-input-1.txt","out.txt")
+
+	print route_length(cities1, route)
+	tsp_grapher.plot_route(cities1,route)
 
 	'''
 	route = algo_greedy_all(cities1)
