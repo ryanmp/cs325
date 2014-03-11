@@ -15,6 +15,14 @@ DEBUG = True
 connectionClassList = []
 connectionSocketList = []
 
+#constants#
+KEEP_ALIVE = 0
+C_REQ_WORK = 1
+C_SEND_RES = 2
+C_UPDATE_M = 3
+S_UPDATE_M = 10
+S_WORK_AG = 11
+
 #deal with signals
 def signal_handler(signum, frame):
 	server.sendKill();
