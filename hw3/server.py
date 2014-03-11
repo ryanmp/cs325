@@ -19,7 +19,7 @@ connectionSocketList = []
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
 C_SEND_RES = 2  #C -> S #Rend result
-C_REQ_UPD  = 3  #C -> S #Request meta-info update
+C_REQ_UPDT = 3  #C -> S #Request meta-info update
 ##Server Packets##
 S_SEND_UPD = 10 #S -> C #Send meta-info update
 S_SERV_KIL = 11 #S -> C #Server Shutting down
@@ -105,18 +105,18 @@ class PacketHandler(asyncore.dispatcher_with_send):
 		if jdata:
 			#lets load up that json!  (DOES NOT DEAL WITH INVALID JSON!)
 			data = json.loads(jdata)
-			if data['id'] == 0:
+			if data['id'] == KEEP_ALIVE:
 				payload = data['payload']
 				dealKeepAlive(self, payload)
-			elif data['id'] == 1:
+			elif data['id'] == C_REQ_WORK:
 				payload = data['payload']
 				#dealWorkReq(self, payload)
 				#Send them work
-			elif data['id'] == 2:
+			elif data['id'] == C_SEND_RES:
 				payload = data['payload']
 				#dealResult(self, self.addr, payload)
 				#Hey, we got a result.  Deal with it.
-			elif data['id'] == 3:
+			elif data['id'] == C_REQ_UPDT:
 				print "this is just here to make python happy."
 				#dealMetaUpdate(self)
 				#Client wants meta-info update.  Send them it.
