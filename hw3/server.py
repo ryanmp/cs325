@@ -26,6 +26,7 @@ S_SERV_KIL = 11 #S -> C #Server Shutting down
 ##algorithm Packets##
 S_WORK_GRE = 20 #S -> C #Send greedy algorithm work
 S_WORK_MST = 21 #S -> C #Send MST algorithm work
+S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities

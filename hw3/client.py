@@ -4,6 +4,10 @@ from sys import stdout, exit
 
 from helpers import *
 from algo_greedy import *
+from algo_mst import *
+from algo_inverse_prim import *
+from algo_improve_rev import *
+from algo_improve_swap import *
 
 #change these values only
 DEBUG = True		#3=show all packet data.
@@ -26,6 +30,7 @@ S_SERV_KIL = 11 #S -> C #Server Shutting down
 ##algorithm Packets##
 S_WORK_GRE = 20 #S -> C #Send greedy algorithm work
 S_WORK_MST = 21 #S -> C #Send MST algorithm work
+S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
@@ -39,10 +44,28 @@ def signal_handler(signum, frame):
 
 def dealGreedyWork(self, _start):
 	global working
+	working = True
 	if DEBUG:
 		print "now doing greedy for: ", _start
-	working = True
 	result = algo_greedy_start(cities, _start)
+	working = False
+	self.sendPickle(C_SEND_RES, result)
+
+def dealMSTWork(self, payload):
+	global working
+	working = True
+	if DEBUG:
+		print "now calculating MST TSP."
+	result = algo_mst(cities)
+	working = False
+	self.sendPickle(C_SEND_RES, result)
+
+def dealPrimWork(self, payload):
+	global working
+	working = True
+	if DEBUG:
+		print "now calculating MST TSP."
+	result = algo_inverse_prim(cities)
 	working = False
 	self.sendPickle(C_SEND_RES, result)
 
@@ -96,6 +119,9 @@ class AsyncClient(asynchat.async_chat):
 			elif id == S_WORK_MST:
 				dealMSTWork(self, payload)
 				#Server sent us some MST algo work
+			elif id == S_WORK_PRM:
+				dealPrimWork(self, payload)
+				#Server sent us some reverse prim algo work
 			elif id == S_IMP_SGMT:
 				dealImproveSegment(self, payload)
 				#Server sent us some segment swapping improvement work
