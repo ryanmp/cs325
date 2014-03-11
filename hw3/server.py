@@ -19,7 +19,7 @@ route = []
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
 C_SEND_RES = 2  #C -> S #Send result
-C_REQ_UPDT = 3  #C -> S #Request meta-info update
+C_REQ_UPDT = 5  #C -> S #Request meta-info update
 ##Server Packets##
 S_SEND_UPD = 10 #S -> C #Send meta-info update
 S_SERV_KIL = 11 #S -> C #Server Shutting down
@@ -44,6 +44,7 @@ def createPickle(self, id, payload):
 	_pickle = pickle.dumps([id, payload])
 	return _pickle
 
+#Packs meta-info up to send to the client
 def metaPack(self, shortest, cities, route):
 	_pickle = pickle.dumps([shortest, cities, route])
 	return _pickle

@@ -6,7 +6,7 @@ from helpers import *
 from algo_greedy import *
 
 #change these values only
-DEBUG = 3		#3=show all packet data.
+DEBUG = True		#3=show all packet data.
 #change these values only
 
 #Global Variables
@@ -19,7 +19,7 @@ working = False
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
 C_SEND_RES = 2  #C -> S #Rend result
-C_REQ_UPDT = 3  #C -> S #Request meta-info update
+C_REQ_UPDT = 5  #C -> S #Request meta-info update
 ##Server Packets##
 S_SEND_UPD = 10 #S -> C #Send meta-info update
 S_SERV_KIL = 11 #S -> C #Server Shutting down
@@ -79,7 +79,7 @@ class AsyncClient(asynchat.async_chat):
 		self.data = ""
 		#lets load up that pickle!  (DOES NOT DEAL WITH INVALID PICKLE!)
 		id, payload = pickle.loads(data)
-		#assuming we actually received SOMETHING.....
+		#Assuming we actually received SOMETHING.....
 		if data:
 			if (DEBUG == 3):
 				print id, payload
@@ -105,12 +105,12 @@ class AsyncClient(asynchat.async_chat):
 			else:
 				print 'Something went wrong.', id, payload
 
-	#adds the requested pickle to the send buffer
+	#Adds the requested pickle to the send buffer
 	def sendPickle(self, id, payload):
 		self.sendall( pickle.dumps([id, payload]) )
 		self.send("\r\n\r\n")
 
-	#got the message to kill self
+	#Got the message to kill self
 	#Also, make sure we kill the child thread too
 	def handle_close(self):
 		self.close()
@@ -125,7 +125,7 @@ class SenderThread(threading.Thread):
 		self.client = client
 
 	#We received the signal to stop from the parent class
-	#or from the signal handler.  Stop what we are doing now
+	#Or from the signal handler.  Stop what we are doing now
 	def stop(self):
 		self._stop = True
 
@@ -142,7 +142,7 @@ class SenderThread(threading.Thread):
 HOST = raw_input("Server IP? (Defaults to localhost): ")
 if (HOST == ''):
 	HOST = '127.0.0.1'
-PORT = raw_input("Server Port? (Defaults to 31337): ")	#Default 31337
+PORT = raw_input("Server Port? (Defaults to 31337): ")
 if (PORT == ''):
 	PORT = 31337
 
