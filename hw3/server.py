@@ -8,7 +8,7 @@ from sys import stdout, exit
 
 #change these values only
 PORT = 31337		# The port used by the server. Default 31337
-DEBUG = True
+DEBUG = True		# Output all kinds of random junk you probly really don't want to see?
 #change these values only
 
 #Global Variables
@@ -99,7 +99,7 @@ class PacketHandler(asyncore.dispatcher_with_send):
 
 	def handle_read(self):
 		jdata = self.recv(8192)
-		If DEBUG:
+		if DEBUG:
 			print jdata
 		#assuming we actually received SOMETHING.....
 		if jdata:
@@ -117,6 +117,7 @@ class PacketHandler(asyncore.dispatcher_with_send):
 				#dealResult(self, self.addr, payload)
 				#Hey, we got a result.  Deal with it.
 			elif data['id'] == 3:
+				print "this is just here to make python happy."
 				#dealMetaUpdate(self)
 				#Client wants meta-info update.  Send them it.
 			elif data['id'] == 9:
