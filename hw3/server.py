@@ -91,12 +91,13 @@ def dealRequest(self, payload):
 	if DEBUG:
 		print "Request for work being handled!"
 	self.send(createJson(self, S_WORK_GRE, 7))
+	#7 is a placeholder.  PLEASE FIX
 
 def dealMetaUpdate(self):
 	if DEBUG:
 		print "Request for meta-info update being handled."
 	_json = metaPack(self, shortest, cities, route)
-	self.send(createJson(self, S_SEND_UPD, _json))
+	self.sendall(createJson(self, S_SEND_UPD, _json))
 	
 #Class For handling the event-driven server
 class PacketHandler(asyncore.dispatcher_with_send):
