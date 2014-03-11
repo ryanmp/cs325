@@ -12,7 +12,7 @@ derp = []
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
 C_SEND_RES = 2  #C -> S #Rend result
-C_REQ_UPD  = 3  #C -> S #Request meta-info update
+C_REQ_UPDT = 3  #C -> S #Request meta-info update
 ##Server Packets##
 S_SEND_UPD = 10 #S -> C #Send meta-info update
 S_SERV_KIL = 11 #S -> C #Server Shutting down
