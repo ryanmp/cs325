@@ -144,7 +144,7 @@ class AsyncClient(asynchat.async_chat):
 	#Adds the requested pickle to the send buffer
 	def sendPickle(self, id, payload):
 		self.sendall( pickle.dumps([id, payload]) )
-		self.send("\r\n\r\n")
+		self.sendall("\r\n\r\n")
 
 	#Got the message to kill self
 	#Also, make sure we kill the child thread too
