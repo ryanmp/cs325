@@ -1,4 +1,4 @@
-import asyncore, socket, json, signal, threading, sys
+import asyncore, socket, signal, threading, sys, pickle
 from time import sleep
 
 from helpers import *
@@ -39,21 +39,21 @@ def signal_handler(signum, frame):
 	sleep(1)
 	exit()
 
-#Returns a json-formatted string based on the packet ID and packet payload
-def createJson(self, id, payload):
-	_json = json.dumps( {"id":id, "payload":payload} )
-	return _json
+#Returns a pickle-formatted string based on the packet ID and packet payload
+def createPickle(self, id, payload):
+	_pickle = pickle.dumps([id, payload])
+	return _pickle
 
 def metaPack(self, shortest, cities, route):
-	_json = json.dumps( {"shortest":shortest, "cities":cities, "route":route} )
-	return _json
+	_pickle = pickle.dumps([shortest, cities, route])
+	return _pickle
 
 #If client sends us a packet ID 0 (keep-alive)
 #Then just pong one back to the client
 #I think this is obsolete now, keeping to be safe.
 def dealKeepAlive(self, payload):
 	print 'replying to keep-alive from:', self.addr
-	self.send( createJson(self, KEEP_ALIVE, payload + " reply") )
+	self.send( createPickle(self, KEEP_ALIVE, payload + " reply") )
 
 #Client asked for a range of numbers they should check
 #Send them however many they asked for
@@ -61,7 +61,7 @@ def dealKeepAlive(self, payload):
 #	global currNum
 #	if DEBUG:
 #		print 'replying to request for', quantity, 'numbers from:', self.addr
-#	self.send( createJson(self, 2, currNum) )
+#	self.send( createPickle(self, 2, currNum) )
 #	currNum += quantity
 
 #The Client sent us a number that they say is a perfect number!
@@ -73,7 +73,7 @@ def dealKeepAlive(self, payload):
 #def dealReportFound(self):
 #	if DEBUG:
 #		print 'A Reporter has asked for the numbers we have found.  Sending.'
-#	self.send( createJson(self, 5, perfectNumbersFound) )
+#	self.send( createPickle(self, 5, perfectNumbersFound) )
 
 #def dealReportClients(self):
 #	if DEBUG:
@@ -85,19 +85,19 @@ def dealKeepAlive(self, payload):
 #		except Exception:
 #			print 'derp'
 #			pass
-#	self.send( createJson(self, 6, addrList) )
+#	self.send( createPickle(self, 6, addrList) )
 
 def dealRequest(self, payload):
 	if DEBUG:
 		print "Request for work being handled!"
-	self.send(createJson(self, S_WORK_GRE, 7))
+	self.send(createPickle(self, S_WORK_GRE, 7))
 	#7 is a placeholder.  PLEASE FIX
 
 def dealMetaUpdate(self):
 	if DEBUG:
 		print "Request for meta-info update being handled."
-	_json = metaPack(self, shortest, cities, route)
-	self.sendall(createJson(self, S_SEND_UPD, _json))
+	_pickle = metaPack(self, shortest, cities, route)
+	self.sendall(createPickle(self, S_SEND_UPD, _pickle))
 	
 #Class For handling the event-driven server
 class PacketHandler(asyncore.dispatcher_with_send):
@@ -109,31 +109,28 @@ class PacketHandler(asyncore.dispatcher_with_send):
 		self.sock = sock2
 
 	def handle_read(self):
-		jdata = self.recv(8192)
+		data = self.recv(8192)
+		#lets load up that pickle!  (DOES NOT DEAL WITH INVALID PICKLE!)
+		id, payload = pickle.loads(data)
 		#assuming we actually received SOMETHING.....
-		if jdata:
+		if data:
 			if DEBUG:
-				print jdata
-			#lets load up that json!  (DOES NOT DEAL WITH INVALID JSON!)
-			data = json.loads(jdata)
-			if data['id'] == KEEP_ALIVE:
-				payload = data['payload']
+				print data
+			if id == KEEP_ALIVE:
 				dealKeepAlive(self, payload)
-			elif data['id'] == C_REQ_WORK:
-				payload = data['payload']
+			elif id == C_REQ_WORK:
 				dealRequest(self, payload)
-			elif data['id'] == C_SEND_RES:
-				payload = data['payload']
+			elif id == C_SEND_RES:
+				print "Hey, we got a result.  Deal with it."
 				#dealResult(self, self.addr, payload)
-				#Hey, we got a result.  Deal with it.
-			elif data['id'] == C_REQ_UPDT:
+			elif id == C_REQ_UPDT:
 				print "this is just here to make python happy."
 				dealMetaUpdate(self)
-			elif data['id'] == 9:
+			elif id == 9:
 				sleep(5)
 				signal_handler('Got Kill Packet From Client', 'derp')
 			else:
-				print 'something went wrong.', data
+				print 'something went wrong.', id, payload
 
 #Class that sets up the event-driven server
 #and passes data it receives to the PacketHandler() class
@@ -151,7 +148,7 @@ class AsyncServer(asyncore.dispatcher):
 	def sendKill(self):
 		for _socketobject in connectionSocketList:
 			try:
-				_socketobject.send( createJson(self, S_SERV_KIL, 'Server says SHUTDOWN!') )
+				_socketobject.send( createPickle(self, S_SERV_KIL, 'Server says SHUTDOWN!') )
 				print str( _socketobject.getpeername()[0] ) + ':' + str( _socketobject.getpeername()[1] ) + ' was sent the shutdown signal!'
 			except Exception:
 				pass

@@ -1,4 +1,4 @@
-import asyncore, socket, json, signal, threading
+import asyncore, socket, signal, threading, pickle
 from time import sleep
 from sys import stdout, exit
 
@@ -35,11 +35,8 @@ def signal_handler(signum, frame):
 		exit()
 	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
 
-def metaUnPack(self, _json):
-	data = json.loads(jdata)
-	shortest = data['shortest']
-	cities = data['cities']
-	route = data['route']
+def metaUnPack(self, _pickle):
+	shortest, cities, route = pickle.loads(data)
 	return shortest, cities, route
 
 def dealGreedyWork(self, payload):
@@ -47,7 +44,7 @@ def dealGreedyWork(self, payload):
 	start = payload['start']
 	result = algo_greedy_start(cities, _start)
 	working = False
-	self.sendJson(C_SEND_RES, result)
+	self.sendPickle(C_SEND_RES, result)
 
 #main class which handles the async part of the client.
 #It then calls out, and starts one of these up for incoming packets
@@ -62,9 +59,9 @@ class AsyncClient(asyncore.dispatcher):
 		self.t = SenderThread(self)
 		self.t.start()
 
-	#adds the requested json to the send buffer
-	def sendJson(self, id, payload):
-		self.send ( json.dumps( {"id":id, "payload":payload} ) )
+	#adds the requested pickle to the send buffer
+	def sendPickle(self, id, payload):
+		self.send( pickle.dumps([id, payload]) )
 
 	#got the message to kill self
 	#Also, make sure we kill the child thread too
@@ -75,35 +72,31 @@ class AsyncClient(asyncore.dispatcher):
 	#Deals with any packets received
 	#Delegates them out to be processed
 	def handle_read(self):
-		jdata = self.recv(8192)
-		if DEBUG:
-			print jdata
+		data = self.recv(8192)
+		#lets load up that pickle!  (DOES NOT DEAL WITH INVALID PICKLE!)
+		#lets load up that pickle!  (DOES NOT DEAL WITH INVALID PICKLE!)
+		id, payload = pickle.loads(data)
 		#assuming we actually received SOMETHING.....
-		if jdata:
-			#lets load up that json!  (DOES NOT DEAL WITH INVALID JSON!)
-			data = json.loads(jdata)
-			if data['id'] == S_SEND_UPD:
+		if data:
+			if DEBUG:
+				print data
+			if id == S_SEND_UPD:
 				print "We got our meta-info update"
-				payload = data['payload']
 				#dealMetaInfo(self, payload)
-			elif data['id'] == S_SERV_KIL:
+			elif id == S_SERV_KIL:
 				print "Our server is shutting down! :("
 				sleep(10)
 				exit()
-			elif data['id'] == S_WORK_GRE:
-				payload = data['payload']
+			elif id == S_WORK_GRE:
 				dealGreedyWork(self, payload)
 				#Server sent us some greedy algo work
-			elif data['id'] == S_WORK_MST:
-				payload = data['payload']
+			elif id == S_WORK_MST:
 				dealMSTWork(self, payload)
 				#Server sent us some MST algo work
-			elif data['id'] == S_IMP_SGMT:
-				payload = data['payload']
+			elif id == S_IMP_SGMT:
 				dealImproveSegment(self, payload)
 				#Server sent us some segment swapping improvement work
-			elif data['id'] == S_IMP_SCTY:
-				payload = data['payload']
+			elif id == S_IMP_SCTY:
 				dealImproveCity(self, payload)
 				#Server sent us some city swapping improvement work
 			else:
@@ -124,11 +117,11 @@ class SenderThread(threading.Thread):
 
 	#What the thread actually does
 	def run(self):
-		self.client.sendJson(C_REQ_UPDT, 'hey bro, need an update!')
+		self.client.sendPickle(C_REQ_UPDT, 'hey bro, need an update!')
 		sleep(5)
 		while (self._stop == False):
 			if (working == False):
-				self.client.sendJson(C_REQ_WORK, 'gimme work!')
+				self.client.sendPickle(C_REQ_WORK, 'gimme work!')
 			sleep(10)
 
 #Initialize by asking for remote host info
