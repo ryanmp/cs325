@@ -9,8 +9,6 @@ DEBUG = True		# Output all kinds of random junk you probly really don't want to 
 #change these values only
 
 #Global Variables
-connectionClassList = []
-connectionSocketList = []
 shortest = sys.maxint
 cities = []
 route = []
@@ -33,7 +31,6 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 
 #deal with signals
 def signal_handler(signum, frame):
-	server.sendKill();
 	if signum == 2:
 		signum = 'Control-c'
 	print 'SHUTDOWN!  Reason:', signum
@@ -141,16 +138,6 @@ class AsyncServer(asyncore.dispatcher):
 	def handle_request(self, channel, method, path, header):
 		print "blah"
 
-	#We have been told to shutdown!
-	#Make sure we send the shutdown packet first!
-	def sendKill(self):
-		for _socketobject in connectionSocketList:
-			try:
-				_socketobject.send( createPickle(self, S_SERV_KIL, 'Server says SHUTDOWN!') )
-				print str( _socketobject.getpeername()[0] ) + ':' + str( _socketobject.getpeername()[1] ) + ' was sent the shutdown signal!'
-			except Exception:
-				pass
-
 	#We got a client connection!
 	def handle_accept(self):
 		pair = self.accept()
@@ -160,8 +147,6 @@ class AsyncServer(asyncore.dispatcher):
 		else:
 			sock, addr = pair
 			handler = PacketHandler(sock, addr)
-			connectionClassList.append(self)
-			connectionSocketList.append(sock)
 
 	def handle_close(self):
 		print self.addr, 'has disconnecteed!'
