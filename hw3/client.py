@@ -11,6 +11,7 @@ DEBUG = True
 
 #Global Variables
 derp = []
+working = False
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -29,12 +30,14 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 
 def signal_handler(signum, frame):
 	if DEBUG == True:
+		print "closing socket..."
 		client.t.stop()
 		exit()
 	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
 
 def dealGreedyWork(self, payload):
 	data = json.loads(payload)
+	start = data['start']
 	
 
 #main class which handles the async part of the client.
@@ -114,10 +117,11 @@ class SenderThread(threading.Thread):
 	def run(self):
 		if (self._stop == True):
 			exit()
-		#self.client.sendJson(C_REQ_WORK, 'client connecting...')
-		#sleep(5)
-		self.client.sendJson(0, 'client connecting...')
-		sleep(1)
+		if (working == False):
+			self.client.sendJson(C_REQ_WORK, 'gimme work!')
+			sleep(5)
+		else:
+			sleep(10)
 		self.run()
 
 #Initialize by asking for remote host info
