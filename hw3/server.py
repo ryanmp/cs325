@@ -75,7 +75,7 @@ def dealRequest(self, payload):
 	curGreedy = curGreedy + 1
 
 def dealResult(self, payload):
-	global shortest
+	global shortest, route
 	length = route_length_final(cities, payload)
 	if DEBUG:
 		print "we got a result!", length
