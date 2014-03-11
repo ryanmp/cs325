@@ -9,8 +9,6 @@ uses algo_greedy on subsets of city (broken up via a grid),
 then uses algo_greedy on the average center of these subsets to decide how to put them back together
 additionally it tries every rotation/reversal when recombining the subsets
 
-
-
 '''
 
 def algo_greedy_segmented(cities):
