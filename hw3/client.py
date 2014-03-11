@@ -11,7 +11,7 @@ from algo_improve_rev import *
 from algo_improve_swap import *
 
 #change these values only
-DEBUG = True		#3=show all packet data.
+DEBUG = True		# 3= show all packet data.
 #change these values only
 
 #Global Variables
@@ -37,11 +37,11 @@ S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 
 def signal_handler(signum, frame):
-	if DEBUG:
-		print "Closing socket..."
-		client.t.stop()
-		exit()
-	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
+	print "Closing socket..."
+	sleep(2)
+	client.t.stop()
+	sleep(2)
+	exit()
 
 def clear():
 	os.system('cls')
@@ -86,7 +86,7 @@ def dealMetaInfoUpdate(self, payload):
 	global route
 	shortest, cities, route = pickle.loads(payload)
 	if DEBUG:
-		print shortest, route, cities[10345]
+		print "Shortest so far:", shortest, "#Cities in route:", len(route), "#Cities:", len(cities)
 
 #main class which handles the async part of the client.
 #It then calls out, and starts one of these up for incoming packets
@@ -150,7 +150,7 @@ class AsyncClient(asynchat.async_chat):
 	#Also, make sure we kill the child thread too
 	def handle_close(self):
 		print "Server not reachable.  Saving best list to pickle to be safe."
-		
+		pickle.dump(route, open('backup.p', 'wb'))
 		self.close()
 		self.t.stop()
 
