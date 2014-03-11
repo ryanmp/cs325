@@ -1,4 +1,5 @@
-import asyncore, asynchat, socket, signal, threading, pickle, sys
+import asyncore, asynchat, socket, threading
+import signal, pickle, sys, os
 from time import sleep
 from sys import stdout, exit
 
@@ -42,6 +43,10 @@ def signal_handler(signum, frame):
 		exit()
 	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
 
+def clear():
+	os.system('cls')
+	os.system('clear')
+
 def dealGreedyWork(self, _start):
 	global working
 	working = True
@@ -68,6 +73,12 @@ def dealPrimWork(self, payload):
 	result = algo_inverse_prim(cities)
 	working = False
 	self.sendPickle(C_SEND_RES, result)
+
+def dealImproveSegment(self, payload):
+	print "derp"
+
+def dealImproveCity(self, payload):
+	print "derp"
 
 def dealMetaInfoUpdate(self, payload):
 	global shortest
@@ -138,6 +149,8 @@ class AsyncClient(asynchat.async_chat):
 	#Got the message to kill self
 	#Also, make sure we kill the child thread too
 	def handle_close(self):
+		print "Server not reachable.  Saving best list to pickle to be safe."
+		
 		self.close()
 		self.t.stop()
 
@@ -164,6 +177,7 @@ class SenderThread(threading.Thread):
 			sleep(10)
 
 #Initialize by asking for remote host info
+clear()
 HOST = raw_input("Server IP? (Defaults to localhost): ")
 if (HOST == ''):
 	HOST = '127.0.0.1'

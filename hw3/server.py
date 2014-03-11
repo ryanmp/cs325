@@ -1,4 +1,5 @@
-import asyncore, asynchat, socket, signal, threading, sys, pickle
+import asyncore, asynchat, socket, threading
+import signal, sys, pickle, os
 from time import sleep
 
 from helpers import *
@@ -12,6 +13,7 @@ DEBUG = True		# Output all kinds of random junk you probly really don't want to 
 shortest = sys.maxint
 cities = []
 route = []
+curGreedy = 0
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -37,6 +39,10 @@ def signal_handler(signum, frame):
 	sleep(1)
 	exit()
 
+def clear():
+	os.system('cls')
+	os.system('clear')
+
 #Returns a pickle-formatted string based on the packet ID and packet payload
 def createPickle(self, id, payload):
 	_pickle = pickle.dumps([id, payload])
@@ -58,11 +64,12 @@ def dealKeepAlive(self, payload):
 #Actually handles requests for work.
 #For now, this just sends a static packet, to test.
 def dealRequest(self, payload):
+	global curGreedy
 	if DEBUG:
 		print "Responding to work request.."
-	self.sendall(createPickle(self, S_WORK_GRE, 7))
+	self.sendall(createPickle(self, S_WORK_GRE, curGreedy))
 	self.send("\r\n\r\n")
-	#7 is a placeholder.  PLEASE FIX
+	curGreedy = curGreedy + 1
 
 def dealResult(self, payload):
 	global shortest
@@ -116,8 +123,8 @@ class PacketHandler(asynchat.async_chat):
 				dealRequest(self, payload)
 				#Client Requested work.  Call work handleing Function
 			elif id == C_SEND_RES:
-				print "Hey, we got a result.  Deal with it."
 				dealResult(self, payload)
+				#Hey, we got a result.  Deal with it.
 			elif id == C_REQ_UPDT:
 				dealMetaUpdate(self)
 				#Client requested Meta-info update.  Call function to send it.
