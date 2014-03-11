@@ -1,5 +1,5 @@
 import tsp_grapher
-import random, timeit, datetime, time
+import timeit, datetime, time
 
 from functools import partial
 
@@ -17,6 +17,7 @@ from algo_inverse_prim import *
 from algo_improve_rev import *
 from algo_improve_swap import *
 
+
 from tree import * #basic tree data structure
 from algo_mst import * 
 
@@ -24,6 +25,7 @@ from helpers import *
 
 n0 = 3 		#Minimum input size to try
 n1 = 60	    #Maximum input size to try
+
 
 def generate_test_set(_n,_range):
 	global set
