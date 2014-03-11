@@ -6,6 +6,8 @@ import threading
 from time import sleep
 from sys import stdout, exit
 
+from helpers import *
+
 #change these values only
 PORT = 31337		# The port used by the server. Default 31337
 DEBUG = True		# Output all kinds of random junk you probly really don't want to see?
@@ -99,10 +101,10 @@ class PacketHandler(asyncore.dispatcher_with_send):
 
 	def handle_read(self):
 		jdata = self.recv(8192)
-		if DEBUG:
-			print jdata
 		#assuming we actually received SOMETHING.....
 		if jdata:
+			if DEBUG:
+				print jdata
 			#lets load up that json!  (DOES NOT DEAL WITH INVALID JSON!)
 			data = json.loads(jdata)
 			if data['id'] == KEEP_ALIVE:
