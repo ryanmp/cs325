@@ -22,10 +22,3 @@ def algo_improve_rev(cities,route,seg_length):
 			route = new_route
 
 	return route
-
-
-
-
-
-
-

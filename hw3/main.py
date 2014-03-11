@@ -10,6 +10,7 @@ from algo_greedy_all import *
 from algo_greedy_segmented import *
 from algo_inverse_prim import *
 from algo_improve_rev import *
+from algo_improve_swap import *
 
 from helpers import *
 
@@ -127,20 +128,19 @@ def main():
 	# a given city set size (using the default seed)
 	#compare_algos(15,[algo_greedy_all,algo_greedy_segmented])
 
-	
 	#cities1 = parse_input("in/example-input-1.txt")
 	cities1 = return_set(150)
 	route = algo_greedy_all(cities1)
 	#tsp_grapher.plot_route(cities1,route)
-	print route_length(cities1, route), "ok"
+	print "greedy_all results:", route_length(cities1, route)
 
-	#for i in xrange(2,len(cities1))
+	route = algo_improve_swap(cities1,route)
+	for i in xrange(2,len(cities1)):
+		route = algo_improve_rev(cities1,route,i)
+	route = algo_improve_swap(cities1,route)
 
-	route = algo_improve_rev(cities1,route,2)
-	route = algo_improve_rev(cities1,route,3)
-	route = algo_improve_rev(cities1,route,4)
-	route = algo_improve_rev(cities1,route,2)
-	print route_length(cities1, route), "HERE,"
+	print "results after improvements:", route_length(cities1, route)
+	#tsp_grapher.plot_route(cities1,route)
 	
 
 main()
