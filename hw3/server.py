@@ -12,10 +12,8 @@ DEBUG = True
 #change these values only
 
 #Global Variables
-currNum = 0
 connectionClassList = []
 connectionSocketList = []
-perfectNumbersFound = []
 
 #deal with signals
 def signal_handler(signum, frame):
@@ -26,18 +24,18 @@ def signal_handler(signum, frame):
 	sleep(1)
 	exit()
 
-#Returns a json-formated string based on the packet ID and packet payload
+#Returns a json-formatted string based on the packet ID and packet payload
 def createJson(self, id, payload):
-	lol = json.dumps( {"id":id, "payload":payload} )
-	return lol
+	_json = json.dumps( {"id":id, "payload":payload} )
+	return _json
 
-#If client sends us a packet ID 0 (keepalive)
+#If client sends us a packet ID 0 (keep-alive)
 #Then just pong one back to the client
 def dealKeepAlive(self, payload):
 	print 'replying to keep-alive from:', self.addr
 	self.send( createJson(self, 0, payload) )
 
-#Cliet asked for a range of numbers they should check
+#Client asked for a range of numbers they should check
 #Send them however many they asked for
 def dealRangeReq(self, quantity):
 	global currNum
@@ -79,7 +77,7 @@ class PacketHandler(asyncore.dispatcher_with_send):
 	def setAddr(self, address):
 		self.addr = address
 
-	#probably not needed anymore
+	#probably not needed any more
 	def setSock(self, sock2):
 		self.sock = sock2
 
@@ -111,7 +109,7 @@ class PacketHandler(asyncore.dispatcher_with_send):
 			else:
 				print 'something went wrong.'
 
-#Class that sets up the event-drivin server
+#Class that sets up the event-driven server
 #and passes data it receives to the PacketHandler() class
 class AsyncServer(asyncore.dispatcher):
 	def __init__(self, host, port):

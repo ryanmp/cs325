@@ -10,3 +10,8 @@ def signal_handler(signum, frame):
 
 	def sendKill(self):
 		print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
+
+#set up signal handler(s)
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+signal.signal(signal.SIGABRT, signal_handler)
