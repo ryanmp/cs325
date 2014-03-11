@@ -1,4 +1,4 @@
-import asyncore, socket, signal, threading, sys, pickle
+import asyncore, asynchat, socket, signal, threading, sys, pickle
 from time import sleep
 
 from helpers import *
@@ -54,50 +54,28 @@ def metaPack(self, shortest, cities, route):
 def dealKeepAlive(self, payload):
 	print 'replying to keep-alive from:', self.addr
 	self.send( createPickle(self, KEEP_ALIVE, payload + " reply") )
+	self.send("\r\n\r\n")
 
-#Client asked for a range of numbers they should check
-#Send them however many they asked for
-#def dealRangeReq(self, quantity):
-#	global currNum
-#	if DEBUG:
-#		print 'replying to request for', quantity, 'numbers from:', self.addr
-#	self.send( createPickle(self, 2, currNum) )
-#	currNum += quantity
-
-#The Client sent us a number that they say is a perfect number!
-#Amazing!  Make a note of this!
-#def dealNumberFound(self, address, numberFound):
-#	print 'client', address[0],':',address[1], 'claims that', numberFound, 'is a perfect number!'
-#	perfectNumbersFound.append(numberFound)
-	
-#def dealReportFound(self):
-#	if DEBUG:
-#		print 'A Reporter has asked for the numbers we have found.  Sending.'
-#	self.send( createPickle(self, 5, perfectNumbersFound) )
-
-#def dealReportClients(self):
-#	if DEBUG:
-#		print 'A Reporter has asked for our connection List.  Sending.'
-#	addrList = []
-#	for _socketobject in connectionSocketList:
-#		try:
-#			addrList.append( _socketobject.getpeername() )
-#		except Exception:
-#			print 'derp'
-#			pass
-#	self.send( createPickle(self, 6, addrList) )
-
+#Actually handles requests for work.
+#For now, this just sends a static piacket, to test.
 def dealRequest(self, payload):
 	if DEBUG:
 		print "Request for work being handled!"
 	self.send(createPickle(self, S_WORK_GRE, 7))
+	self.send("\r\n\r\n")
 	#7 is a placeholder.  PLEASE FIX
 
+#The client asked for various meta-info, send it.
+#Currently sends the length of shortest path so far,
+#the list of cities, and the shortest path so far.
 def dealMetaUpdate(self):
 	if DEBUG:
 		print "Request for meta-info update being handled."
 	_pickle = metaPack(self, shortest, cities, route)
+	sleep(1)
 	self.sendall(createPickle(self, S_SEND_UPD, _pickle))
+	sleep(1)
+	self.send("\r\n\r\n")
 	
 #Class For handling the event-driven server
 class PacketHandler(asyncore.dispatcher_with_send):
@@ -115,20 +93,19 @@ class PacketHandler(asyncore.dispatcher_with_send):
 		#assuming we actually received SOMETHING.....
 		if data:
 			if DEBUG:
-				print data
+				print id, payload
 			if id == KEEP_ALIVE:
 				dealKeepAlive(self, payload)
+				#Client Sent keep-alive.  Reply to it.
 			elif id == C_REQ_WORK:
 				dealRequest(self, payload)
+				#Client Requested work.  Call work handleing Function
 			elif id == C_SEND_RES:
 				print "Hey, we got a result.  Deal with it."
-				#dealResult(self, self.addr, payload)
+				dealResult(self, self.addr, payload)
 			elif id == C_REQ_UPDT:
-				print "this is just here to make python happy."
 				dealMetaUpdate(self)
-			elif id == 9:
-				sleep(5)
-				signal_handler('Got Kill Packet From Client', 'derp')
+				#Client requested Meta-info update.  Call function to send it.
 			else:
 				print 'something went wrong.', id, payload
 
@@ -182,5 +159,6 @@ generate_test_set(15000,4000)
 cities = return_set(15000)
 
 #Run the event-driven server
+print "Opening Socket..."
 server = AsyncServer('', PORT)
 asyncore.loop(1)

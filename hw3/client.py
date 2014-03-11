@@ -1,4 +1,4 @@
-import asyncore, socket, signal, threading, pickle
+import asyncore, asynchat, socket, signal, threading, pickle, sys
 from time import sleep
 from sys import stdout, exit
 
@@ -10,7 +10,9 @@ DEBUG = True
 #change these values only
 
 #Global Variables
+shortest = sys.maxint
 cities = []
+route = []
 working = False
 
 #Packet Constants#
@@ -35,10 +37,6 @@ def signal_handler(signum, frame):
 		exit()
 	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
 
-def metaUnPack(self, _pickle):
-	shortest, cities, route = pickle.loads(data)
-	return shortest, cities, route
-
 def dealGreedyWork(self, payload):
 	working = True
 	start = payload['start']
@@ -46,43 +44,45 @@ def dealGreedyWork(self, payload):
 	working = False
 	self.sendPickle(C_SEND_RES, result)
 
+def dealMetaInfoUpdate(self, payload):
+	global shortest
+	global cities
+	global route
+	shortest, cities, route = pickle.loads(payload)
+	print shortest, route, cities[10345]
+
 #main class which handles the async part of the client.
 #It then calls out, and starts one of these up for incoming packets
-class AsyncClient(asyncore.dispatcher):
+class AsyncClient(asynchat.async_chat):
 	buffer = ""
 	t = None
 
 	def __init__(self, host):
-		asyncore.dispatcher.__init__(self)
+		asynchat.async_chat.__init__(self)
+		self.set_terminator("\r\n\r\n")
+		self.request = None
+		self.data = ""
+		self.shutdown = 0 #think can be removed
 		self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connect( (host, PORT) )
 		self.t = SenderThread(self)
 		self.t.start()
 
-	#adds the requested pickle to the send buffer
-	def sendPickle(self, id, payload):
-		self.send( pickle.dumps([id, payload]) )
+	def collect_incoming_data(self, data):
+		self.data = self.data + data
 
-	#got the message to kill self
-	#Also, make sure we kill the child thread too
-	def handle_close(self):
-		self.close()
-		self.t.stop()
-
-	#Deals with any packets received
-	#Delegates them out to be processed
-	def handle_read(self):
-		data = self.recv(8192)
-		#lets load up that pickle!  (DOES NOT DEAL WITH INVALID PICKLE!)
+	def found_terminator(self):
+		data = self.data
+		self.data = ""
 		#lets load up that pickle!  (DOES NOT DEAL WITH INVALID PICKLE!)
 		id, payload = pickle.loads(data)
 		#assuming we actually received SOMETHING.....
 		if data:
 			if DEBUG:
-				print data
+				print id, payload
 			if id == S_SEND_UPD:
-				print "We got our meta-info update"
-				#dealMetaInfo(self, payload)
+				dealMetaInfoUpdate(self, payload)
+				#Server sent Info.  Update local copy.
 			elif id == S_SERV_KIL:
 				print "Our server is shutting down! :("
 				sleep(10)
@@ -100,7 +100,17 @@ class AsyncClient(asyncore.dispatcher):
 				dealImproveCity(self, payload)
 				#Server sent us some city swapping improvement work
 			else:
-				print 'something went wrong.'
+				print 'something went wrong.', id, payload
+
+	#adds the requested pickle to the send buffer
+	def sendPickle(self, id, payload):
+		self.send( pickle.dumps([id, payload]) )
+
+	#got the message to kill self
+	#Also, make sure we kill the child thread too
+	def handle_close(self):
+		self.close()
+		self.t.stop()
 
 #Thread that actually does all the processing
 class SenderThread(threading.Thread):
