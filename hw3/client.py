@@ -6,7 +6,7 @@ from helpers import *
 from algo_greedy import *
 
 #change these values only
-DEBUG = True
+DEBUG = 3		#3=show all packet data.
 #change these values only
 
 #Global Variables
@@ -31,15 +31,17 @@ S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 
 def signal_handler(signum, frame):
-	if DEBUG == True:
-		print "closing socket..."
+	if DEBUG:
+		print "Closing socket..."
 		client.t.stop()
 		exit()
 	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
 
-def dealGreedyWork(self, payload):
+def dealGreedyWork(self, _start):
+	global working
+	if DEBUG:
+		print "now doing greedy for: ", _start
 	working = True
-	start = payload['start']
 	result = algo_greedy_start(cities, _start)
 	working = False
 	self.sendPickle(C_SEND_RES, result)
@@ -49,7 +51,8 @@ def dealMetaInfoUpdate(self, payload):
 	global cities
 	global route
 	shortest, cities, route = pickle.loads(payload)
-	print shortest, route, cities[10345]
+	if DEBUG:
+		print shortest, route, cities[10345]
 
 #main class which handles the async part of the client.
 #It then calls out, and starts one of these up for incoming packets
@@ -78,7 +81,7 @@ class AsyncClient(asynchat.async_chat):
 		id, payload = pickle.loads(data)
 		#assuming we actually received SOMETHING.....
 		if data:
-			if DEBUG:
+			if (DEBUG == 3):
 				print id, payload
 			if id == S_SEND_UPD:
 				dealMetaInfoUpdate(self, payload)
@@ -100,11 +103,12 @@ class AsyncClient(asynchat.async_chat):
 				dealImproveCity(self, payload)
 				#Server sent us some city swapping improvement work
 			else:
-				print 'something went wrong.', id, payload
+				print 'Something went wrong.', id, payload
 
 	#adds the requested pickle to the send buffer
 	def sendPickle(self, id, payload):
-		self.send( pickle.dumps([id, payload]) )
+		self.sendall( pickle.dumps([id, payload]) )
+		self.send("\r\n\r\n")
 
 	#got the message to kill self
 	#Also, make sure we kill the child thread too
@@ -127,7 +131,7 @@ class SenderThread(threading.Thread):
 
 	#What the thread actually does
 	def run(self):
-		self.client.sendPickle(C_REQ_UPDT, 'hey bro, need an update!')
+		self.client.sendPickle(C_REQ_UPDT, 'Hey bro, need an update!')
 		sleep(5)
 		while (self._stop == False):
 			if (working == False):
