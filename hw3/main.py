@@ -1,5 +1,5 @@
 import tsp_grapher
-import random, timeit, datetime, time
+import timeit, datetime, time
 
 from functools import partial
 
@@ -11,24 +11,10 @@ from algo_greedy_segmented import *
 from algo_inverse_prim import *
 from algo_improve_rev import *
 from algo_improve_swap import *
-
 from helpers import *
 
 n0 = 300 		#Minimum input size to try
 n1 = 305	    #Maximum input size to try
-
-def generate_test_set(_n,_range):
-	global set
-	random.seed("0")    #Seeds the RNG.  This causes us to use the same test set every run.
-	set = []
-	for i in xrange(_n):
-		set.append((random.randrange(1,_range),random.randrange(1,_range)))
-	return set
-
-def return_set(max):
-	global set
-	#not done
-	return set[:max]
 
 def parse_input(file_name):
 	f = open(file_name)
