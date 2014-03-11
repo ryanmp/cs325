@@ -3,18 +3,42 @@ import timeit, datetime, time
 
 from functools import partial
 
+#these work properly
 from algo_exact import *
 from algo_fastdumb import *
 from algo_greedy import *
 from algo_greedy_all import *
+
+#and these do not
 from algo_greedy_segmented import *
 from algo_inverse_prim import *
+
+#improve upon an existing route
 from algo_improve_rev import *
 from algo_improve_swap import *
+
+
+from tree import * #basic tree data structure
+from algo_mst import * 
+
 from helpers import *
 
-n0 = 300 		#Minimum input size to try
-n1 = 305	    #Maximum input size to try
+n0 = 3 		#Minimum input size to try
+n1 = 60	    #Maximum input size to try
+
+
+def generate_test_set(_n,_range):
+	global set
+	random.seed("1z")    #Seeds the RNG.  This causes us to use the same test set every run.
+	set = []
+	for i in xrange(_n):
+		set.append((random.randrange(1,_range),random.randrange(1,_range)))
+	return set
+
+def return_set(max):
+	global set
+	#not done
+	return set[:max]
 
 def parse_input(file_name):
 	f = open(file_name)
@@ -103,30 +127,39 @@ def generate_test_set2(_seed,_n,_range):
 def main():
 
 	#initialize random inputs:
-	generate_test_set(n1,4000)
+	generate_test_set(n1,1000)
 
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
 	# (using the default range+seed declared up in the global variable)
-	#batch_compare_algos(algo_greedy_all,algo_greedy,algo_greedy_segmented)
+	batch_compare_algos(algo_greedy_all,algo_mst)
 
 	# this will plot the resultant route from each algorithm for
 	# a given city set size (using the default seed)
 	#compare_algos(15,[algo_greedy_all,algo_greedy_segmented])
 
 	#cities1 = parse_input("in/example-input-1.txt")
-	cities1 = return_set(150)
+	cities1 = return_set(70)
+	#route = algo_mst(cities1)
+	#tsp_grapher.plot_route(cities1,route)
+
+	'''
 	route = algo_greedy_all(cities1)
 	#tsp_grapher.plot_route(cities1,route)
 	print "greedy_all results:", route_length(cities1, route)
-
-	route = algo_improve_swap(cities1,route)
 	for i in xrange(2,len(cities1)):
 		route = algo_improve_rev(cities1,route,i)
-	route = algo_improve_swap(cities1,route)
-
 	print "results after improvements:", route_length(cities1, route)
 	#tsp_grapher.plot_route(cities1,route)
+
+	route = algo_mst(cities1)
+	#tsp_grapher.plot_route(cities1,route)
+	print "mst results:", route_length(cities1, route)
+	for i in xrange(2,len(cities1)):
+		route = algo_improve_rev(cities1,route,i)
+	print "results after improvements:", route_length(cities1, route)
+	#tsp_grapher.plot_route(cities1,route)
+	'''
 	
 
 main()
