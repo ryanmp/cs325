@@ -86,7 +86,7 @@ def dealMetaInfoUpdate(self, payload):
 	global route
 	shortest, cities, route = pickle.loads(payload)
 	if DEBUG:
-		print "Shortest so far:", shortest, "#Cities in route:", len(route), "#Cities:", len(cities)
+		print  "#Cities:", len(cities), "Shortest so far:", shortest, "#Cities in route:", len(route)
 
 #main class which handles the async part of the client.
 #It then calls out, and starts one of these up for incoming packets
