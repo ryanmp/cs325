@@ -9,7 +9,7 @@ from random import randrange
 
 if len(sys.argv) != 2:
 	print 'You must specify an IP to connect to to monitor!'
-	print 'like so:  reporty.py 127.0.0.1'
+	print 'like so:  client.py 127.0.0.1'
 	sys.exit(1)
 
 #change these values only
