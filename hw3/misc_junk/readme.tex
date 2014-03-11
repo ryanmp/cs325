@@ -1,0 +1,125 @@
+\documentclass[letterpaper,10pt,titlepage]{article}
+
+\usepackage{graphicx}                                        
+
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+
+\usepackage{url}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+
+\usepackage{pstricks, pst-node}
+
+\usepackage{geometry}
+\geometry{textheight=9in, textwidth=6.5in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+
+\def\name{Joshua Villwock}
+
+%pull in the necessary preamble matter for pygments output
+\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs311 ``operating systems'' files filesystem I/O},
+  pdftitle = {CS 311 Project 6: Socket I/O},
+  pdfsubject = {CS 311 Project 6},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+\tableofcontents
+
+\section{Overall System Design}
+
+There are 8 Used packet types in the system:
+
+\begin{center}
+    \begin{tabular}{ | l | l | l | p{5cm} |}
+    \hline
+    Packet ID & <-> & Name & Description \\ \hline
+    0 & c <-> s & Keep-Alive & Apacket That is Completly Unused but   
+    The server will ping it back to the client if received. \\ \hline
+    1 & c -> s & Range Request & The Client sends this to the server
+    To ask for work to do.  Payload is the range
+    of numbers the client would like \\ \hline
+    2 & c <- s & Assign Range & Server sends this back to the client
+    Payload is the number the client should start at
+    It is implied that the Client should do how much they requested past that \\ \hline
+	3 & c -> s & Found Number & Client Sends this to server When Number Found \\ \hline
+	4 & c -> s & Unused & Unused \\ \hline
+	5 & c <-> s & Report Found & Reporter Uses to ask Server What numbers were found \\ \hline
+	6 & c <-> s & Report Clients & Reporter Uses to ask Server What Clients are connected \\ \hline
+	7 & <-> & Report Number & Reporter Uses to ask Server What Number we are currently on \\ \hline
+	8 & - & Unused & Unused \\ \hline
+	9 & c <-> s & Kill & A server can send this to the clients to tell them to shut down
+    or a reporter can send this to the Server to tell it to stop
+	Its clients and shut down.\\ \hline
+    \end{tabular}
+\end{center}
+
+Note that the Client is not written in C, due to time contraints and problems.  You can read below for more details.
+
+However, some source code I was working on for a C based client is included, but definitly not working.  Check README.md for how to use it, or see below for more details.
+
+\section{Work Log}
+
+Nov 23- Python Socket code
+
+Nov 26- Server keeps listening
+
+Nov 28- Server async
+
+Dec 1- Finished Basic Client server Working
+
+Dec 2- Fixed Stuff, Wrote Report
+
+Full work log can be found here:
+\url{https://github.com/1n5aN1aC/Perfect/commits/master}
+
+\section{Challenges}
+
+I tried writing the client in C, as specified, but I both had issues with witing a proper asncronous network client for it, and getting json parson and construction working in it.
+
+The pythn was fairly easy, except for a few quirks of python that had to be learned, and overcome.
+
+\section{Questions And Answers}
+
+\subsection{what do you think the main point of this assignment is?}
+
+\begin{itemize}
+\item Mainly, to get us to learn to develop our own protocol, and implement it.  This implies a lot of engeneering, and planning
+\item But also, to use threads, or async network programming, to amke sure the IO is isolated fromt he Program logic
+\end{itemize}
+
+\subsection{how did you ensure your solution was correct? Testing details, for instance.}
+
+Tests were ran on many different computers, with the server only being tested on my computer, but tested locally, over the LAN, and over the internet.
+
+It was tested with as many as 8 consecutive clients.
+
+\subsection{what did you learn?}
+
+I learned Async Network programming in python is fairly fun, but much, much, harder in C or C Plus Plus.
+
+\end{document}
