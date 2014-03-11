@@ -6,7 +6,7 @@ from helpers import *
 
 #change these values only
 PORT = 31337		# The port used by the server. Default 31337
-DEBUG = True		# Output all kinds of random junk you probly really don't want to see?
+DEBUG = True		# 3= show all packet data.
 #change these values only
 
 #Global Variables
@@ -57,9 +57,9 @@ def metaPack(self, shortest, cities, route):
 #Then just pong one back to the client
 #I think this is obsolete now, keeping to be safe.
 def dealKeepAlive(self, payload):
-	print 'replying to keep-alive from:', self.addr
+	print 'Responding to keep-alive from:', self.addr
 	self.sendall( createPickle(self, KEEP_ALIVE, payload + " reply") )
-	self.send("\r\n\r\n")
+	self.sendall("\r\n\r\n")
 
 #Actually handles requests for work.
 #For now, this just sends a static packet, to test.
@@ -68,12 +68,12 @@ def dealRequest(self, payload):
 	if DEBUG:
 		print "Responding to work request.."
 	self.sendall(createPickle(self, S_WORK_GRE, curGreedy))
-	self.send("\r\n\r\n")
+	self.sendall("\r\n\r\n")
 	curGreedy = curGreedy + 1
 
 def dealResult(self, payload):
 	global shortest
-	length = route_length(cities, payload)
+	length = route_length_final(cities, payload)
 	if DEBUG:
 		print "we got a result!", length
 	if (length < shortest):
@@ -87,11 +87,11 @@ def dealResult(self, payload):
 #the list of cities, and the shortest path so far.
 def dealMetaUpdate(self):
 	if DEBUG:
-		print "Request for meta-info update being handled."
+		print "Responding to meta-info update request."
 	_pickle = metaPack(self, shortest, cities, route)
 	self.sendall(createPickle(self, S_SEND_UPD, _pickle))
-	self.send("\r\n\r\n")
-	
+	self.sendall("\r\n\r\n")
+
 #Class For handling the event-driven server
 class PacketHandler(asynchat.async_chat):
 	def __init__(self, _sock, addr):
@@ -114,14 +114,14 @@ class PacketHandler(asynchat.async_chat):
 		id, payload = pickle.loads(data)
 		#assuming we actually received SOMETHING.....
 		if data:
-			if (DEBUG == 2):
+			if (DEBUG == 3):
 				print id, payload
 			if id == KEEP_ALIVE:
 				dealKeepAlive(self, payload)
 				#Client Sent keep-alive.  Reply to it.
 			elif id == C_REQ_WORK:
 				dealRequest(self, payload)
-				#Client Requested work.  Call work handleing Function
+				#Client Requested work.  Call work handling Function
 			elif id == C_SEND_RES:
 				dealResult(self, payload)
 				#Hey, we got a result.  Deal with it.
