@@ -62,16 +62,21 @@ def dealKeepAlive(self, payload):
 #For now, this just sends a static packet, to test.
 def dealRequest(self, payload):
 	if DEBUG:
-		print "Request for work being handled!"
+		print "Responding to work request.."
 	self.sendall(createPickle(self, S_WORK_GRE, 7))
 	self.send("\r\n\r\n")
 	#7 is a placeholder.  PLEASE FIX
 
 def dealResult(self, payload):
+	global shortest
 	length = route_length(cities, payload)
 	if DEBUG:
 		print "we got a result!", length
-	#Actually do stuff later.
+	if (length < shortest):
+		if DEBUG:
+			print self.addr, "Found a better Route!", shortest, ">", length
+		shortest = length
+		route = payload
 
 #The client asked for various meta-info, send it.
 #Currently sends the length of shortest path so far,
@@ -168,6 +173,7 @@ signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGABRT, signal_handler)
 
 #Set up
+clear()
 print "Setting up server..."
 generate_test_set(15000,4000)
 cities = return_set(15000)
