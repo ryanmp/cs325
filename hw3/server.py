@@ -18,15 +18,17 @@ connectionSocketList = []
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
-C_SEND_RES = 2  #C -> S #rend result
-C_REQ_UPD  = 3  #C -> S #request meta-info update
+C_SEND_RES = 2  #C -> S #Rend result
+C_REQ_UPD  = 3  #C -> S #Request meta-info update
 ##Server Packets##
-S_SEND_UPD = 10 #S -> C #send meta-info update
-S_WORK_GRE = 11 #S -> C #send greedy algorithm work
-S_WORK_MST = 12 #S -> C #send MST algorithm work
+S_SEND_UPD = 10 #S -> C #Send meta-info update
+S_SERV_KIL = 11 #S -> C #Server Shutting down
+##algorithm Packets##
+S_WORK_GRE = 20 #S -> C #Send greedy algorithm work
+S_WORK_MST = 21 #S -> C #Send MST algorithm work
 ##Improvement Packets##
-S_IMP_SGMT = 15 #S -> C #Send improvement work, swapping segments
-S_IMP_SCTY = 16 #S -> C #send improvement work, swapping cities
+S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
+S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 
 #deal with signals
 def signal_handler(signum, frame):
@@ -44,46 +46,47 @@ def createJson(self, id, payload):
 
 #If client sends us a packet ID 0 (keep-alive)
 #Then just pong one back to the client
+#I think this is obsolete now, keeping to be safe.
 def dealKeepAlive(self, payload):
 	print 'replying to keep-alive from:', self.addr
 	self.send( createJson(self, 0, payload) )
 
 #Client asked for a range of numbers they should check
 #Send them however many they asked for
-def dealRangeReq(self, quantity):
-	global currNum
-	if DEBUG:
-		print 'replying to request for', quantity, 'numbers from:', self.addr
-	self.send( createJson(self, 2, currNum) )
-	currNum += quantity
+#def dealRangeReq(self, quantity):
+#	global currNum
+#	if DEBUG:
+#		print 'replying to request for', quantity, 'numbers from:', self.addr
+#	self.send( createJson(self, 2, currNum) )
+#	currNum += quantity
 
 #The Client sent us a number that they say is a perfect number!
 #Amazing!  Make a note of this!
-def dealNumberFound(self, address, numberFound):
-	print 'client', address[0],':',address[1], 'claims that', numberFound, 'is a perfect number!'
-	perfectNumbersFound.append(numberFound)
+#def dealNumberFound(self, address, numberFound):
+#	print 'client', address[0],':',address[1], 'claims that', numberFound, 'is a perfect number!'
+#	perfectNumbersFound.append(numberFound)
 	
-def dealReportFound(self):
-	if DEBUG:
-		print 'A Reporter has asked for the numbers we have found.  Sending.'
-	self.send( createJson(self, 5, perfectNumbersFound) )
+#def dealReportFound(self):
+#	if DEBUG:
+#		print 'A Reporter has asked for the numbers we have found.  Sending.'
+#	self.send( createJson(self, 5, perfectNumbersFound) )
 
-def dealReportClients(self):
-	if DEBUG:
-		print 'A Reporter has asked for our connection List.  Sending.'
-	addrList = []
-	for _socketobject in connectionSocketList:
-		try:
-			addrList.append( _socketobject.getpeername() )
-		except Exception:
-			print 'derp'
-			pass
-	self.send( createJson(self, 6, addrList) )
+#def dealReportClients(self):
+#	if DEBUG:
+#		print 'A Reporter has asked for our connection List.  Sending.'
+#	addrList = []
+#	for _socketobject in connectionSocketList:
+#		try:
+#			addrList.append( _socketobject.getpeername() )
+#		except Exception:
+#			print 'derp'
+#			pass
+#	self.send( createJson(self, 6, addrList) )
 
-def dealReportNumber(self):
-	if DEBUG:
-		print 'A Reporter has asked for how far we are currently.  Sending.'
-	self.send( createJson(self, 7, currNum) )
+#def dealReportNumber(self):
+#	if DEBUG:
+#		print 'A Reporter has asked for how far we are currently.  Sending.'
+#	self.send( createJson(self, 7, currNum) )
 
 #Class For handling the event-driven server
 class PacketHandler(asyncore.dispatcher_with_send):
@@ -96,31 +99,31 @@ class PacketHandler(asyncore.dispatcher_with_send):
 
 	def handle_read(self):
 		jdata = self.recv(8192)
-		#print jdata
+		If DEBUG:
+			print jdata
 		#assuming we actually received SOMETHING.....
 		if jdata:
 			#lets load up that json!  (DOES NOT DEAL WITH INVALID JSON!)
 			data = json.loads(jdata)
 			if data['id'] == 0:
-				lol = data['payload']
-				dealKeepAlive(self, lol)
+				payload = data['payload']
+				dealKeepAlive(self, payload)
 			elif data['id'] == 1:
-				quantity = data['payload']
-				dealRangeReq(self, quantity)
+				payload = data['payload']
+				#dealWorkReq(self, payload)
+				#Send them work
+			elif data['id'] == 2:
+				payload = data['payload']
+				#dealResult(self, self.addr, payload)
+				#Hey, we got a result.  Deal with it.
 			elif data['id'] == 3:
-				numberFound = data['payload']
-				dealNumberFound(self, self.addr, numberFound)
-			elif data['id'] == 5:
-				dealReportFound(self)
-			elif data['id'] == 6:
-				dealReportClients(self)
-			elif data['id'] == 7:
-				dealReportNumber(self)
+				#dealMetaUpdate(self)
+				#Client wants meta-info update.  Send them it.
 			elif data['id'] == 9:
 				sleep(5)
 				signal_handler('Got Kill Packet From Client', 'derp')
 			else:
-				print 'something went wrong.'
+				print 'something went wrong.', data
 
 #Class that sets up the event-driven server
 #and passes data it receives to the PacketHandler() class
@@ -131,14 +134,14 @@ class AsyncServer(asyncore.dispatcher):
 		self.set_reuse_addr()
 		self.bind(("", port))
 		self.listen(5)
-		print 'server is now listening for connections.'
+		print 'Server is now listening for connections.'
 
 	#We have been told to shutdown!
 	#Make sure we send the shutdown packet first!
 	def sendKill(self):
 		for _socketobject in connectionSocketList:
 			try:
-				_socketobject.send( createJson(self, 9, 'Server says SHUTDOWN!') )
+				_socketobject.send( createJson(self, S_SERV_KIL, 'Server says SHUTDOWN!') )
 				print str( _socketobject.getpeername()[0] ) + ':' + str( _socketobject.getpeername()[1] ) + ' was sent the shutdown signal!'
 			except Exception:
 				pass
@@ -147,7 +150,7 @@ class AsyncServer(asyncore.dispatcher):
 	def handle_accept(self):
 		pair = self.accept()
 		if pair is None:
-			print 'something is messed up'
+			print 'something is messed up', pair
 			pass
 		else:
 			sock, addr = pair
