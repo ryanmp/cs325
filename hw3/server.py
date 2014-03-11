@@ -1,10 +1,5 @@
-import asyncore
-import socket
-import json
-import signal
-import threading
+import asyncore, socket, json, signal, threading, sys
 from time import sleep
-from sys import stdout, exit
 
 from helpers import *
 
@@ -16,6 +11,9 @@ DEBUG = True		# Output all kinds of random junk you probly really don't want to 
 #Global Variables
 connectionClassList = []
 connectionSocketList = []
+shortest = sys.maxint
+cities = []
+route = []
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -44,6 +42,10 @@ def signal_handler(signum, frame):
 #Returns a json-formatted string based on the packet ID and packet payload
 def createJson(self, id, payload):
 	_json = json.dumps( {"id":id, "payload":payload} )
+	return _json
+
+def metaPack(self, shortest, cities, route):
+	_json = json.dumps( {"shortest":shortest, "cities":cities, "route":route} )
 	return _json
 
 #If client sends us a packet ID 0 (keep-alive)
@@ -85,11 +87,17 @@ def dealKeepAlive(self, payload):
 #			pass
 #	self.send( createJson(self, 6, addrList) )
 
-#def dealReportNumber(self):
-#	if DEBUG:
-#		print 'A Reporter has asked for how far we are currently.  Sending.'
-#	self.send( createJson(self, 7, currNum) )
+def dealRequest(self, payload):
+	if DEBUG:
+		print "Request for work being handled!"
+	self.send(createJson(self, S_WORK_GRE, 7))
 
+def dealMetaUpdate(self):
+	if DEBUG:
+		print "Request for meta-info update being handled."
+	_json = metaPack(self, shortest, cities, route)
+	self.send(createJson(self, S_SEND_UPD, _json))
+	
 #Class For handling the event-driven server
 class PacketHandler(asyncore.dispatcher_with_send):
 	def setAddr(self, address):
@@ -112,16 +120,14 @@ class PacketHandler(asyncore.dispatcher_with_send):
 				dealKeepAlive(self, payload)
 			elif data['id'] == C_REQ_WORK:
 				payload = data['payload']
-				#dealWorkReq(self, payload)
-				#Send them work
+				dealRequest(self, payload)
 			elif data['id'] == C_SEND_RES:
 				payload = data['payload']
 				#dealResult(self, self.addr, payload)
 				#Hey, we got a result.  Deal with it.
 			elif data['id'] == C_REQ_UPDT:
 				print "this is just here to make python happy."
-				#dealMetaUpdate(self)
-				#Client wants meta-info update.  Send them it.
+				dealMetaUpdate(self)
 			elif data['id'] == 9:
 				sleep(5)
 				signal_handler('Got Kill Packet From Client', 'derp')
@@ -171,6 +177,11 @@ class AsyncServer(asyncore.dispatcher):
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGABRT, signal_handler)
+
+#Set up
+print "Setting up server..."
+generate_test_set(15000,4000)
+cities = return_set(15000)
 
 #Run the event-driven server
 server = AsyncServer('', PORT)

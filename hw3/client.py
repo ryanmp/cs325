@@ -10,7 +10,7 @@ DEBUG = True
 #change these values only
 
 #Global Variables
-derp = []
+cities = []
 working = False
 
 #Packet Constants#
@@ -35,13 +35,22 @@ def signal_handler(signum, frame):
 		exit()
 	print "Sorry, I've disabled killing the client using control-c, as It could conceivably cause some data to be lost, if it is done at a very bad time for the server."
 
+def metaUnPack(self, _json):
+	data = json.loads(jdata)
+	shortest = data['shortest']
+	cities = data['cities']
+	route = data['route']
+	return shortest, cities, route
+
 def dealGreedyWork(self, payload):
-	data = json.loads(payload)
-	start = data['start']
-	
+	working = True
+	start = payload['start']
+	result = algo_greedy_start(cities, _start)
+	working = False
+	self.sendJson(C_SEND_RES, result)
 
 #main class which handles the async part of the client.
-#It then calls out, and starts up the actual processing thread
+#It then calls out, and starts one of these up for incoming packets
 class AsyncClient(asyncore.dispatcher):
 	buffer = ""
 	t = None
@@ -115,14 +124,12 @@ class SenderThread(threading.Thread):
 
 	#What the thread actually does
 	def run(self):
-		if (self._stop == True):
-			exit()
-		if (working == False):
-			self.client.sendJson(C_REQ_WORK, 'gimme work!')
-			sleep(5)
-		else:
+		self.client.sendJson(C_REQ_UPDT, 'hey bro, need an update!')
+		sleep(5)
+		while (self._stop == False):
+			if (working == False):
+				self.client.sendJson(C_REQ_WORK, 'gimme work!')
 			sleep(10)
-		self.run()
 
 #Initialize by asking for remote host info
 HOST = raw_input("Server IP? (Defaults to localhost): ")
