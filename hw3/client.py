@@ -11,7 +11,7 @@ from algo_improve_rev import *
 from algo_improve_swap import *
 
 #change these values only
-DEBUG = True		# 3= show all packet data.
+DEBUG = True	# 3= show all packet data.
 #change these values only
 
 #Global Variables
@@ -143,8 +143,7 @@ class AsyncClient(asynchat.async_chat):
 
 	#Adds the requested pickle to the send buffer
 	def sendPickle(self, id, payload):
-		self.sendall( pickle.dumps([id, payload]) )
-		self.sendall("\r\n\r\n")
+		self.push(pickle.dumps([id, payload]) + "\r\n\r\n")
 
 	#Got the message to kill self
 	#Also, make sure we kill the child thread too
