@@ -5,8 +5,8 @@ from time import sleep
 from helpers import *
 
 #change these values only
-PORT = 31337		# The port used by the server. Default 31337
-DEBUG = True		# 3= show all packet data.
+PORT = 31337	# The port used by the server. Default 31337
+DEBUG = True	# 3= show all packet data.
 #change these values only
 
 #Global Variables
@@ -61,8 +61,7 @@ def metaPack(self, shortest, cities, route):
 #I think this is obsolete now, keeping to be safe.
 def dealKeepAlive(self, payload):
 	print 'Responding to keep-alive from:', self.addr
-	self.sendall( createPickle(self, KEEP_ALIVE, payload + " reply") )
-	self.sendall("\r\n\r\n")
+	self.sendPickle(KEEP_ALIVE, payload + " reply")
 
 #Actually handles requests for work.
 #For now, this just sends a static packet, to test.
@@ -70,8 +69,7 @@ def dealRequest(self, payload):
 	global curGreedy
 	if DEBUG:
 		print "Responding to work request.."
-	self.sendall(createPickle(self, S_WORK_GRE, curGreedy))
-	self.sendall("\r\n\r\n")
+	self.sendPickle(S_WORK_GRE, curGreedy)
 	curGreedy = curGreedy + 1
 
 def dealResult(self, payload):
@@ -92,8 +90,7 @@ def dealMetaUpdate(self):
 	if DEBUG:
 		print "Responding to meta-info update request."
 	_pickle = metaPack(self, shortest, cities, route)
-	self.sendall(createPickle(self, S_SEND_UPD, _pickle))
-	self.sendall("\r\n\r\n")
+	self.sendPickle(S_SEND_UPD, _pickle)
 
 #Class For handling the event-driven server
 class PacketHandler(asynchat.async_chat):
@@ -133,6 +130,9 @@ class PacketHandler(asynchat.async_chat):
 				#Client requested Meta-info update.  Call function to send it.
 			else:
 				print 'something went wrong.', id, payload
+
+	def sendPickle(self, id, payload):
+		self.push(pickle.dumps([id, payload]) + "\r\n\r\n")
 
 #Class that sets up the event-driven server
 #and passes data it receives to the PacketHandler() class
