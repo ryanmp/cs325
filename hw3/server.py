@@ -89,7 +89,6 @@ def dealResult(self, payload):
 #Currently sends the length of shortest path so far,
 #the list of cities, and the shortest path so far.
 def dealMetaUpdate(self):
-	print route
 	if DEBUG:
 		print "Responding to meta-info update request."
 	_pickle = metaPack(self, shortest, cities, route)
