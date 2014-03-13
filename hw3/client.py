@@ -48,13 +48,18 @@ def clear():
 	os.system('clear')
 
 def dealGreedyWork(self, _start):
-	global working
+	global working, shortest, route
 	working = True
 	if DEBUG:
 		print "now doing greedy for: ", _start
 	result = algo_greedy_start(cities, _start)
+	length = route_length_final(cities, result)
+	if (shortest > length):
+		print "Found a shorter route.  Updating local cache, and sending route to server."
+		shortest = length
+		route = result
+		self.sendPickle(C_SEND_RES, result)
 	working = False
-	self.sendPickle(C_SEND_RES, result)
 
 def dealMSTWork(self, payload):
 	global working
@@ -75,10 +80,10 @@ def dealPrimWork(self, payload):
 	self.sendPickle(C_SEND_RES, result)
 
 def dealImproveSegment(self, payload):
-	print "derp"
+	print "Running segment swap"
 
 def dealImproveCity(self, payload):
-	print "derp"
+	print "Running city swap"
 
 def dealMetaInfoUpdate(self, payload):
 	global shortest
