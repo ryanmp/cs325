@@ -32,6 +32,13 @@ S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
+##Monitor / Control Packets##
+M_GET_CURR = 40 #M -> S #Request current status
+M_GET_CLIE = 42 #M -> S #Request list of clients
+M_SET_MODE = 43 #M -> S #Request server mode change
+##Server (monitor) Reply Packets##
+S_SEND_CUR = 50 #S -> M #Respond with current status
+S_SEND_CLI = 52 #S -> M #Respond with List of clients
 
 #deal with signals
 def signal_handler(signum, frame):
@@ -78,8 +85,7 @@ def dealResult(self, payload):
 	if DEBUG:
 		print "we got a result!", length
 	if (length < shortest):
-		if DEBUG:
-			print self.addr, "Found a better Route!", shortest, ">", length
+		print self.addr, "Found a better Route!", shortest, ">", length
 		shortest = length
 		route = payload[0:]
 
