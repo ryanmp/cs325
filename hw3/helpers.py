@@ -5,7 +5,8 @@ def distance(p1,p2):
 
 def route_length(cities,route):
 	distance = 0
-	for i in xrange(len(route)-1):
+	_length = len(route)-1
+	for i in xrange(_length):
 		idx1 = route[i]
 		idx2 = route[i+1]
 
@@ -21,7 +22,8 @@ def route_length(cities,route):
 
 def route_length_final(cities,route):
 	distance = 0
-	for i in xrange(len(route)-1):
+	_length = len(route)-1
+	for i in xrange(_length):
 		idx1 = route[i]
 		idx2 = route[i+1]
 

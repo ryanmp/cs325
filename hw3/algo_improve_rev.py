@@ -2,10 +2,10 @@ from helpers import *
 
 def algo_improve_rev(cities,route,seg_length):
 
-	for i in xrange(len(cities)-seg_length):
+	_length = len(cities)-seg_length
+	for i in xrange(_length):
 
 		new_route = route[0:]
-
 		initial_length = route_length(cities,new_route)
 
 		start_idx = i
