@@ -6,6 +6,7 @@ from algo_exact import *
 from algo_fastdumb import *
 from algo_greedy import *
 from algo_greedy_all import *
+from algo_greedy_all_hash import *
 
 #and these do not
 from algo_greedy_segmented import *
@@ -23,12 +24,14 @@ import tsp_grapher
 
 #import tsp-verifier #naming convention error!
 
-n0 = 4 #Minimum input size to try
-n1 = 45	#Maximum input size to try
+n0 = 110 #Minimum input size to try
+n1 = 120	#Maximum input size to try
+
+
 
 def generate_test_set(_n,_range):
 	global set
-	random.seed("1z")    #Seeds the RNG.  This causes us to use the same test set every run.
+	random.seed("0")    #Seeds the RNG.  This causes us to use the same test set every run.
 	set = []
 	for i in xrange(_n):
 		set.append((random.randrange(1,_range),random.randrange(1,_range)))
@@ -72,8 +75,14 @@ def batch_algo(f, n0, n1):
 		#t2 = t1[:n1]
 
 		start_time = time.time()
-		ret.append( route_length( t2, f(t2) ) )
-		timings.append(time.time()-start_time)
+
+
+		if (f.__name__ == 'algo_greedy_all_hash'):
+			ret.append( route_length( t2, f(t2,dict_distances) ) )
+			timings.append(time.time()-start_time)
+		else:
+			ret.append( route_length( t2, f(t2) ) )
+			timings.append(time.time()-start_time)
 
 	return ret, [i for i in range(n0,n1)], f, timings
 
@@ -140,6 +149,26 @@ def run_verifier(cities_txt,route_txt):
 	path = os.getcwd() + "/"
 	os.system("python tsp-verifier.py "+path+cities_txt+" "+path+route_txt)
 
+
+def algo_combo1(cities):
+	route = algo_greedy(cities)
+	for i in xrange(2,len(cities)):
+		route = algo_improve_rev(cities,route,i)
+	for i in xrange(2,len(cities)):
+		route = algo_improve_rev(cities,route,i)
+	return route
+
+def algo_combo2(cities):
+	route = algo_greedy(cities)
+	for i in xrange(2,3):
+		route = algo_improve_swap(cities,route)
+		route = algo_improve_rev(cities,route,i)
+	
+	return route
+
+
+
+
 def main():
 
 	#initialize random inputs:
@@ -148,22 +177,46 @@ def main():
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
 	# (using the default range+seed declared up in the global variable)
-	#batch_compare_algos(algo_greedy_all,algo_mst)
+	#batch_compare_algos(algo_combo1,algo_combo2)
 
 	# this will plot the resultant route from each algorithm for
 	# a given city set size (using the default seed)
 	#compare_algos(15,[algo_greedy_all,algo_greedy_segmented])
 
-	#cities1 = return_set(25)
-	cities1 = parse_input("in/example-input-1.txt")
+	cities = return_set(150)
+	##cities1 = parse_input("in/example-input-1.txt")
 
-	route = algo_greedy_all(cities1)
+	'''
+	global dict_distances
+	dict_distances = {}
+	for idx1 in xrange(len(cities)):
+		for idx2 in range(idx1,len(cities)):
+			if (idx1 != idx2):
+				dict_distances[str(cities[idx1])+str(cities[idx2])] = distance(cities[idx1],cities[idx2])
 
-	format_output(cities1, route, "out.txt")
+
+	batch_compare_algos(algo_greedy_all,algo_greedy_all_hash)
+	'''
+
+	#time1, junk1, jumk2 = time_algo(algo_greedy_all_hash,5,20)
+	#print time1
+	
+
+	'''
+	time0 = time.time()
+	route2 = algo_greedy(cities1)
+	for i in xrange(2,6):
+		route2 = algo_improve_rev(cities1,route2,i)
+	print route_length(cities1, route2), time.time() - time0
+	'''
+
+	#cities = parse_input("in/example-input-1.txt")
+	#route = algo_greedy(cities)
+	#format_output(cities, route, "out.txt")
 	run_verifier("in/example-input-1.txt","out.txt")
 
-	print route_length(cities1, route)
-	tsp_grapher.plot_route(cities1,route)
+	#print route_length(cities1, route)
+	#tsp_grapher.plot_route(cities1,route)
 
 	'''
 	route = algo_greedy_all(cities1)

@@ -1,4 +1,4 @@
-import sys, math, numpy
+import sys, math
 from helpers import *
 
 
