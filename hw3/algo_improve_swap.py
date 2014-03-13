@@ -6,7 +6,6 @@ def algo_improve_swap(cities,route):
 		for j in xrange(len(cities)):
 
 			new_route = route[0:]
-
 			initial_length = route_length(cities,new_route)
 
 			tmp1 = new_route[i]
