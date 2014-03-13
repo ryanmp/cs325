@@ -18,7 +18,9 @@ DEBUG = True	# 3= show all packet data.
 shortest = sys.maxint
 cities = []
 route = []
-working = False
+mode = ""
+curGreedy = ""
+clients = []
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -35,6 +37,11 @@ S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
+##Monitor / Control Packets##
+M_GET_CURR = 40 #M -> S #Request current status
+M_SET_MODE = 43 #M -> S #Request server mode change
+##Server (monitor) Reply Packets##
+S_SEND_STA = 50 #S -> M #Respond with current status
 
 def signal_handler(signum, frame):
 	print "Closing socket..."
@@ -47,49 +54,13 @@ def clear():
 	os.system('cls')
 	os.system('clear')
 
-def dealGreedyWork(self, _start):
-	global working, shortest, route
-	working = True
-	if DEBUG:
-		print "now doing greedy for: ", _start
-	result = algo_greedy_start(cities, _start)
-	length = route_length_final(cities, result)
-	if (shortest > length):
-		print "Found a shorter route.  Updating local cache, and sending route to server."
-		shortest = length
-		route = result
-		self.sendPickle(C_SEND_RES, result)
-	working = False
-
-def dealMSTWork(self, payload):
-	global working
-	working = True
-	if DEBUG:
-		print "now calculating MST TSP."
-	result = algo_mst(cities)
-	working = False
-	self.sendPickle(C_SEND_RES, result)
-
-def dealPrimWork(self, payload):
-	global working
-	working = True
-	if DEBUG:
-		print "now calculating MST TSP."
-	result = algo_inverse_prim(cities)
-	working = False
-	self.sendPickle(C_SEND_RES, result)
-
-def dealImproveSegment(self, payload):
-	print "Running segment swap"
-
-def dealImproveCity(self, payload):
-	print "Running city swap"
-
 def dealMetaInfoUpdate(self, payload):
 	global shortest, cities, route
 	shortest, cities, route = pickle.loads(payload)
-	if DEBUG:
-		print  "#Cities:", len(cities), "Shortest so far:", shortest, "#Cities in route:", len(route)
+
+def dealStatusUpdate(self, payload):
+	global mode, clients, curGreedy
+	curGreedy, mode, clients = pickle.loads(payload)
 
 #main class which handles the async part of the client.
 #It then calls out, and starts one of these up for incoming packets
@@ -119,28 +90,16 @@ class AsyncClient(asynchat.async_chat):
 		if data:
 			if (DEBUG == 3):
 				print id, payload
-			if id == S_SEND_UPD:
-				dealMetaInfoUpdate(self, payload)
-				#Server sent Info.  Update local copy.
-			elif id == S_SERV_KIL:
+			if id == S_SERV_KIL:
 				print "Our server is shutting down! :("
 				sleep(10)
 				exit()
-			elif id == S_WORK_GRE:
-				dealGreedyWork(self, payload)
-				#Server sent us some greedy algo work
-			elif id == S_WORK_MST:
-				dealMSTWork(self, payload)
-				#Server sent us some MST algo work
-			elif id == S_WORK_PRM:
-				dealPrimWork(self, payload)
-				#Server sent us some reverse prim algo work
-			elif id == S_IMP_SGMT:
-				dealImproveSegment(self, payload)
-				#Server sent us some segment swapping improvement work
-			elif id == S_IMP_SCTY:
-				dealImproveCity(self, payload)
-				#Server sent us some city swapping improvement work
+			elif id == S_SEND_UPD:
+				dealMetaInfoUpdate(self, payload)
+				#Server sent Info.  Update local copy.
+			elif id == S_SEND_STA:
+				dealStatusUpdate(self, payload)
+				#Server sent us a status info update
 			else:
 				print 'Something went wrong.', id, payload
 
@@ -171,11 +130,17 @@ class SenderThread(threading.Thread):
 
 	#What the thread actually does
 	def run(self):
-		self.client.sendPickle(C_REQ_UPDT, 'Hey bro, need an update!')
-		sleep(5)
 		while (self._stop == False):
-			if (working == False):
-				self.client.sendPickle(C_REQ_WORK, 'gimme work!')
+			self.client.sendPickle(C_REQ_UPDT, 'M update')
+			sleep(1)
+			self.client.sendPickle(M_GET_CURR, 'M Status')
+			sleep(1)
+			clear()
+			print "\n\n\ncurrent best:", shortest
+			print "\n#of cities:", len(cities), "#Cities in result:", len(route)
+			print "\n#of active clients:", len(clients)
+			print "current Greedy level:", curGreedy
+			print "\n\nmode:", mode
 			sleep(10)
 
 #Initialize by asking for remote host info
