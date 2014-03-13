@@ -36,6 +36,7 @@ S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 
+#deal with signals
 def signal_handler(signum, frame):
 	print "Closing socket..."
 	sleep(2)
@@ -43,10 +44,12 @@ def signal_handler(signum, frame):
 	sleep(2)
 	exit()
 
+#helper method to Clear the screen
 def clear():
 	os.system('cls')
 	os.system('clear')
 
+#Handles doing a run of greedy
 def dealGreedyWork(self, _start):
 	global working, shortest, route
 	working = True
@@ -80,7 +83,18 @@ def dealPrimWork(self, payload):
 	self.sendPickle(C_SEND_RES, result)
 
 def dealImproveSegment(self, payload):
-	print "Running segment swap"
+	global route, shortest
+	seg_length, _path = pickle.loads(payload)
+	if DEBUG:
+		print "Running segment swap, length:", seg_length
+	new_route = algo_improve_rev(cities, _path, seg_length)
+	len_old = route_length_final(_path)
+	len_new = route_length_final(new_route)
+	if (len_old > len_new):
+		print "Segment swap has improved:", len_old, ">", len_new
+		route = new_route
+		shortest = len_new
+		self.sendPickle(C_SEND_RES, new_route)
 
 def dealImproveCity(self, payload):
 	print "Running city swap"
