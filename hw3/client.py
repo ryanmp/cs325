@@ -83,19 +83,21 @@ def dealPrimWork(self, payload):
 	self.sendPickle(C_SEND_RES, result)
 
 def dealImproveSegment(self, payload):
-	global route, shortest
+	global route, shortest, working
+	working = True
 	start_length, end_length, _path = pickle.loads(payload)
 	for i in xrange(start_length, end_length):
 		if DEBUG:
 			print "Running segment swap, length:", i
 		new_route = algo_improve_rev(cities, _path, i)
-		len_old = route_length_final(_path)
-		len_new = route_length_final(new_route)
+		len_old = route_length_final(cities, _path)
+		len_new = route_length_final(cities, new_route)
 		if (len_old > len_new):
 			print "Segment swap has improved:", len_old, ">", len_new
 			route = new_route
 			shortest = len_new
 	self.sendPickle(C_SEND_RES, new_route)
+	working = False
 
 def dealImproveCity(self, payload):
 	print "Running city swap"

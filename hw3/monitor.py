@@ -18,8 +18,9 @@ DEBUG = True	# 3= show all packet data.
 shortest = sys.maxint
 cities = []
 route = []
-mode = ""
-curGreedy = ""
+mode = "unknown"
+curGreedy = "unknown"
+curImprove = "unknown"
 clients = []
 
 #Packet Constants#
@@ -60,7 +61,7 @@ def dealMetaInfoUpdate(self, payload):
 
 def dealStatusUpdate(self, payload):
 	global mode, clients, curGreedy
-	curGreedy, mode, clients = pickle.loads(payload)
+	curGreedy, curImprove, mode, clients = pickle.loads(payload)
 
 #main class which handles the async part of the client.
 #It then calls out, and starts one of these up for incoming packets
@@ -130,6 +131,7 @@ class SenderThread(threading.Thread):
 
 	#What the thread actually does
 	def run(self):
+		self.client.sendPickle(M_SET_MODE, 2)
 		while (self._stop == False):
 			self.client.sendPickle(C_REQ_UPDT, 'M update')
 			sleep(1)
@@ -140,6 +142,7 @@ class SenderThread(threading.Thread):
 			print "\n#of cities:", len(cities), "#Cities in result:", len(route)
 			print "\n#of active clients:", len(clients)
 			print "current Greedy level:", curGreedy
+			print "current Improve Level:", curImprove
 			print "\n\nmode:", mode
 			sleep(10)
 

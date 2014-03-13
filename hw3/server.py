@@ -80,10 +80,16 @@ def dealRequest(self, payload):
 	if (mode == 1):
 		self.sendPickle(S_WORK_GRE, curGreedy)
 		curGreedy = curGreedy + 1
-	if (mode == 2):
+	elif (mode == 2):
 		_pickle = pickle.dumps([curImprove, curImprove+50, route])
-		self.sendPickle(S_WORK_GRE, _pickle)
+		dealMetaUpdate(self)
+		sleep(3)
+		self.sendPickle(S_IMP_SGMT, _pickle)
 		curImprove = curImprove + 50
+		if (curImprove > len(cities)/2):
+			curImprove = 1
+	elif (mode == 3):
+		print "not implemented yet! (city swap)"
 	else:
 		print "something is horribly wrong"
 
@@ -98,23 +104,28 @@ def dealResult(self, payload):
 		shortest = length
 		route = payload[0:]
 
+def dealModeChange(self, payload):
+	global mode
+	mode = payload
+	print "A connected monitor said we should switch to mode", payload
+
 #Handles a client asking for Monitor-info
 def dealMonitorUpdate(self):
-	global curGreedy, mode
+	global curGreedy, mode, curImprove
 	addrList = []
 	for _socketobject in connectionSocketList:
 		try:
 			addrList.append( _socketobject.getpeername() )
 		except Exception:
 			pass
-	_pickle = pickle.dumps([curGreedy, mode, addrList])
+	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
 	self.sendPickle(S_SEND_STA, _pickle)
 
 #The client asked for various meta-info, send it.
 #Currently sends the length of shortest path so far,
 #the list of cities, and the shortest path so far.
 def dealMetaUpdate(self):
-	if DEBUG:
+	if (DEBUG == 3):
 		print "Responding to meta-info update request."
 	_pickle = metaPack(self, shortest, cities, route)
 	self.sendPickle(S_SEND_UPD, _pickle)
@@ -158,6 +169,9 @@ class PacketHandler(asynchat.async_chat):
 			elif id == M_GET_CURR:
 				dealMonitorUpdate(self)
 				#Monitor is asking for info
+			elif id == M_SET_MODE:
+				dealModeChange(self, payload)
+				#Monitor says we should go to another mode.
 			else:
 				print 'something went wrong.', id, payload
 
