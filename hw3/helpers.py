@@ -5,10 +5,10 @@ def distance(p1,p2):
 
 def route_length(cities,route):
 	distance = 0
-	for i in xrange(len(route)-1):
+	_length = len(route)-1
+	for i in xrange(_length):
 		idx1 = route[i]
 		idx2 = route[i+1]
-
 		distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
 	
 	#connect back to start
@@ -21,7 +21,8 @@ def route_length(cities,route):
 
 def route_length_final(cities,route):
 	distance = 0
-	for i in xrange(len(route)-1):
+	_length = len(route)-1
+	for i in xrange(_length):
 		idx1 = route[i]
 		idx2 = route[i+1]
 
@@ -38,6 +39,19 @@ def route_length_final(cities,route):
 	distance += int(round(math.sqrt(dx*dx + dy*dy)))
 	#distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
 
+	return distance
+
+#Used for finding the length of just a specific segment of a route.
+def segment_length(cities,route,_start,_end):
+	distance = 0
+	_length = len(route)-1
+	for i in xrange(_start-1,_end):
+		idx1 = route[i]
+		try:
+			idx2 = route[i+1]
+		except Exception:	#Kinda a hackjob, but hey, it works.
+			return sys.maxint
+		distance += math.hypot(cities[idx2][0] - cities[idx1][0], cities[idx2][1] - cities[idx1][1])
 	return distance
 
 def generate_test_set(_list_length,_max_int):
