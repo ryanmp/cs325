@@ -15,8 +15,9 @@ connectionSocketList = []
 shortest = sys.maxint	#Length of shortest path so far
 cities = []				#List of cities
 route = []				#Current best route
-mode = ""				#Operating Mode
+mode = 1				#Operating Mode
 curGreedy = 0			#Current Starting City for greedy
+curImprove = 1			#Current length for length improvements
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -73,11 +74,18 @@ def dealKeepAlive(self, payload):
 #Actually handles requests for work.
 #For now, this just sends a static packet, to test.
 def dealRequest(self, payload):
-	global curGreedy
+	global curGreedy, curImprove
 	if DEBUG:
 		print "Responding to work request.."
-	self.sendPickle(S_WORK_GRE, curGreedy)
-	curGreedy = curGreedy + 1
+	if (mode == 1):
+		self.sendPickle(S_WORK_GRE, curGreedy)
+		curGreedy = curGreedy + 1
+	if (mode == 2):
+		_pickle = pickle.dumps([curImprove, curImprove+50, route])
+		self.sendPickle(S_WORK_GRE, _pickle)
+		curImprove = curImprove + 50
+	else:
+		print "something is horribly wrong"
 
 #Handles requests for work from a client
 def dealResult(self, payload):
