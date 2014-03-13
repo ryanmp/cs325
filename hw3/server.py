@@ -12,11 +12,11 @@ DEBUG = True	# 3= show all packet data.
 #Global Variables
 connectionClassList = []
 connectionSocketList = []
-shortest = sys.maxint
-cities = []
-route = []
-mode = ""
-curGreedy = 0
+shortest = sys.maxint	#Length of shortest path so far
+cities = []				#List of cities
+route = []				#Current best route
+mode = ""				#Operating Mode
+curGreedy = 0			#Current Starting City for greedy
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -48,6 +48,7 @@ def signal_handler(signum, frame):
 	sleep(1)
 	exit()
 
+#helper method to Clear the screen
 def clear():
 	os.system('cls')
 	os.system('clear')
@@ -78,6 +79,7 @@ def dealRequest(self, payload):
 	self.sendPickle(S_WORK_GRE, curGreedy)
 	curGreedy = curGreedy + 1
 
+#Handles requests for work from a client
 def dealResult(self, payload):
 	global shortest, route
 	length = route_length_final(cities, payload)
@@ -88,6 +90,7 @@ def dealResult(self, payload):
 		shortest = length
 		route = payload[0:]
 
+#Handles a client asking for Monitor-info
 def dealMonitorUpdate(self):
 	global curGreedy, mode
 	addrList = []
