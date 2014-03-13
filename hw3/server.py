@@ -15,6 +15,7 @@ connectionSocketList = []
 shortest = sys.maxint
 cities = []
 route = []
+mode = ""
 curGreedy = 0
 
 #Packet Constants#
@@ -34,11 +35,9 @@ S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 ##Monitor / Control Packets##
 M_GET_CURR = 40 #M -> S #Request current status
-M_GET_CLIE = 42 #M -> S #Request list of clients
 M_SET_MODE = 43 #M -> S #Request server mode change
 ##Server (monitor) Reply Packets##
-S_SEND_CUR = 50 #S -> M #Respond with current status
-S_SEND_CLI = 52 #S -> M #Respond with List of clients
+S_SEND_STA = 50 #S -> M #Respond with current status
 
 #deal with signals
 def signal_handler(signum, frame):
@@ -89,6 +88,17 @@ def dealResult(self, payload):
 		shortest = length
 		route = payload[0:]
 
+def dealMonitorUpdate(self):
+	global curGreedy, mode
+	addrList = []
+	for _socketobject in connectionSocketList:
+		try:
+			addrList.append( _socketobject.getpeername() )
+		except Exception:
+			pass
+	_pickle = pickle.dumps([curGreedy, mode, addrList])
+	self.sendPickle(S_SEND_STA, _pickle)
+
 #The client asked for various meta-info, send it.
 #Currently sends the length of shortest path so far,
 #the list of cities, and the shortest path so far.
@@ -134,6 +144,9 @@ class PacketHandler(asynchat.async_chat):
 			elif id == C_REQ_UPDT:
 				dealMetaUpdate(self)
 				#Client requested Meta-info update.  Call function to send it.
+			elif id == M_GET_CURR:
+				dealMonitorUpdate(self)
+				#Monitor is asking for info
 			else:
 				print 'something went wrong.', id, payload
 
