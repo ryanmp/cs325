@@ -83,11 +83,10 @@ def dealRequest(self, payload):
 		self.sendPickle(S_WORK_GRE, curGreedy)
 		curGreedy = curGreedy + 1
 	elif (mode == 2):
-		_pickle = pickle.dumps([curImprove, curImprove+50, route])
+		_pickle = pickle.dumps([curImprove, curImprove+20, route])
 		dealMetaUpdate(self)
-		sleep(3)
 		self.sendPickle(S_IMP_SGMT, _pickle)
-		curImprove = curImprove + 50
+		curImprove = curImprove + 20
 		if (curImprove > len(cities)/2):
 			curImprove = 1
 	elif (mode == 3):
@@ -109,7 +108,7 @@ def dealResult(self, payload):
 def dealModeChange(self, payload):
 	global mode
 	mode = int(payload)
-	print "A connected monitor said we should switch to mode", payload
+	print "A connected monitor said we should switch to mode", int(payload)
 
 #Handles a client asking for Monitor-info
 def dealMonitorUpdate(self):

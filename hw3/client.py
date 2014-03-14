@@ -6,7 +6,6 @@ from sys import stdout, exit
 from helpers import *
 from algo_greedy import *
 from algo_mst import *
-from algo_inverse_prim import *
 from algo_improve_rev import *
 from algo_improve_swap import *
 
