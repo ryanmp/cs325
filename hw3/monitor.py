@@ -42,6 +42,7 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
 M_LOAD_FIL = 44 #M -> S #Request server file load
+M_SET_POSI = 45 #M -> S #Request server stets greedy & improve numbers
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -154,8 +155,10 @@ class SenderThread(threading.Thread):
 				screen.addstr(3, 15, "CS381 Server Control Centre")
 				screen.addstr(14, 2, "Please enter a number...")
 				screen.addstr(16, 4, "1 - Switch server mode")
-				screen.addstr(17, 4, "2 - Load a list in ./in/input.txt")
-				screen.addstr(18, 4, "5 - Exit")
+				screen.addstr(17, 4, "2 - Load a list in ./in/*.txt")
+				screen.addstr(18, 4, "3 - Export List to ./out/*.txt")
+				screen.addstr(19, 4, "4 - Change Progress")
+				screen.addstr(20, 4, "5 - Exit")
 				
 				screen.addstr(5, 6, "#cities:  ")
 				screen.addstr(6, 6, "#c's in r:")
@@ -186,6 +189,13 @@ class SenderThread(threading.Thread):
 				elif x == ord('2'):
 					file = get_param("File Name?")
 					self.client.sendPickle(M_LOAD_FIL, file)
+				elif x == ord('3'):
+					print "not implemented"
+				elif x == ord('4'):
+					greedy_pos = get_param("Greedy Position?")
+					imp_pos = get_param("Improvement Position?")
+					_pickle = pickle.dumps([greedy_pos, imp_pos])
+					self.client.sendPickle(M_SET_POSI, _pickle)
 			curses.endwin()
 			self._stop = True
 			exit()

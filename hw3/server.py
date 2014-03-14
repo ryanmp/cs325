@@ -41,6 +41,7 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
 M_LOAD_FIL = 44 #M -> S #Request server file load
+M_SET_POSI = 45 #M -> S #Request server stets greedy & improve numbers
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -154,6 +155,10 @@ def dealMonitorUpdate(self):
 	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
 	self.sendPickle(S_SEND_STA, _pickle)
 
+def dealPositionChange(self, payload):
+	global curGreedy, curImprove
+	curGreedy, curImprove = pickle.loads(payload)
+
 #The client asked for various meta-info, send it.
 #Currently sends the length of shortest path so far,
 #the list of cities, and the shortest path so far.
@@ -209,6 +214,9 @@ class PacketHandler(asynchat.async_chat):
 			elif id == M_SET_MODE:
 				dealModeChange(self, payload)
 				#Monitor says we should go to another mode.
+			elif id == M_SET_POSI:
+				dealPositionChange(self, payload)
+				#Monitor wants us to change positions.
 			else:
 				print 'something went wrong.', id, payload
 
