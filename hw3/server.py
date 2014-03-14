@@ -6,7 +6,7 @@ from helpers import *
 
 #change these values only
 PORT = 31337	# The port used by the server. Default 31337
-DEBUG = True	# 3= show all packet data.
+DEBUG = False	# 3= show all packet data.
 #change these values only
 
 #Global Variables
@@ -119,6 +119,7 @@ def dealMonitorUpdate(self):
 		try:
 			addrList.append( _socketobject.getpeername() )
 		except Exception:
+			#connectionSocketList.pop(this)
 			pass
 	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
 	self.sendPickle(S_SEND_STA, _pickle)
@@ -141,8 +142,7 @@ class PacketHandler(asynchat.async_chat):
 		self.data = ""
 		self.sock = _sock
 		self.addr = addr
-		if DEBUG:
-			print "New client connecting:", addr
+		print "New client connecting:", addr
 
 	def collect_incoming_data(self, data):
 		self.data = self.data + data
