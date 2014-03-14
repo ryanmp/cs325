@@ -107,7 +107,7 @@ def dealResult(self, payload):
 		route = payload[0:]
 
 def dealLoadFile(self, payload):
-	global cities, shortest, route
+	global cities, shortest, route, mode, curGreedy, curImprove
 	print "Loading cities from file.", payload
 	cities = parse_input("in/" + payload + ".txt")
 	shortest = sys.maxint
@@ -115,6 +115,12 @@ def dealLoadFile(self, payload):
 	mode = 0
 	curGreedy = 0
 	curImprove = 1
+	for _socketobject in connectionSocketList:
+		try:
+			_socketobject.send(createPickle(self, S_SEND_UPD, metaPack(self, shortest, cities, route)))
+		except Exception:
+			connectionSocketList.remove(_socketobject)
+			pass
 
 def dealModeChange(self, payload):
 	global mode
