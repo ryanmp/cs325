@@ -106,6 +106,16 @@ def dealResult(self, payload):
 		shortest = length
 		route = payload[0:]
 
+def dealLoadFile(self, payload):
+	global cities, shortest, route
+	print "Loading cities from file.", payload
+	cities = parse_input("in/" + payload + ".txt")
+	shortest = sys.maxint
+	route = []
+	mode = 0
+	curGreedy = 0
+	curImprove = 1
+
 def dealModeChange(self, payload):
 	global mode
 	mode = int(payload)
@@ -118,6 +128,7 @@ def dealMonitorUpdate(self):
 	for _socketobject in connectionSocketList:
 		try:
 			addrList.append( _socketobject.getpeername() )
+		except Exception:
 			connectionSocketList.remove(_socketobject)
 			pass
 	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
@@ -170,6 +181,9 @@ class PacketHandler(asynchat.async_chat):
 			elif id == M_GET_CURR:
 				dealMonitorUpdate(self)
 				#Monitor is asking for info
+			elif id == M_LOAD_FIL:
+				dealLoadFile(self, payload)
+				#Monitor says we should go to another mode.
 			elif id == M_SET_MODE:
 				dealModeChange(self, payload)
 				#Monitor says we should go to another mode.

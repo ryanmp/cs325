@@ -39,18 +39,6 @@ def return_set(max):
 	#not done
 	return set[:max]
 
-def parse_input(file_name):
-	f = open(file_name)
-	lines_raw = f.readlines()
-	ret = []
-	for i in range(0,len(lines_raw)):
-		parsing_line = []
-		parsing_line = lines_raw[i].split()
-		parsing_line = map(int, parsing_line)
-		to_tuple = (parsing_line[1],parsing_line[2])
-		ret.append(to_tuple)
-	return ret
-
 # { algorithm to test, range for n (n0=smallest -> n1=largest) }
 def time_algo(f, n0, n1):
 	ret = []

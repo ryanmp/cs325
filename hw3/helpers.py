@@ -9,6 +9,17 @@ def is_valid(cities,route):
 		return False
 	return True
 
+def parse_input(file_name):
+	f = open(file_name)
+	lines_raw = f.readlines()
+	ret = []
+	for i in range(0,len(lines_raw)):
+		parsing_line = []
+		parsing_line = lines_raw[i].split()
+		parsing_line = map(int, parsing_line)
+		to_tuple = (parsing_line[1],parsing_line[2])
+		ret.append(to_tuple)
+	return ret
 
 def distance(p1,p2):
 	return math.hypot(p2[1]-p1[1],p2[0]-p1[0])

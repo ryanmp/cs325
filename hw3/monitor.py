@@ -140,6 +140,7 @@ class SenderThread(threading.Thread):
 				screen.border(0)
 				screen.addstr(2, 2, prompt_string)
 				screen.refresh()
+				screen.timeout(999999999)
 				input = screen.getstr(10, 10, 60)
 				return input
 			x = 0
@@ -149,10 +150,10 @@ class SenderThread(threading.Thread):
 				screen.border(0)
 				screen.addstr(2, 8, "Welcome to Joshua Villwock's")
 				screen.addstr(3, 15, "CS381 Server Control Centre")
-				screen.addstr(13, 2, "Please enter a number...")
-				screen.addstr(15, 4, "1 - Switch server mode")
-				screen.addstr(16, 4, "2 - Load a list in ./in/input.txt")
-				screen.addstr(17, 4, "5 - Exit")
+				screen.addstr(14, 2, "Please enter a number...")
+				screen.addstr(16, 4, "1 - Switch server mode")
+				screen.addstr(17, 4, "2 - Load a list in ./in/input.txt")
+				screen.addstr(18, 4, "5 - Exit")
 				
 				screen.addstr(5, 6, "#cities:  ")
 				screen.addstr(6, 6, "#c's in r:")
@@ -161,6 +162,7 @@ class SenderThread(threading.Thread):
 				screen.addstr(9, 6, "Improve:  ")
 				screen.addstr(10, 6, "Clients:  ")
 				screen.addstr(11, 6, "Mode:     ")
+				screen.addstr(12, 6, "Valid?:   ")
 				global mode
 				screen.addstr(5, 17, str(len(cities)))
 				screen.addstr(6, 17, str(len(route)))
@@ -169,6 +171,7 @@ class SenderThread(threading.Thread):
 				screen.addstr(9, 17, str(curImprove))
 				screen.addstr(10, 17, str(len(clients)))
 				screen.addstr(11, 17, str(mode))
+				screen.addstr(12, 17, str(is_valid(cities,route)))
 				
 				screen.refresh()
 				self.client.sendPickle(C_REQ_UPDT, 'M update')
@@ -179,8 +182,8 @@ class SenderThread(threading.Thread):
 					mode = get_param("0=idle, 1=greedy, 2=route improve, 3=city improve")
 					self.client.sendPickle(M_SET_MODE, int(mode))
 				elif x == ord('2'):
-					curses.endwin()
-					print "not implemented yet"
+					file = get_param("File Name?")
+					self.client.sendPickle(M_LOAD_FIL, file)
 			curses.endwin()
 			self._stop = True
 			exit()
