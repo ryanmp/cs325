@@ -20,6 +20,7 @@ route = []				#Current best route
 mode = 0				#Operating Mode
 curGreedy = 0			#Current Starting City for greedy
 curImprove = 1			#Current length for length improvements
+curBackup = 0
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -99,15 +100,22 @@ def dealRequest(self, payload):
 
 #Handles requests for work from a client
 def dealResult(self, payload):
-	global shortest, route, cities
+	global shortest, route, cities, curBackup
+	pickle.dump(route, open('backup.' + str(curBackup) + '.p', 'wb'))
+	curBackup = curBackup + 1
 	try:
 		length = route_length_final(cities, payload)
 		if DEBUG:
 			print "we got a result!", length
-		if (length < shortest):
-			print self.addr, "Found a better Route!", shortest, ">", length
-			shortest = length
-			route = payload[0:]
+		if (is_valid(cities, payload)):
+			if (length < shortest):
+				print self.addr, "Found a better Route!", shortest, ">", length
+				shortest = length
+				route = payload[0:]
+		else:
+			print self.addr, "Sent us an invalid route!"
+			pickle.dump(route, open('backup.' + str(curBackup) + '.error.p', 'wb'))
+			
 	except Exception:
 		print "got an invalid route!"
 
