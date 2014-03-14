@@ -1,5 +1,5 @@
 import asyncore, asynchat, socket, threading
-import signal, pickle, sys, os
+import signal, pickle, sys, os, curses
 from time import sleep
 from sys import stdout, exit
 
@@ -50,10 +50,6 @@ def signal_handler(signum, frame):
 	client.t.stop()
 	sleep(2)
 	exit()
-
-def clear():
-	os.system('cls')
-	os.system('clear')
 
 def dealMetaInfoUpdate(self, payload):
 	global shortest, cities, route
@@ -131,26 +127,65 @@ class SenderThread(threading.Thread):
 
 	#What the thread actually does
 	def run(self):
-		self.client.sendPickle(M_SET_MODE, 2)
 		while (self._stop == False):
+			print "starting initial queries..."
 			self.client.sendPickle(C_REQ_UPDT, 'M update')
 			sleep(1)
 			self.client.sendPickle(M_GET_CURR, 'M Status')
-			sleep(1)
-			clear()
-			print "\n\n\ncurrent best:", shortest
-			print "\n#of cities:", len(cities), "#Cities in result:", len(route)
-			print "\n#of active clients:", len(clients)
-			print "current Greedy level:", curGreedy
-			print "current Improve Level:", curImprove
-			print "\n\nmode:", mode
-			sleep(10)
+			sleep(5)
+			
+			def get_param(prompt_string):
+				screen.clear()
+				screen.border(0)
+				screen.addstr(2, 2, prompt_string)
+				screen.refresh()
+				input = screen.getstr(10, 10, 60)
+				return input
+			x = 0
+			while x != ord('5'):
+				screen = curses.initscr()
+				screen.clear()
+				screen.border(0)
+				screen.addstr(2, 8, "Welcome to Joshua Villwock's")
+				screen.addstr(3, 15, "CS381 Server Control Centre")
+				screen.addstr(12, 2, "Please enter a number...")
+				screen.addstr(14, 4, "1 - Switch server mode")
+				screen.addstr(15, 4, "2 - Load a list in ./in/input.txt")
+				screen.addstr(16, 4, "5 - Exit")
+				
+				screen.addstr(5, 6, "#cities:  ")
+				screen.addstr(6, 6, "#c's in r:")
+				screen.addstr(7, 6, "shortest: ")
+				screen.addstr(8, 6, "greedy:   ")
+				screen.addstr(9, 6, "Improve:  ")
+				screen.addstr(10, 6, "Mode:     ")
+				global mode
+				screen.addstr(5, 17, str(len(cities)))
+				screen.addstr(6, 17, str(len(route)))
+				screen.addstr(7, 17, str(shortest))
+				screen.addstr(8, 17, str(curGreedy))
+				screen.addstr(9, 17, str(curImprove))
+				screen.addstr(10, 17, str(mode))
+				
+				screen.refresh()
+				self.client.sendPickle(C_REQ_UPDT, 'M update')
+				self.client.sendPickle(M_GET_CURR, 'M Status')
+				sleep(2)
+				x = screen.getch()
+				if x == ord('1'):
+					mode = get_param("0=idle, 1=greedy, 2=route improve, 3=city improve")
+					self.client.sendPickle(M_SET_MODE, int(mode))
+				elif x == ord('2'):
+					curses.endwin()
+					print "not implemented yet"
+			curses.endwin()
+			self._stop = True
+			exit()
 
 #Initialize by asking for remote host info
-clear()
-HOST = raw_input("Server IP? (Defaults to localhost): ")
+HOST = raw_input("Server IP? (Defaults to mc.13-thirtyseven.com): ")
 if (HOST == ''):
-	HOST = '127.0.0.1'
+	HOST = 'mc.13-thirtyseven.com'
 PORT = raw_input("Server Port? (Defaults to 31337): ")
 if (PORT == ''):
 	PORT = 31337
