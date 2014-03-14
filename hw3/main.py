@@ -23,8 +23,8 @@ import tsp_grapher
 
 #import tsp-verifier #naming convention error!
 
-n0 = 4 #Minimum input size to try
-n1 = 45	#Maximum input size to try
+n0 = 3 #Minimum input size to try
+n1 = 80	#Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
@@ -140,6 +140,23 @@ def run_verifier(cities_txt,route_txt):
 	path = os.getcwd() + "/"
 	os.system("python tsp-verifier.py "+path+cities_txt+" "+path+route_txt)
 
+def algo_combo1(cities):
+	route = algo_greedy(cities)
+	for i in xrange(2,len(cities)):
+		route = algo_improve_rev(cities,route,i)
+	for i in xrange(len(cities),2,-1):
+		route = algo_improve_rev(cities,route,i)
+	for i in xrange(2,len(cities)):
+		route = algo_improve_rev(cities,route,i)
+	return route
+
+def algo_combo2(cities):
+	route = algo_greedy(cities)
+	for i in xrange(2,4):
+		route = algo_improve_rev(cities,route,i)
+		route = algo_improve_swap(cities,route)
+	return route
+
 def main():
 
 	#initialize random inputs:
@@ -148,22 +165,26 @@ def main():
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
 	# (using the default range+seed declared up in the global variable)
-	#batch_compare_algos(algo_greedy_all,algo_mst)
+	#batch_compare_algos(algo_combo1,algo_combo2)
 
 	# this will plot the resultant route from each algorithm for
 	# a given city set size (using the default seed)
-	#compare_algos(15,[algo_greedy_all,algo_greedy_segmented])
+	#compare_algos(15,[algo_combo1,algo_combo1])
 
-	#cities1 = return_set(25)
+	#cities1 = return_set(5)
+
 	cities1 = parse_input("in/example-input-1.txt")
+	route = algo_greedy(cities1)
+	print is_valid(cities1,route)
 
-	route = algo_greedy_all(cities1)
+	route = [0,0,1,2,3]
+	print is_valid(cities1,route)
 
-	format_output(cities1, route, "out.txt")
-	run_verifier("in/example-input-1.txt","out.txt")
+	#format_output(cities1, route, "out.txt")
+	#run_verifier("in/example-input-1.txt","out.txt")
 
-	print route_length(cities1, route)
-	tsp_grapher.plot_route(cities1,route)
+	#print route_length(cities1, route)
+	#tsp_grapher.plot_route(cities1,route)
 
 	'''
 	route = algo_greedy_all(cities1)

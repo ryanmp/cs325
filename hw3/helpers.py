@@ -1,5 +1,15 @@
 import math, random
 
+def is_valid(cities,route):
+	if len(cities) != len(route):
+		return False
+	test_route = route[:]
+	test_route.sort()
+	if [i for i in xrange(len(cities))] != test_route:
+		return False
+	return True
+
+
 def distance(p1,p2):
 	return math.hypot(p2[1]-p1[1],p2[0]-p1[0])
 
