@@ -59,7 +59,7 @@ def dealGreedyWork(self, _start):
 	if (shortest > length):
 		print "Found a shorter route.  Updating local cache, and sending route to server."
 		shortest = length
-		route = result
+		route = result[0:]
 		self.sendPickle(C_SEND_RES, result)
 	working = False
 

@@ -12,7 +12,7 @@ def algo_greedy(cities):
     	closest_idx = 0
     	for i in unvisited:
     		distance = math.hypot(i[0] - route[-1][0], i[1] - route[-1][1])
-    		if distance < closest_dist:
+    		if (distance < closest_dist):
     			closest_dist = distance
     			closest_idx = i
     	route.append(closest_idx)

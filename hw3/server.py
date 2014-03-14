@@ -3,6 +3,7 @@ import signal, sys, pickle, os
 from time import sleep
 
 from helpers import *
+from algo_fastdumb import *
 
 #change these values only
 PORT = 31337	# The port used by the server. Default 31337
@@ -256,6 +257,8 @@ clear()
 print "Setting up server..."
 generate_test_set(15000,4000)
 cities = return_set(15000)
+route = algo_fastdumb(cities)
+shortest = route_length_final(cities, route)
 
 #Run the event-driven server
 print "Opening Socket..."
