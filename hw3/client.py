@@ -171,7 +171,7 @@ class AsyncClient(asynchat.async_chat):
 	def handle_close(self):
 		global cities, route
 		print "Server not reachable.  Saving best list to pickle to be safe."
-		pickle.dump(route, open('backup.p' + str(route_length_final(cities, route)), 'wb'))
+		pickle.dump(route, open('backup.' + str(route_length_final(cities, route)) + '.p', 'wb'))
 		self.close()
 		self.t.stop()
 

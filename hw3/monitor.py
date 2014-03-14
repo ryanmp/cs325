@@ -109,7 +109,7 @@ class AsyncClient(asynchat.async_chat):
 	#Also, make sure we kill the child thread too
 	def handle_close(self):
 		print "Server not reachable.  Saving best list to pickle to be safe."
-		pickle.dump(route, open('monitor_backup.p', 'wb'))
+		pickle.dump(route, open('monitor_backup.' + str(route_length_final(cities, route)) + '.p', 'wb'))
 		self.close()
 		self.t.stop()
 
