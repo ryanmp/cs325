@@ -74,7 +74,7 @@ def dealKeepAlive(self, payload):
 #Actually handles requests for work.
 #For now, this just sends a static packet, to test.
 def dealRequest(self, payload):
-	global curGreedy, curImprove
+	global curGreedy, curImprove, mode
 	if DEBUG:
 		print "Responding to work request.."
 	if (mode == 0):
@@ -108,7 +108,7 @@ def dealResult(self, payload):
 
 def dealModeChange(self, payload):
 	global mode
-	mode = payload
+	mode = int(payload)
 	print "A connected monitor said we should switch to mode", payload
 
 #Handles a client asking for Monitor-info
