@@ -15,7 +15,7 @@ connectionSocketList = []
 shortest = sys.maxint	#Length of shortest path so far
 cities = []				#List of cities
 route = []				#Current best route
-mode = 1				#Operating Mode
+mode = 0				#Operating Mode
 curGreedy = 0			#Current Starting City for greedy
 curImprove = 1			#Current length for length improvements
 
@@ -77,7 +77,9 @@ def dealRequest(self, payload):
 	global curGreedy, curImprove
 	if DEBUG:
 		print "Responding to work request.."
-	if (mode == 1):
+	if (mode == 0):
+		self.sendPickle(KEEP_ALIVE, shortest)
+	elif (mode == 1):
 		self.sendPickle(S_WORK_GRE, curGreedy)
 		curGreedy = curGreedy + 1
 	elif (mode == 2):
