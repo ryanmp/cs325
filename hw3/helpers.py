@@ -9,7 +9,6 @@ def is_valid(cities,route):
 		return False
 	return True
 
-
 def distance(p1,p2):
 	return math.hypot(p2[1]-p1[1],p2[0]-p1[0])
 

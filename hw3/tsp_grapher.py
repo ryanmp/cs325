@@ -45,10 +45,15 @@ def plot_timing(_ts, _ranges, algos):
 	plt.xlim([_ranges[0][0],_ranges[0][-1]])
 
 	plt.show()
-
-
-
 	return slopes, intercepts
+
+def plot_improvements(_ls, _ts, n):
+	for i in xrange(len(_ls)):
+		plt.plot(_ls[i],_ts[i],label=str(n)+" cities")
+	plt.legend(loc='upper left')
+	plt.ylabel('route length')
+	plt.xlabel('iterations')
+	plt.show()
 	
 
 def plot_lengths(_ls, _ranges, algos):

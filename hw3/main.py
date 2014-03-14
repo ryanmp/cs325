@@ -24,11 +24,11 @@ import tsp_grapher
 #import tsp-verifier #naming convention error!
 
 n0 = 3 #Minimum input size to try
-n1 = 80	#Maximum input size to try
+n1 = 500	#Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
-	random.seed("1z")    #Seeds the RNG.  This causes us to use the same test set every run.
+	random.seed("dffa")    #Seeds the RNG.  This causes us to use the same test set every run.
 	set = []
 	for i in xrange(_n):
 		set.append((random.randrange(1,_range),random.randrange(1,_range)))
@@ -157,10 +157,62 @@ def algo_combo2(cities):
 		route = algo_improve_swap(cities,route)
 	return route
 
+
+def compare_improvements(cities,max_iter):
+
+	times = []
+	lengths = []
+	iterations = []
+	idx = 0
+
+	route = algo_greedy(cities)
+
+	start_time = time.time()
+	times.append(time.time() - start_time)
+	lengths.append(route_length(cities,route))
+	iterations.append(idx)
+
+	#while (time.time() - start_time < max_time):
+	while idx < max_iter*2:
+
+		'''
+		for x in xrange(random.randint(1,6)):
+			idx += 1
+			for i in xrange(2,len(cities)):
+				route = algo_improve_rev(cities,route,i)
+			print route_length(cities,route) 
+			times.append(time.time() - start_time)
+			lengths.append(route_length(cities,route))
+			iterations.append(idx)
+		'''
+
+		idx += 1
+		for i in xrange(2,len(cities)):
+			route = algo_improve_rev(cities,route,i)
+		print route_length(cities,route) 
+		times.append(time.time() - start_time)
+		lengths.append(route_length(cities,route))
+		iterations.append(idx)
+	
+		idx += 1
+		route = algo_improve_swap(cities,route)
+		print route_length(cities,route) 
+		times.append(time.time() - start_time)
+		lengths.append(route_length(cities,route))
+		iterations.append(idx)
+		
+		
+		
+
+	tsp_grapher.plot_improvements([iterations],[lengths],len(cities))
+
+
 def main():
 
 	#initialize random inputs:
 	generate_test_set(n1,1000)
+
+	
 
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
@@ -171,14 +223,17 @@ def main():
 	# a given city set size (using the default seed)
 	#compare_algos(15,[algo_combo1,algo_combo1])
 
-	#cities1 = return_set(5)
+	cities = return_set(500)
+	compare_improvements(cities,3)
 
+	'''
 	cities1 = parse_input("in/example-input-1.txt")
 	route = algo_greedy(cities1)
 	print is_valid(cities1,route)
 
 	route = [0,0,1,2,3]
 	print is_valid(cities1,route)
+	'''
 
 	#format_output(cities1, route, "out.txt")
 	#run_verifier("in/example-input-1.txt","out.txt")
