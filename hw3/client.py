@@ -6,7 +6,6 @@ from sys import stdout, exit
 from helpers import *
 from algo_greedy import *
 from algo_mst import *
-from algo_inverse_prim import *
 from algo_improve_rev import *
 from algo_improve_swap import *
 
@@ -170,8 +169,9 @@ class AsyncClient(asynchat.async_chat):
 	#Got the message to kill self
 	#Also, make sure we kill the child thread too
 	def handle_close(self):
+		global cities, route
 		print "Server not reachable.  Saving best list to pickle to be safe."
-		pickle.dump(route, open('backup.p', 'wb'))
+		pickle.dump(route, open('backup.p' + str(route_length_final(cities, route)), 'wb'))
 		self.close()
 		self.t.stop()
 

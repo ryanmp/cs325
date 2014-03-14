@@ -37,6 +37,7 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 ##Monitor / Control Packets##
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
+M_LOAD_FIL = 44 #M -> S #Request server file load
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -83,11 +84,10 @@ def dealRequest(self, payload):
 		self.sendPickle(S_WORK_GRE, curGreedy)
 		curGreedy = curGreedy + 1
 	elif (mode == 2):
-		_pickle = pickle.dumps([curImprove, curImprove+50, route])
+		_pickle = pickle.dumps([curImprove, curImprove+20, route])
 		dealMetaUpdate(self)
-		sleep(3)
 		self.sendPickle(S_IMP_SGMT, _pickle)
-		curImprove = curImprove + 50
+		curImprove = curImprove + 20
 		if (curImprove > len(cities)/2):
 			curImprove = 1
 	elif (mode == 3):
@@ -109,7 +109,7 @@ def dealResult(self, payload):
 def dealModeChange(self, payload):
 	global mode
 	mode = int(payload)
-	print "A connected monitor said we should switch to mode", payload
+	print "A connected monitor said we should switch to mode", int(payload)
 
 #Handles a client asking for Monitor-info
 def dealMonitorUpdate(self):
@@ -118,8 +118,7 @@ def dealMonitorUpdate(self):
 	for _socketobject in connectionSocketList:
 		try:
 			addrList.append( _socketobject.getpeername() )
-		except Exception:
-			#connectionSocketList.pop(this)
+			connectionSocketList.remove(_socketobject)
 			pass
 	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
 	self.sendPickle(S_SEND_STA, _pickle)
