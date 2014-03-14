@@ -41,6 +41,7 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 ##Monitor / Control Packets##
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
+M_LOAD_FIL = 44 #M -> S #Request server file load
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -56,7 +57,7 @@ def dealMetaInfoUpdate(self, payload):
 	shortest, cities, route = pickle.loads(payload)
 
 def dealStatusUpdate(self, payload):
-	global mode, clients, curGreedy
+	global mode, clients, curGreedy, curImprove
 	curGreedy, curImprove, mode, clients = pickle.loads(payload)
 
 #main class which handles the async part of the client.
@@ -108,7 +109,7 @@ class AsyncClient(asynchat.async_chat):
 	#Also, make sure we kill the child thread too
 	def handle_close(self):
 		print "Server not reachable.  Saving best list to pickle to be safe."
-		pickle.dump(route, open('backup.p', 'wb'))
+		pickle.dump(route, open('monitor_backup.p', 'wb'))
 		self.close()
 		self.t.stop()
 

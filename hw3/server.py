@@ -37,6 +37,7 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 ##Monitor / Control Packets##
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
+M_LOAD_FIL = 44 #M -> S #Request server file load
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -118,7 +119,7 @@ def dealMonitorUpdate(self):
 		try:
 			addrList.append( _socketobject.getpeername() )
 		except Exception:
-			#connectionSocketList.pop(this)
+			connectionSocketList.remove(_socketobject)
 			pass
 	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
 	self.sendPickle(S_SEND_STA, _pickle)
