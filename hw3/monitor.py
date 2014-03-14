@@ -110,6 +110,7 @@ class AsyncClient(asynchat.async_chat):
 	def handle_close(self):
 		print "Server not reachable.  Saving best list to pickle to be safe."
 		pickle.dump(route, open('monitor_backup.' + str(route_length_final(cities, route)) + '.p', 'wb'))
+		curses.endwin()
 		self.close()
 		self.t.stop()
 
@@ -125,6 +126,7 @@ class SenderThread(threading.Thread):
 	#Or from the signal handler.  Stop what we are doing now
 	def stop(self):
 		self._stop = True
+		curses.endwin()
 
 	#What the thread actually does
 	def run(self):
@@ -204,3 +206,4 @@ signal.signal(signal.SIGABRT, signal_handler)
 #ok, now actually start up the client!
 client = AsyncClient(HOST)
 asyncore.loop(1)
+curses.endwin()

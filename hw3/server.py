@@ -12,6 +12,7 @@ DEBUG = False	# 3= show all packet data.
 #Global Variables
 connectionClassList = []
 connectionSocketList = []
+connectionHandlerList = []
 shortest = sys.maxint	#Length of shortest path so far
 cities = []				#List of cities
 route = []				#Current best route
@@ -97,14 +98,17 @@ def dealRequest(self, payload):
 
 #Handles requests for work from a client
 def dealResult(self, payload):
-	global shortest, route
-	length = route_length_final(cities, payload)
-	if DEBUG:
-		print "we got a result!", length
-	if (length < shortest):
-		print self.addr, "Found a better Route!", shortest, ">", length
-		shortest = length
-		route = payload[0:]
+	global shortest, route, cities
+	try:
+		length = route_length_final(cities, payload)
+		if DEBUG:
+			print "we got a result!", length
+		if (length < shortest):
+			print self.addr, "Found a better Route!", shortest, ">", length
+			shortest = length
+			route = payload[0:]
+	except Exception:
+		print "got an invalid route!"
 
 def dealLoadFile(self, payload):
 	global cities, shortest, route, mode, curGreedy, curImprove
@@ -115,11 +119,12 @@ def dealLoadFile(self, payload):
 	mode = 0
 	curGreedy = 0
 	curImprove = 1
-	for _socketobject in connectionSocketList:
+	for _handler in connectionHandlerList:
 		try:
-			_socketobject.send(createPickle(self, S_SEND_UPD, metaPack(self, shortest, cities, route)))
+			print _handler
+			dealMetaUpdate(_handler)
 		except Exception:
-			connectionSocketList.remove(_socketobject)
+			connectionHandlerList.remove(_handler)
 			pass
 
 def dealModeChange(self, payload):
@@ -144,6 +149,7 @@ def dealMonitorUpdate(self):
 #Currently sends the length of shortest path so far,
 #the list of cities, and the shortest path so far.
 def dealMetaUpdate(self):
+	global shortest, cities, route
 	if (DEBUG == 3):
 		print "Responding to meta-info update request."
 	_pickle = metaPack(self, shortest, cities, route)
@@ -159,6 +165,7 @@ class PacketHandler(asynchat.async_chat):
 		self.sock = _sock
 		self.addr = addr
 		print "New client connecting:", addr
+		connectionHandlerList.append(self)
 
 	def collect_incoming_data(self, data):
 		self.data = self.data + data
