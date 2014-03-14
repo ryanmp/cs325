@@ -139,6 +139,8 @@ class AsyncClient(asynchat.async_chat):
 			if id == S_SEND_UPD:
 				dealMetaInfoUpdate(self, payload)
 				#Server sent Info.  Update local copy.
+			elif id == KEEP_ALIVE:
+				print "connected, but idle."
 			elif id == S_SERV_KIL:
 				print "Our server is shutting down! :("
 				sleep(10)
