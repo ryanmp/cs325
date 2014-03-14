@@ -197,9 +197,9 @@ class SenderThread(threading.Thread):
 
 #Initialize by asking for remote host info
 clear()
-HOST = raw_input("Server IP? (Defaults to localhost): ")
+HOST = raw_input("Server IP? (Defaults to mc.13-thirtyseven.com): ")
 if (HOST == ''):
-	HOST = '127.0.0.1'
+	HOST = 'mc.13-thirtyseven.com'
 PORT = raw_input("Server Port? (Defaults to 31337): ")
 if (PORT == ''):
 	PORT = 31337
