@@ -34,6 +34,7 @@ S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
+S_IMP_SGT2 = 32 #S -> C #Send Improvement Work, swapping segments with wraparound
 
 #deal with signals
 def signal_handler(signum, frame):
@@ -89,6 +90,23 @@ def dealImproveSegment(self, payload):
 		if DEBUG:
 			print "Running segment swap, length:", i
 		new_route = algo_improve_rev(cities, route, i)
+		len_old = route_length_final(cities, route)
+		len_new = route_length_final(cities, new_route)
+		if (len_old > len_new):
+			print "Segment swap has improved:", len_old, ">", len_new
+			route = new_route[0:]
+			shortest = len_new
+	self.sendPickle(C_SEND_RES, new_route)
+	working = False
+
+def dealImproveSegment2(self, payload):
+	global route, shortest, working
+	working = True
+	start_length, end_length, route = pickle.loads(payload)
+	for i in xrange(start_length, end_length):
+		if DEBUG:
+			print "Running segment swap, length:", i
+		new_route = algo_improve_rev_wrap(cities, route, i)
 		len_old = route_length_final(cities, route)
 		len_new = route_length_final(cities, new_route)
 		if (len_old > len_new):
@@ -169,6 +187,9 @@ class AsyncClient(asynchat.async_chat):
 			elif id == S_IMP_SGMT:
 				dealImproveSegment(self, payload)
 				#Server sent us some segment swapping improvement work
+			elif id == S_IMP_SGT2:
+				dealImproveSegment2(self, payload)
+				#Server sent us some segment swapping improvement work with wraparound
 			elif id == S_IMP_SCTY:
 				dealImproveCity(self, payload)
 				#Server sent us some city swapping improvement work

@@ -37,6 +37,7 @@ S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
+S_IMP_SGT2 = 32 #S -> C #Send Improvement Work, swapping segments with wraparound
 ##Monitor / Control Packets##
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
