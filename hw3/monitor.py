@@ -43,6 +43,7 @@ M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
 M_LOAD_FIL = 44 #M -> S #Request server file load
 M_SET_POSI = 45 #M -> S #Request server stets greedy & improve numbers
+M_LOAD_PIC = 46 #M -> S #Request server loads route from file
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -191,7 +192,8 @@ class SenderThread(threading.Thread):
 					file = get_param("File Name?")
 					self.client.sendPickle(M_LOAD_FIL, file)
 				elif x == ord('3'):
-					print "Not implemented (route loading)"
+					file = get_param("File name?")
+					self.client.sendPickle(M_LOAD_PIC, file)
 				elif x == ord('4'):
 					greedy_pos = get_param("Greedy Position?")
 					imp_pos = get_param("Improvement Position?")
