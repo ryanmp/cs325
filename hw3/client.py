@@ -106,7 +106,7 @@ def dealImproveSegment2(self, payload):
 	start_length, route = pickle.loads(payload)
 	if DEBUG:
 		print "Running segment swap, length:", start_length
-	new_route = algo_improve_rev_wrap(cities, route, start_length)
+	new_route = algo_improve_rev_wrapper(cities, route, start_length)
 	len_old = route_length_final(cities, route)
 	len_new = route_length_final(cities, new_route)
 	if (len_old > len_new):
