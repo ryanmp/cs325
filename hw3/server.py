@@ -145,7 +145,7 @@ def dealLoadFile(self, payload):
 	curImprove = 1
 	for _handler in connectionHandlerList:
 		try:
-			print _handler
+			print _handler.addr
 			dealMetaUpdate(_handler)
 		except Exception:
 			connectionHandlerList.remove(_handler)
@@ -154,10 +154,18 @@ def dealLoadFile(self, payload):
 def dealRouteLoad(self, payload):
 	global cities, shortest, route, mode, curGreedy, curImprove
 	print "Loading route from file.", payload
-	file = pickle.load(route, open(str(payload) + '.p', 'wb'))
+	file = pickle.load(open("in/" + str(payload), 'rb'))
 	route = file[0:]
 	shortest = route_length_final(cities, route)
 	mode = 0
+	print "Loaded route", shortest
+	for _handler in connectionHandlerList:
+		try:
+			print _handler.addr
+			dealMetaUpdate(_handler)
+		except Exception:
+			connectionHandlerList.remove(_handler)
+			pass
 
 def dealModeChange(self, payload):
 	global mode, curImprove
