@@ -14,6 +14,7 @@ from algo_inverse_prim import *
 #improve upon an existing route
 from algo_improve_rev import *
 from algo_improve_swap import *
+from algo_improve_exact_segment import *
 
 from tree import * #basic tree data structure
 from algo_mst import * 
@@ -23,12 +24,12 @@ import tsp_grapher
 
 #import tsp-verifier #naming convention error!
 
-n0 = 3 #Minimum input size to try
-n1 = 500	#Maximum input size to try
+n0 = 15 #Minimum input size to try
+n1 = 20	#Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
-	random.seed("dffa")    #Seeds the RNG.  This causes us to use the same test set every run.
+	random.seed("dff34335a")    #Seeds the RNG.  This causes us to use the same test set every run.
 	set = []
 	for i in xrange(_n):
 		set.append((random.randrange(1,_range),random.randrange(1,_range)))
@@ -67,6 +68,7 @@ def batch_algo(f, n0, n1):
 	#t1 = generate_test_set2("ok",n1,1000)
 
 	for i in xrange(n0,n1):
+		print i
 		t2 = return_set(i)
 
 		#t2 = t1[:n1]
@@ -152,13 +154,20 @@ def algo_combo1(cities):
 
 def algo_combo2(cities):
 	route = algo_greedy(cities)
-	for i in xrange(2,4):
-		route = algo_improve_rev(cities,route,i)
-		route = algo_improve_swap(cities,route)
+	for i in xrange(10,len(cities)):
+		route = algo_improve_exact_segment(cities,route,i-8,i)
 	return route
 
+def read_route(file_name):
+	f = open(file_name)
+	lines_raw = f.readlines()
+	lines_raw = lines_raw[1:]
+	ret = []
+	for i in range(0,len(lines_raw)):
+		ret.append(int(lines_raw[i]))
+	return ret
 
-def compare_improvements(cities,max_iter):
+def compare_improvements(cities,max):
 
 	times = []
 	lengths = []
@@ -172,8 +181,8 @@ def compare_improvements(cities,max_iter):
 	lengths.append(route_length(cities,route))
 	iterations.append(idx)
 
-	#while (time.time() - start_time < max_time):
-	while idx < max_iter*2:
+	while (time.time() - start_time < max):
+	#while idx < max:
 
 		'''
 		for x in xrange(random.randint(1,6)):
@@ -186,20 +195,23 @@ def compare_improvements(cities,max_iter):
 			iterations.append(idx)
 		'''
 
-		idx += 1
+		'''
 		for i in xrange(2,len(cities)):
+			idx += 1
 			route = algo_improve_rev(cities,route,i)
-		print route_length(cities,route) 
-		times.append(time.time() - start_time)
-		lengths.append(route_length(cities,route))
-		iterations.append(idx)
+			print route_length(cities,route) 
+			times.append(time.time() - start_time)
+			lengths.append(route_length(cities,route))
+			iterations.append(idx)
+		'''
 	
-		idx += 1
-		route = algo_improve_swap(cities,route)
-		print route_length(cities,route) 
-		times.append(time.time() - start_time)
-		lengths.append(route_length(cities,route))
-		iterations.append(idx)
+		for i in xrange(10,len(cities)):
+			idx += 1
+			route = algo_improve_exact_segment(cities,route,i-7,i)
+			print route_length(cities,route) 
+			times.append(time.time() - start_time)
+			lengths.append(route_length(cities,route))
+			iterations.append(idx)
 		
 		
 		
@@ -223,16 +235,30 @@ def main():
 	# a given city set size (using the default seed)
 	#compare_algos(15,[algo_combo1,algo_combo1])
 
-	cities = return_set(500)
-	compare_improvements(cities,3)
+	#cities = return_set(20)
+	#compare_improvements(cities,3)
 
-	'''
-	cities1 = parse_input("in/example-input-1.txt")
-	route = algo_greedy(cities1)
-	print is_valid(cities1,route)
 
-	route = [0,0,1,2,3]
-	print is_valid(cities1,route)
+	#cities = parse_input("in/example-input-3.txt")
+	#tsp_grapher.plot_cities(cities)
+
+	#route = algo_greedy(cities)
+
+	#for i in xrange(2,len(cities)):
+	#	route = algo_improve_rev(cities,route,i)
+
+	#print route_length(cities,route)
+	#tsp_grapher.plot_route(cities,route)
+
+	#route2 = read_route("out/example-output-3.txt")
+	tsp_grapher.plot_route(cities,route2)
+
+	#print route
+	#route = algo_improve_exact_segment(cities,route,10,16)
+	#print route
+
+	#route = [0,0,1,2,3]
+	#print is_valid(cities1,route)
 	'''
 
 	#format_output(cities1, route, "out.txt")
@@ -241,7 +267,7 @@ def main():
 	#print route_length(cities1, route)
 	#tsp_grapher.plot_route(cities1,route)
 
-	'''
+
 	route = algo_greedy_all(cities1)
 	#tsp_grapher.plot_route(cities1,route)
 	print "greedy_all results:", route_length(cities1, route)

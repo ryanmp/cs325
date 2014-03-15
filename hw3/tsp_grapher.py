@@ -1,6 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+def plot_cities(cities):
+	x_val = [x[0] for x in cities]
+	y_val = [x[1] for x in cities]
+	plt.scatter(x_val,y_val)
+	plt.show()
+
 def plot_route(cities, route):
 	X, Y = [],[]
 	for i in route:
