@@ -152,14 +152,15 @@ class SenderThread(threading.Thread):
 				screen.clear()
 				screen.border(0)
 				screen.addstr(2, 8, "Welcome to Joshua Villwock's")
-				screen.addstr(3, 15, "CS381 Server Control Centre")
+				screen.addstr(3, 9, "CS381 Server Control Centre")
 				screen.addstr(14, 2, "Please enter a number...")
 				screen.addstr(16, 4, "1 - Switch server mode")
-				screen.addstr(17, 4, "2 - Load a list in ./in/*.txt")
-				screen.addstr(18, 4, "3 - Export List to ./out/*.txt")
+				screen.addstr(17, 4, "2 - Load a List in ./in/*.txt")
+				screen.addstr(18, 4, "3 - Load a Route in ./in/*.p")
 				screen.addstr(19, 4, "4 - Change Progress")
 				screen.addstr(20, 4, "5 - Exit")
-				
+				screen.addstr(22, 4, "7 - Dump Route to ./out/" + str(shortest) + ".txt")
+
 				screen.addstr(5, 6, "#cities:  ")
 				screen.addstr(6, 6, "#c's in r:")
 				screen.addstr(7, 6, "shortest: ")
@@ -177,25 +178,29 @@ class SenderThread(threading.Thread):
 				screen.addstr(10, 17, str(len(clients)))
 				screen.addstr(11, 17, str(mode))
 				screen.addstr(12, 17, str(is_valid(cities,route)))
-				
+
 				screen.refresh()
 				self.client.sendPickle(C_REQ_UPDT, 'M update')
 				self.client.sendPickle(M_GET_CURR, 'M Status')
 				screen.timeout(5000)
 				x = screen.getch()
 				if x == ord('1'):
-					mode = get_param("0=idle, 1=greedy, 2=route improve, 3=city improve")
+					mode = get_param("0=idle, 1=greedy, 2=route improve, 3=city improve, 4=route w/ wrap")
 					self.client.sendPickle(M_SET_MODE, int(mode))
 				elif x == ord('2'):
 					file = get_param("File Name?")
 					self.client.sendPickle(M_LOAD_FIL, file)
 				elif x == ord('3'):
-					print "not implemented"
+					print "Not implemented (route loading)"
 				elif x == ord('4'):
 					greedy_pos = get_param("Greedy Position?")
 					imp_pos = get_param("Improvement Position?")
 					_pickle = pickle.dumps([int(greedy_pos), int(imp_pos)])
 					self.client.sendPickle(M_SET_POSI, _pickle)
+				elif x == ord('7'):
+					curses.endwin()
+					format_output(cities, route, "out/" + str(shortest) + ".txt")
+					run_verifier("in/example-input-3.txt","out/" + str(shortest) + ".txt")
 			curses.endwin()
 			self._stop = True
 			exit()
