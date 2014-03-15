@@ -42,7 +42,8 @@ S_IMP_SGT2 = 32 #S -> C #Send Improvement Work, swapping segments with wraparoun
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
 M_LOAD_FIL = 44 #M -> S #Request server file load
-M_SET_POSI = 45 #M -> S #Request server stets greedy & improve numbers
+M_SET_POSI = 45 #M -> S #Request server sets greedy & improve numbers
+M_LOAD_PIC = 46 #M -> S #Request server loads route from file
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -150,6 +151,12 @@ def dealLoadFile(self, payload):
 			connectionHandlerList.remove(_handler)
 			pass
 
+def dealRouteLoad(self, payload):
+	global cities, shortest, route, mode, curGreedy, curImprove
+	print "Loading route from file.", payload
+	
+	pickle.dump(route, open('monitor_backup.' + str(route_length_final(cities, route)) + '.p', 'wb'))
+
 def dealModeChange(self, payload):
 	global mode, curImprove
 	mode = int(payload)
@@ -234,6 +241,9 @@ class PacketHandler(asynchat.async_chat):
 			elif id == M_SET_POSI:
 				dealPositionChange(self, payload)
 				#Monitor wants us to change positions.
+			elif id == M_LOAD_PIC:
+				dealRouteLoad(self, payload)
+				#Monitor wants us to load route from file.
 			else:
 				print 'something went wrong.', id, payload
 
