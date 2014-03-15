@@ -103,7 +103,12 @@ def dealRequest(self, payload):
 		if (curImprove > len(cities)-1):
 			curImprove = 0
 	elif (mode == 4):
-		print "not implemented yet! (other swap)"
+		_pickle = pickle.dumps([curImprove, route])
+		dealMetaUpdate(self)
+		self.sendPickle(S_IMP_SGT2, _pickle)
+		curImprove = curImprove + 1
+		if (curImprove > len(cities)/2):
+			curImprove = 1
 	else:
 		print "something is horribly wrong"
 
