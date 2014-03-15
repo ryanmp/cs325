@@ -194,7 +194,7 @@ class SenderThread(threading.Thread):
 				elif x == ord('4'):
 					greedy_pos = get_param("Greedy Position?")
 					imp_pos = get_param("Improvement Position?")
-					_pickle = pickle.dumps([greedy_pos, imp_pos])
+					_pickle = pickle.dumps([int(greedy_pos), int(imp_pos)])
 					self.client.sendPickle(M_SET_POSI, _pickle)
 			curses.endwin()
 			self._stop = True
