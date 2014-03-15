@@ -154,8 +154,10 @@ def dealLoadFile(self, payload):
 def dealRouteLoad(self, payload):
 	global cities, shortest, route, mode, curGreedy, curImprove
 	print "Loading route from file.", payload
-	
-	pickle.dump(route, open('monitor_backup.' + str(route_length_final(cities, route)) + '.p', 'wb'))
+	file = pickle.load(route, open(str(payload) + '.p', 'wb'))
+	route = file[0:]
+	shortest = route_length_final(cities, route)
+	mode = 0
 
 def dealModeChange(self, payload):
 	global mode, curImprove
