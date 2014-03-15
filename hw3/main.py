@@ -239,19 +239,24 @@ def main():
 	#compare_improvements(cities,3)
 
 
-	#cities = parse_input("in/example-input-3.txt")
+	cities = parse_input("test3.txt")
 	#tsp_grapher.plot_cities(cities)
 
-	#route = algo_greedy(cities)
+	#print len(cities)
 
-	#for i in xrange(2,len(cities)):
-	#	route = algo_improve_rev(cities,route,i)
+	route = algo_greedy(cities)
 
-	#print route_length(cities,route)
-	#tsp_grapher.plot_route(cities,route)
+	'''
+	for i in xrange(2,int(len(cities)/3)):
+		route = algo_improve_rev(cities,route,i)
+		print route_length(cities,route)
+		'''
+	print route_length(cities,route)
+	tsp_grapher.plot_route(cities,route)
+	
 
 	#route2 = read_route("out/example-output-3.txt")
-	tsp_grapher.plot_route(cities,route2)
+	#tsp_grapher.plot_route(cities,route2)
 
 	#print route
 	#route = algo_improve_exact_segment(cities,route,10,16)
