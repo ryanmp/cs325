@@ -4,10 +4,13 @@ test1
 the last stage of improvements was exact n=8
 
 test2
-to beat: 127149.005328
+to beat: 115549
+
+last stage was n=6?
+
+n=7 up to 250...
 
 '''
-
 
 import timeit, datetime, time, os
 from functools import partial
@@ -28,6 +31,11 @@ from algo_improve_rev_wrap import *
 from algo_improve_swap import *
 from algo_improve_exact_segment import *
 
+from algo_improve_swap2 import *
+
+from algo_improve_transpose import *
+from algo_improve_combo import *
+
 from tree import * #basic tree data structure
 from algo_mst import * 
 
@@ -41,7 +49,7 @@ n1 = 50	#Maximum input size to try
 
 def generate_test_set(_n,_range):
 	global set
-	random.seed("3r3")    #Seeds the RNG.  This causes us to use the same test set every run.
+	random.seed("0")    #Seeds the RNG.  This causes us to use the same test set every run.
 	set = []
 	for i in xrange(_n):
 		set.append((random.randrange(1,_range),random.randrange(1,_range)))
@@ -155,15 +163,14 @@ def run_verifier(cities_txt,route_txt):
 	os.system("python tsp-verifier.py "+path+cities_txt+" "+path+route_txt)
 
 def algo_combo1(cities):
-	route = algo_fastdumb(cities)
-	for i in xrange(int(len(cities)/2),len(cities)):
-		route = algo_improve_rev_wrapper(cities,route,i)
+	route = algo_greedy(cities)
+	route = algo_improve_swap(cities,route)
 	return route
 	
 def algo_combo2(cities):
-	route = algo_fastdumb(cities)
-	for i in xrange(int(len(cities)/2),len(cities)):
-		route = algo_improve_rev_old(cities,route,i)
+	route = algo_greedy(cities)
+	for i in xrange(30):
+		route = algo_improve_swap2(cities,route,3)
 	return route
 
 def read_route(file_name):
@@ -238,39 +245,33 @@ def main():
 	# this will plot route_length vs. N & 
 	# timing vs. N for each algorithm listed
 	# (using the default range+seed declared up in the global variable)
-	#batch_compare_algos(algo_combo1,algo_combo2)
+	
 
 	# this will plot the resultant route from each algorithm for
 	# a given city set size (using the default seed)
 	#compare_algos(15,[algo_combo1,algo_combo1])
 
-	'''
-	cities = return_set(10)
-	route = algo_fastdumb(cities)
-	route = algo_improve_rev(cities,route,3)
-	print route
-	'''
+
 
 	#generate_test_set(n1,1000)
+	#batch_compare_algos(algo_combo1,algo_combo2)
 
 
+	
+	cities = parse_input("test3.txt")
+	route = read_route("test3_result.txt")
+	#tsp_grapher.plot_route(cities,route)
+	
+	
 
-
-	cities = parse_input("test2.txt")
-
-	route = read_route("t2_better4")
-
-	tsp_grapher.plot_route(cities,route)
-
-	'''
-	for i in xrange(6,len(cities)):
-		route = algo_improve_exact_segment(cities,route,i-6,i)
-		print route_length(cities,route), i
+	route = algo_improve_transpose(cities,route)
+	print route_length(cities,route)	
 	
 	format_output(cities, route, "tmp")
-	run_verifier("test2.txt","tmp")
-	'''
-
+	run_verifier("test3.txt","tmp")
+	
+	
+	
 
 
 
