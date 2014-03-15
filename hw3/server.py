@@ -95,7 +95,14 @@ def dealRequest(self, payload):
 		if (curImprove > len(cities)/2):
 			curImprove = 1
 	elif (mode == 3):
-		print "not implemented yet! (city swap)"
+		dealMetaUpdate(self)
+		_pickle = pickle.dumps([curImprove, curImprove+20, route])
+		self.sendPickle(S_IMP_SCTY, _pickle)
+		curImprove = curImprove + 20
+		if (curImprove > len(cities)-1):
+			curImprove = 0
+	elif (mode == 4):
+		print "not implemented yet! (other swap)"
 	else:
 		print "something is horribly wrong"
 
@@ -138,8 +145,12 @@ def dealLoadFile(self, payload):
 			pass
 
 def dealModeChange(self, payload):
-	global mode
+	global mode, curImprove
 	mode = int(payload)
+	if (mode == 2):
+		curImprove = 1
+	elif (mode == 3):
+		curImprove = 0
 	print "A connected monitor said we should switch to mode", int(payload)
 
 #Handles a client asking for Monitor-info
