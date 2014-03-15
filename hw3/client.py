@@ -129,7 +129,7 @@ def dealImproveCity(self, payload):
 		print "City swap has improved:", len_old, ">", len_new
 		route = new_route[0:]
 		shortest = len_new
-	self.sendPickle(C_SEND_RES, new_route)
+		self.sendPickle(C_SEND_RES, new_route)
 	working = False
 
 def dealMetaInfoUpdate(self, payload):
