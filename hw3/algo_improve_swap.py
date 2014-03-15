@@ -15,7 +15,7 @@ def algo_improve_swap(cities, route, i):
 		new_length = route_length(cities,new_route)
 
 		if new_length < initial_length:
-			#print new_length
+			print j, new_length
 			route = new_route
 
 	return route

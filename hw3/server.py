@@ -88,17 +88,17 @@ def dealRequest(self, payload):
 		self.sendPickle(S_WORK_GRE, curGreedy)
 		curGreedy = curGreedy + 1
 	elif (mode == 2):
-		_pickle = pickle.dumps([curImprove, curImprove+20, route])
+		_pickle = pickle.dumps([curImprove, curImprove+18, route])
 		dealMetaUpdate(self)
 		self.sendPickle(S_IMP_SGMT, _pickle)
-		curImprove = curImprove + 20
+		curImprove = curImprove + 18
 		if (curImprove > len(cities)/2):
 			curImprove = 1
 	elif (mode == 3):
 		dealMetaUpdate(self)
-		_pickle = pickle.dumps([curImprove, curImprove+20, route])
+		_pickle = pickle.dumps([curImprove, route])
 		self.sendPickle(S_IMP_SCTY, _pickle)
-		curImprove = curImprove + 20
+		curImprove = curImprove + 1
 		if (curImprove > len(cities)-1):
 			curImprove = 0
 	elif (mode == 4):
@@ -131,8 +131,8 @@ def dealLoadFile(self, payload):
 	global cities, shortest, route, mode, curGreedy, curImprove
 	print "Loading cities from file.", payload
 	cities = parse_input("in/" + payload + ".txt")
-	shortest = sys.maxint
-	route = []
+	route = algo_fastdumb(cities)
+	shortest = route_length_final(cities, route)
 	mode = 0
 	curGreedy = 0
 	curImprove = 1
