@@ -17,7 +17,10 @@ def algo_greedy_all(cities):
     shortest_route_dist = sys.maxint
     best_route = []
 
+    idx = -1
+
     for i in xrange(0,len(cities)-1):
+        idx += 1
         route = [cities[i]]
         unvisited = cities[:i+0] + cities[i+1:]
 

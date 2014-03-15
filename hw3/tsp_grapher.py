@@ -18,6 +18,18 @@ def plot_route(cities, route):
 	Y.append([cities[route[0]][1]])    
 
 	plt.plot(X, Y, 'bo-')
+
+
+	'''
+	for i in xrange(len(route)):
+		plt.annotate(route[i],  xy = (X[i][0], Y[i][0]), xytext = (-20, -20),
+	        textcoords = 'offset points', ha = 'right', va = 'bottom',
+	        bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+	        arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
+	'''
+	
+
+
 	plt.show()
 	
 def plot_routes(cities, routes):

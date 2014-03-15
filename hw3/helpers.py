@@ -1,4 +1,4 @@
-import math, random
+import math, random, sys
 
 def is_valid(cities,route):
 	if len(cities) != len(route):

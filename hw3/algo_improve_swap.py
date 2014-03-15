@@ -3,6 +3,9 @@ from helpers import *
 def algo_improve_swap(cities,route):
 
 	for i in xrange(len(cities)):
+
+		print i
+
 		for j in xrange(len(cities)):
 
 			new_route = route[0:]
@@ -16,7 +19,7 @@ def algo_improve_swap(cities,route):
 			new_length = route_length(cities,new_route)
 
 			if new_length < initial_length:
-				#print new_length
+				print new_length
 				route = new_route
 
 	return route
