@@ -109,9 +109,29 @@ City Transpose Optimization: For every city in the route, try shifting it to eve
 
 Exact Section Optimization: Given a particular subroute, it tries every possible permutation to see which is optimal. This uses the same approach as the exact TSP solver, so the same limits apply. We only tried it with subroute lengths less than ten. \\
 
+\begin{Large}
+\textbf{Client-Server}\\
+\end{Large}
 
+%client server info goes here
 
+\begin{Large}
+\textbf{Strategy} \\
+\end{Large}
 
+Two different strategies were used, one for the first two test cases, and the other for the third test case.
+
+\textbf{Test1/Test2}
+
+We began by running both the MST solver and greedy-all() (which just runs greedy on every possible starting city). This gave us two different starting solutions for our hill climb. Next we ran complete cycles of the various optimization algorithms, to see which would get us the furthest in the least amount of time (i.e. rate of improvement). 
+
+To avoid getting stuck at local minimums, we tried different orderings of optimizers. For most testing seeds, running the optimizers in a fairly random order seemed to do the best job of this, as it avoided getting stuck in a cycle of test-routes. Also, we occasionally arrive at a state in which a single change wouldn’t improve the route, but that a sequence of changes was required, some of which would possibly make it worse. To this end, optimizer combinators were written which would run several optimizers, but only check the length at the end of the sequence, rather than throughout the process.
+
+While testing we ran into the case where running a complete cycle of all optimizers failed to improve the route. But by looking at plots of the routes we could clearly see that they were not optimal. It was at this point that we wrote a couple more optimizers (transpose and exact section) in order to progress a bit further.
+
+\textbf{Test3}
+
+Since the third test case was so much larger than the others, a client-server system was used between the members of the group. We didn’t implement all our solvers and optimizers for this, but instead picked the ones that could best take advantage of the parallelism. Greedy was a perfect candidate for this, as each client was given a different starting city to try. Then for optimization, we mostly ran subroute reversals, dealing a different set of segment sizes to test to each client. Some of the other methods were attempted as well, but subroute reversal seemed to yield the best rate of improvement for the data set. Within the testing window, the client-server was running test case 3 pretty much non-stop and it never got to a local minimum. \\
 
 
 \end{document}
