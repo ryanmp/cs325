@@ -113,7 +113,11 @@ Exact Section Optimization: Given a particular subroute, it tries every possible
 \textbf{Client-Server}\\
 \end{Large}
 
-%client server info goes here
+In order to take full advantage of our 24-hour work time, we implemented a fairly simple client-server system to allow us to parallelize the work, especially considering python is single threaded.  The Server Runs, listens for connections, and keeps track of where we are, what kind of work we are doing, and our current best list.  
+
+The clients ask for an IP when you start them up, but after that run completely automated, sending a packet to the server asking for work to do, whenever they are not currently working.  The server then relies to this request with one of several different packets, telling the client to update it's local cache, or to do some specific type of calculation, or improvement.
+
+Finally, we also had a Monitor client that is really more like a controller, which we could use to instruct the server to change modes, save or load progress, or other parameters specific to the improvement algorithm used.
 
 \begin{Large}
 \textbf{Strategy} \\
