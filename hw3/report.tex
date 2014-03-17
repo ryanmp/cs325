@@ -46,9 +46,9 @@
   colorlinks = true,
   urlcolor = black,
   pdfauthor = {\name},
-  pdfkeywords = {cs311 ``operating systems'' files filesystem I/O},
-  pdftitle = {CS 311 Project},
-  pdfsubject = {CS 311 Project},
+  pdfkeywords = {},
+  pdftitle = {},
+  pdfsubject = {},
   pdfpagemode = UseNone
 }
 
@@ -90,18 +90,18 @@ In order to determine how effective each approach was we generated and ran rando
 \end{Large}
 To get an initial solution, we wrote a couple of basic TSP-solvers. These included the following types of algorithms: exact, greedy, and minimum spanning tree.
 
-“Exact” simply tried to every possible permutation on the city set and returned the one with the shortest route length. This wasn’t practical for any of the given test set, but it is a good approach for a small set of cities (like less than 10). This algorithm has a runtime of O(n!), where n is the number of cities.
+“Exact” simply tried every possible permutation on the city set and returned the route with the shortest length. This wasn’t practical for any of the given test sets, but it is a good approach for a small set of cities (like less than 10). This algorithm has a runtime of O(n!), where n is the number of cities.
 
-The greedy algorithm starts at a specified starting city and then picks the closest city to it as the next stop in its route. This new city is removed from the set of possible route destinations, and the process is repeated as long any unvisited cities remained. This algorithm has a runtime of O(n*n). A variation of this which gave consistently better results (at the expense of another factor of n).
+The greedy algorithm starts at a specified starting city and then picks the closest city to it as the next stop in its route. This new city is removed from the set of possible route destinations, and the process is repeated as long any unvisited cities remained. This algorithm has a runtime of O(n*n). A variation of this which gave consistently better results (at the expense of another factor of n) simply tries all possible starting cities. 
 
-The tsp solver began by constructing a graph representation of the cities by calculating the distances between every pairs of nodes. It then picked the smallest distance from the list, and added that edge and the two cities that connected to it to the graph. Next... \\
+The tsp solver began by constructing a graph representation of the cities by calculating the distances between every pairs of nodes. It then picked the smallest distance from the list, and added that edge and the two cities that connected to it to the graph. Next all the edges connected to the set of nodes in our tree, with the exception of any internal ones (if they spanned two nodes already in our tree) were added to the test set. From this set, the minimum distance edge was picked once again. This process was repeated until our tree included every city. The final step was to do a quick pre-order-traversal of this tree, and then the result of this gave a pretty good starting route.
 
 \begin{Large}
 \textbf{Optimizers} \\
 \end{Large}
-These functions took as input a set of cities and a valid route and would try making changes, and then continually test to see if any of the changes yielded a shorter route.
+These functions took as input a set of cities and a valid route and would try making changes, and then continually test to see if any of the changes yielded a shorter route. Then these functions would be run again on the new, improved route. They could then be run continually, and the longer the running time, the better the route would be - unless the route got stuck at a local or global minimum.
 
-Reverse Optimization: Given a particular section length, this function reverses the order of every possible sub-route of this size.
+Reverse Subroute Optimization: Given a particular section length, this function reverses the order of every possible sub-route of this size.
 
 City Swap Optimization: Takes 2 or more cities and swaps their positions in the route. This function had a couple of different flavors, including a randomized and a systematic method. The second flavor attempted every possible swap and the first just picked from a random subset of these possibilities.
 
