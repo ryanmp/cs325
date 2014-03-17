@@ -27,7 +27,7 @@
 
 %the following sets the geometry of the page
 \usepackage{geometry}
-\geometry{textheight=9in, textwidth=6.5in}
+\geometry{textheight=9in, textwidth=6.6in}
 \pagestyle{fancy}
 % random comment
 
@@ -90,30 +90,30 @@ In order to determine how effective each approach was we generated and ran rando
 \end{Large}
 To get an initial solution, we wrote a couple of basic TSP-solvers. These included the following types of algorithms: exact, greedy, and minimum spanning tree.
 
-“Exact” simply tried every possible permutation on the city set and returned the route with the shortest length. This wasn’t practical for any of the given test sets, but it is a good approach for a small set of cities (like less than 10). This algorithm has a runtime of O(n!), where n is the number of cities.
+Exact simply tries every possible permutation on the city set and returns the route with the shortest length. This was not practical for any of the given test sets, but it is a good approach for a very small set of cities. This algorithm has a runtime of O(n!), where n is the number of cities.
 
-The greedy algorithm starts at a specified starting city and then picks the closest city to it as the next stop in its route. This new city is removed from the set of possible route destinations, and the process is repeated as long any unvisited cities remained. This algorithm has a runtime of O(n*n). A variation of this which gave consistently better results (at the expense of another factor of n) simply tries all possible starting cities. 
+The greedy algorithm starts at a specified starting city and then picks the closest city to it as the next stop on its route. This new city is removed from the set of possible route destinations, and the process is repeated as long any unvisited cities remained. This algorithm has a runtime of O(n*n). A variation of this which gave consistently better results (at the expense of another factor of n) simply tries all possible starting cities. 
 
-The tsp solver began by constructing a graph representation of the cities by calculating the distances between every pairs of nodes. It then picked the smallest distance from the list, and added that edge and the two cities that connected to it to the graph. Next all the edges connected to the set of nodes in our tree, with the exception of any internal ones (if they spanned two nodes already in our tree) were added to the test set. From this set, the minimum distance edge was picked once again. This process was repeated until our tree included every city. The final step was to do a quick pre-order-traversal of this tree, and then the result of this gave a pretty good starting route.
+The tsp solver constructs a graph representation of the cities by calculating the distances between every pairs of nodes. It then picks the smallest distance from the list, and adds that edge and the two cities connected to it to a tree. Next all the edges connected to the set of nodes in our current tree, with the exception of any internal ones are added to the active test set. From this set, the minimum distance edge is picked once again. This process is repeated until the tree includes every city. The final step is to do a quick pre-order-traversal of this tree to get a complete route.
 
 \begin{Large}
 \textbf{Optimizers} \\
 \end{Large}
-These functions took as input a set of cities and a valid route and would try making changes, and then continually test to see if any of the changes yielded a shorter route. Then these functions would be run again on the new, improved route. They could then be run continually, and the longer the running time, the better the route would be - unless the route got stuck at a local or global minimum.
+These functions take as input a set of cities and a valid route and make specific changes and check for improvement. Then these functions can be run again on the improved route. In practice they are run continually, and the longer the running time, the better the route is - unless the route gets stuck at a local or global minimum.
 
 Reverse Subroute Optimization: Given a particular section length, this function reverses the order of every possible sub-route of this size.
 
-City Swap Optimization: Takes 2 or more cities and swaps their positions in the route. This function had a couple of different flavors, including a randomized and a systematic method. The second flavor attempted every possible swap and the first just picked from a random subset of these possibilities.
+City Swap Optimization: Takes 2 or more cities and swaps their positions in the route. 
 
 City Transpose Optimization: For every city in the route, try shifting it to every other possible position in the route. There was also a variation of this function that performed this same operation with not just a single city, but with a subroute.
 
-Exact Section Optimization: Given a particular subroute, it tries every possible permutation to see which is optimal. This uses the same approach as the exact TSP solver, so the same limits apply. We only tried it with subroute lengths less than ten. \\
+Exact Section Optimization: Given a particular subroute, it tries every possible permutation to see which is optimal. This uses the same approach as the exact TSP solver, so the same limits apply. \\
 
 \begin{Large}
 \textbf{Client-Server}\\
 \end{Large}
 
-In order to take full advantage of our 24-hour work time, we implemented a fairly simple client-server system to allow us to parallelize the work, especially considering python is single threaded.  The Server Runs, listens for connections, and keeps track of where we are, what kind of work we are doing, and our current best list.  
+In order to take full advantage of our 24-hour work time, we implemented a fairly simple client-server system to allow us to parallelize the work, especially considering python is single threaded.  The server runs, listens for connections, and keeps track of where we are, what kind of work we are doing, and our current best list.  
 
 The clients ask for an IP when you start them up, but after that run completely automated, sending a packet to the server asking for work to do, whenever they are not currently working.  The server then relies to this request with one of several different packets, telling the client to update it's local cache, or to do some specific type of calculation, or improvement.
 
@@ -123,11 +123,11 @@ Finally, we also had a Monitor client that is really more like a controller, whi
 \textbf{Strategy} \\
 \end{Large}
 
-Two different strategies were used, one for the first two test cases, and the other for the third test case.
+Two different strategies were used: one for the first two test cases and the other for the third test case.
 
 \textbf{Test1/Test2}
 
-We began by running both the MST solver and greedy-all() (which just runs greedy on every possible starting city). This gave us two different starting solutions for our hill climb. Next we ran complete cycles of the various optimization algorithms, to see which would get us the furthest in the least amount of time (i.e. rate of improvement). 
+We began by running both the MST solver and greedy-all() (which just runs greedy on every possible starting city). This gave us two different starting solutions for our hill climb. Next we ran complete cycles of all of the optimization algorithms on both.
 
 To avoid getting stuck at local minimums, we tried different orderings of optimizers. For most testing seeds, running the optimizers in a fairly random order seemed to do the best job of this, as it avoided getting stuck in a cycle of test-routes. Also, we occasionally arrive at a state in which a single change wouldn’t improve the route, but that a sequence of changes was required, some of which would possibly make it worse. To this end, optimizer combinators were written which would run several optimizers, but only check the length at the end of the sequence, rather than throughout the process.
 
@@ -135,7 +135,7 @@ While testing we ran into the case where running a complete cycle of all optimiz
 
 \textbf{Test3}
 
-Since the third test case was so much larger than the others, a client-server system was used between the members of the group. We didn’t implement all our solvers and optimizers for this, but instead picked the ones that could best take advantage of the parallelism. Greedy was a perfect candidate for this, as each client was given a different starting city to try. Then for optimization, we mostly ran subroute reversals, dealing a different set of segment sizes to test to each client. Some of the other methods were attempted as well, but subroute reversal seemed to yield the best rate of improvement for the data set. Within the testing window, the client-server was running test case 3 pretty much non-stop and it never got to a local minimum. \\
+Since the third test case was so much larger than the others, the client-server system was used between the members of the group. We didn’t implement all our solvers and optimizers for this, but instead picked the ones that could best take advantage of the parallelism. Greedy was a perfect candidate for this, as each client was given a different starting city to try. Then for optimization, we mostly ran subroute reversals, dealing a different set of segment sizes to test to each client. Some of the other methods were attempted as well, but subroute reversal seemed to yield the best rate of improvement for the data set. Within the testing window, the client-server was running test case 3 pretty much non-stop and it never got to a local minimum. \\
 
 
 \end{document}
