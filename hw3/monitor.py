@@ -42,6 +42,8 @@ S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
 M_LOAD_FIL = 44 #M -> S #Request server file load
+M_SET_POSI = 45 #M -> S #Request server stets greedy & improve numbers
+M_LOAD_PIC = 46 #M -> S #Request server loads route from file
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -109,7 +111,8 @@ class AsyncClient(asynchat.async_chat):
 	#Also, make sure we kill the child thread too
 	def handle_close(self):
 		print "Server not reachable.  Saving best list to pickle to be safe."
-		pickle.dump(route, open('monitor_backup.p', 'wb'))
+		pickle.dump(route, open('monitor_backup.' + str(route_length_final(cities, route)) + '.p', 'wb'))
+		curses.endwin()
 		self.close()
 		self.t.stop()
 
@@ -125,6 +128,7 @@ class SenderThread(threading.Thread):
 	#Or from the signal handler.  Stop what we are doing now
 	def stop(self):
 		self._stop = True
+		curses.endwin()
 
 	#What the thread actually does
 	def run(self):
@@ -140,6 +144,7 @@ class SenderThread(threading.Thread):
 				screen.border(0)
 				screen.addstr(2, 2, prompt_string)
 				screen.refresh()
+				screen.timeout(999999999)
 				input = screen.getstr(10, 10, 60)
 				return input
 			x = 0
@@ -148,12 +153,15 @@ class SenderThread(threading.Thread):
 				screen.clear()
 				screen.border(0)
 				screen.addstr(2, 8, "Welcome to Joshua Villwock's")
-				screen.addstr(3, 15, "CS381 Server Control Centre")
-				screen.addstr(13, 2, "Please enter a number...")
-				screen.addstr(15, 4, "1 - Switch server mode")
-				screen.addstr(16, 4, "2 - Load a list in ./in/input.txt")
-				screen.addstr(17, 4, "5 - Exit")
-				
+				screen.addstr(3, 9, "CS381 Server Control Centre")
+				screen.addstr(14, 2, "Please enter a number...")
+				screen.addstr(16, 4, "1 - Switch server mode")
+				screen.addstr(17, 4, "2 - Load a List in ./in/*.txt")
+				screen.addstr(18, 4, "3 - Load a Route in ./in/*.p")
+				screen.addstr(19, 4, "4 - Change Progress")
+				screen.addstr(20, 4, "5 - Exit")
+				screen.addstr(22, 4, "7 - Dump Route to ./out/" + str(shortest) + ".txt")
+
 				screen.addstr(5, 6, "#cities:  ")
 				screen.addstr(6, 6, "#c's in r:")
 				screen.addstr(7, 6, "shortest: ")
@@ -161,6 +169,7 @@ class SenderThread(threading.Thread):
 				screen.addstr(9, 6, "Improve:  ")
 				screen.addstr(10, 6, "Clients:  ")
 				screen.addstr(11, 6, "Mode:     ")
+				screen.addstr(12, 6, "Valid?:   ")
 				global mode
 				screen.addstr(5, 17, str(len(cities)))
 				screen.addstr(6, 17, str(len(route)))
@@ -169,18 +178,31 @@ class SenderThread(threading.Thread):
 				screen.addstr(9, 17, str(curImprove))
 				screen.addstr(10, 17, str(len(clients)))
 				screen.addstr(11, 17, str(mode))
-				
+				screen.addstr(12, 17, str(is_valid(cities,route)))
+
 				screen.refresh()
 				self.client.sendPickle(C_REQ_UPDT, 'M update')
 				self.client.sendPickle(M_GET_CURR, 'M Status')
 				screen.timeout(5000)
 				x = screen.getch()
 				if x == ord('1'):
-					mode = get_param("0=idle, 1=greedy, 2=route improve, 3=city improve")
+					mode = get_param("0=idle, 1=greedy, 2=route improve, 3=city improve, 4=route w/ wrap")
 					self.client.sendPickle(M_SET_MODE, int(mode))
 				elif x == ord('2'):
+					file = get_param("File Name?")
+					self.client.sendPickle(M_LOAD_FIL, file)
+				elif x == ord('3'):
+					file = get_param("File name?")
+					self.client.sendPickle(M_LOAD_PIC, file)
+				elif x == ord('4'):
+					greedy_pos = get_param("Greedy Position?")
+					imp_pos = get_param("Improvement Position?")
+					_pickle = pickle.dumps([int(greedy_pos), int(imp_pos)])
+					self.client.sendPickle(M_SET_POSI, _pickle)
+				elif x == ord('7'):
 					curses.endwin()
-					print "not implemented yet"
+					format_output(cities, route, "out/" + str(shortest) + ".txt")
+					run_verifier("in/example-input-3.txt","out/" + str(shortest) + ".txt")
 			curses.endwin()
 			self._stop = True
 			exit()
@@ -201,3 +223,4 @@ signal.signal(signal.SIGABRT, signal_handler)
 #ok, now actually start up the client!
 client = AsyncClient(HOST)
 asyncore.loop(1)
+curses.endwin()

@@ -3,6 +3,7 @@ import signal, sys, pickle, os
 from time import sleep
 
 from helpers import *
+from algo_fastdumb import *
 
 #change these values only
 PORT = 31337	# The port used by the server. Default 31337
@@ -12,12 +13,14 @@ DEBUG = False	# 3= show all packet data.
 #Global Variables
 connectionClassList = []
 connectionSocketList = []
+connectionHandlerList = []
 shortest = sys.maxint	#Length of shortest path so far
 cities = []				#List of cities
 route = []				#Current best route
 mode = 0				#Operating Mode
 curGreedy = 0			#Current Starting City for greedy
 curImprove = 1			#Current length for length improvements
+curBackup = 0
 
 #Packet Constants#
 KEEP_ALIVE = 0  #C -> S #Keep-alive
@@ -34,10 +37,13 @@ S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
+S_IMP_SGT2 = 32 #S -> C #Send Improvement Work, swapping segments with wraparound
 ##Monitor / Control Packets##
 M_GET_CURR = 40 #M -> S #Request current status
 M_SET_MODE = 43 #M -> S #Request server mode change
 M_LOAD_FIL = 44 #M -> S #Request server file load
+M_SET_POSI = 45 #M -> S #Request server sets greedy & improve numbers
+M_LOAD_PIC = 46 #M -> S #Request server loads route from file
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
@@ -84,31 +90,90 @@ def dealRequest(self, payload):
 		self.sendPickle(S_WORK_GRE, curGreedy)
 		curGreedy = curGreedy + 1
 	elif (mode == 2):
-		_pickle = pickle.dumps([curImprove, curImprove+20, route])
+		_pickle = pickle.dumps([curImprove, curImprove+18, route])
 		dealMetaUpdate(self)
 		self.sendPickle(S_IMP_SGMT, _pickle)
-		curImprove = curImprove + 20
+		curImprove = curImprove + 18
 		if (curImprove > len(cities)/2):
 			curImprove = 1
 	elif (mode == 3):
-		print "not implemented yet! (city swap)"
+		dealMetaUpdate(self)
+		_pickle = pickle.dumps([curImprove, route])
+		self.sendPickle(S_IMP_SCTY, _pickle)
+		curImprove = curImprove + 1
+		if (curImprove > len(cities)-1):
+			curImprove = 0
+	elif (mode == 4):
+		_pickle = pickle.dumps([curImprove, route])
+		dealMetaUpdate(self)
+		self.sendPickle(S_IMP_SGT2, _pickle)
+		curImprove = curImprove + 1
+		if (curImprove > len(cities)/2):
+			curImprove = 1
 	else:
 		print "something is horribly wrong"
 
 #Handles requests for work from a client
 def dealResult(self, payload):
-	global shortest, route
-	length = route_length_final(cities, payload)
-	if DEBUG:
-		print "we got a result!", length
-	if (length < shortest):
-		print self.addr, "Found a better Route!", shortest, ">", length
-		shortest = length
-		route = payload[0:]
+	global shortest, route, cities, curBackup
+	pickle.dump(route, open('backup.' + str(curBackup) + '.p', 'wb'))
+	curBackup = curBackup + 1
+	try:
+		length = route_length_final(cities, payload)
+		if DEBUG:
+			print "we got a result!", length
+		if (is_valid(cities, payload)):
+			if (length < shortest):
+				print self.addr, "Found a better Route!", shortest, ">", length
+				shortest = length
+				route = payload[0:]
+		else:
+			print self.addr, "Sent us an invalid route!"
+			pickle.dump(route, open('backup.' + str(curBackup) + '.error.p', 'wb'))
+			
+	except Exception:
+		print "got an invalid route!"
+
+def dealLoadFile(self, payload):
+	global cities, shortest, route, mode, curGreedy, curImprove
+	print "Loading cities from file.", payload
+	cities = parse_input("in/" + payload + ".txt")
+	route = algo_fastdumb(cities)
+	shortest = route_length_final(cities, route)
+	mode = 0
+	curGreedy = 0
+	curImprove = 1
+	for _handler in connectionHandlerList:
+		try:
+			print _handler.addr
+			dealMetaUpdate(_handler)
+		except Exception:
+			connectionHandlerList.remove(_handler)
+			pass
+
+def dealRouteLoad(self, payload):
+	global cities, shortest, route, mode, curGreedy, curImprove
+	print "Loading route from file.", payload
+	file = pickle.load(open("in/" + str(payload), 'rb'))
+	route = file[0:]
+	shortest = route_length_final(cities, route)
+	mode = 0
+	print "Loaded route", shortest
+	for _handler in connectionHandlerList:
+		try:
+			print _handler.addr
+			dealMetaUpdate(_handler)
+		except Exception:
+			connectionHandlerList.remove(_handler)
+			pass
 
 def dealModeChange(self, payload):
-	global mode
+	global mode, curImprove
 	mode = int(payload)
+	if (mode == 2):
+		curImprove = 1
+	elif (mode == 3):
+		curImprove = 0
 	print "A connected monitor said we should switch to mode", int(payload)
 
 #Handles a client asking for Monitor-info
@@ -124,10 +189,15 @@ def dealMonitorUpdate(self):
 	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
 	self.sendPickle(S_SEND_STA, _pickle)
 
+def dealPositionChange(self, payload):
+	global curGreedy, curImprove
+	curGreedy, curImprove = pickle.loads(payload)
+
 #The client asked for various meta-info, send it.
 #Currently sends the length of shortest path so far,
 #the list of cities, and the shortest path so far.
 def dealMetaUpdate(self):
+	global shortest, cities, route
 	if (DEBUG == 3):
 		print "Responding to meta-info update request."
 	_pickle = metaPack(self, shortest, cities, route)
@@ -143,6 +213,7 @@ class PacketHandler(asynchat.async_chat):
 		self.sock = _sock
 		self.addr = addr
 		print "New client connecting:", addr
+		connectionHandlerList.append(self)
 
 	def collect_incoming_data(self, data):
 		self.data = self.data + data
@@ -171,9 +242,18 @@ class PacketHandler(asynchat.async_chat):
 			elif id == M_GET_CURR:
 				dealMonitorUpdate(self)
 				#Monitor is asking for info
+			elif id == M_LOAD_FIL:
+				dealLoadFile(self, payload)
+				#Monitor says we should go to another mode.
 			elif id == M_SET_MODE:
 				dealModeChange(self, payload)
 				#Monitor says we should go to another mode.
+			elif id == M_SET_POSI:
+				dealPositionChange(self, payload)
+				#Monitor wants us to change positions.
+			elif id == M_LOAD_PIC:
+				dealRouteLoad(self, payload)
+				#Monitor wants us to load route from file.
 			else:
 				print 'something went wrong.', id, payload
 
@@ -230,6 +310,8 @@ clear()
 print "Setting up server..."
 generate_test_set(15000,4000)
 cities = return_set(15000)
+route = algo_fastdumb(cities)
+shortest = route_length_final(cities, route)
 
 #Run the event-driven server
 print "Opening Socket..."

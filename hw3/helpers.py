@@ -1,4 +1,4 @@
-import math, random
+import math, random, os
 
 def is_valid(cities,route):
 	if len(cities) != len(route):
@@ -9,9 +9,39 @@ def is_valid(cities,route):
 		return False
 	return True
 
+def parse_input(file_name):
+	f = open(file_name)
+	lines_raw = f.readlines()
+	ret = []
+	for i in range(0,len(lines_raw)):
+		parsing_line = []
+		parsing_line = lines_raw[i].split()
+		parsing_line = map(int, parsing_line)
+		to_tuple = (parsing_line[1],parsing_line[2])
+		ret.append(to_tuple)
+	return ret
 
 def distance(p1,p2):
 	return math.hypot(p2[1]-p1[1],p2[0]-p1[0])
+
+def run_verifier(cities_txt,route_txt):
+	path = os.getcwd() + "/"
+	os.system("python tsp-verifier.py "+path+cities_txt+" "+path+route_txt)
+
+def format_output(cities, route, file_name):
+	#create a file
+	f = open(file_name, "wb")
+
+	#first line is the route length as an int
+	#i'm using a new route_length function, because tsp-verifier needs
+	#a lot of rounding
+	route_length_str = str(int(route_length_final(cities,route)))+"\n"
+	f.write(route_length_str)
+
+	#write each city in route as new line
+	for i in route:
+		f.write(str(i)+"\n")
+	f.close()
 
 def route_length(cities,route):
 	distance = 0

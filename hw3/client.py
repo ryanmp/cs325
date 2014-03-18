@@ -8,6 +8,7 @@ from algo_greedy import *
 from algo_mst import *
 from algo_improve_rev import *
 from algo_improve_swap import *
+from algo_improve_rev_wrap import *
 
 #change these values only
 DEBUG = True	# 3= show all packet data.
@@ -34,6 +35,7 @@ S_WORK_PRM = 22 #S -> C #Send Reverse Prim algorithm work
 ##Improvement Packets##
 S_IMP_SGMT = 30 #S -> C #Send improvement work, swapping segments
 S_IMP_SCTY = 31 #S -> C #Send improvement work, swapping cities
+S_IMP_SGT2 = 32 #S -> C #Send Improvement Work, swapping segments with wraparound
 
 #deal with signals
 def signal_handler(signum, frame):
@@ -59,7 +61,7 @@ def dealGreedyWork(self, _start):
 	if (shortest > length):
 		print "Found a shorter route.  Updating local cache, and sending route to server."
 		shortest = length
-		route = result
+		route = result[0:]
 		self.sendPickle(C_SEND_RES, result)
 	working = False
 
@@ -98,8 +100,37 @@ def dealImproveSegment(self, payload):
 	self.sendPickle(C_SEND_RES, new_route)
 	working = False
 
+def dealImproveSegment2(self, payload):
+	global route, shortest, working
+	working = True
+	start_length, route = pickle.loads(payload)
+	if DEBUG:
+		print "Running segment swap, length:", start_length
+	new_route = algo_improve_rev_wrapper(cities, route, start_length)
+	len_old = route_length_final(cities, route)
+	len_new = route_length_final(cities, new_route)
+	if (len_old > len_new):
+		print "Segment swap has improved:", len_old, ">", len_new
+		route = new_route[0:]
+		shortest = len_new
+		self.sendPickle(C_SEND_RES, new_route)
+	working = False
+
 def dealImproveCity(self, payload):
-	print "Running city swap"
+	global route, shortest, working
+	working = True
+	start_city, route = pickle.loads(payload)
+	if DEBUG:
+		print "Running city swap, city:", start_city
+	new_route = algo_improve_swap(cities, route, start_city)
+	len_old = route_length_final(cities, route)
+	len_new = route_length_final(cities, new_route)
+	if (len_old > len_new):
+		print "City swap has improved:", len_old, ">", len_new
+		route = new_route[0:]
+		shortest = len_new
+		self.sendPickle(C_SEND_RES, new_route)
+	working = False
 
 def dealMetaInfoUpdate(self, payload):
 	global shortest, cities, route
@@ -156,6 +187,9 @@ class AsyncClient(asynchat.async_chat):
 			elif id == S_IMP_SGMT:
 				dealImproveSegment(self, payload)
 				#Server sent us some segment swapping improvement work
+			elif id == S_IMP_SGT2:
+				dealImproveSegment2(self, payload)
+				#Server sent us some segment swapping improvement work with wraparound
 			elif id == S_IMP_SCTY:
 				dealImproveCity(self, payload)
 				#Server sent us some city swapping improvement work
@@ -171,7 +205,7 @@ class AsyncClient(asynchat.async_chat):
 	def handle_close(self):
 		global cities, route
 		print "Server not reachable.  Saving best list to pickle to be safe."
-		pickle.dump(route, open('backup.p' + str(route_length_final(cities, route)), 'wb'))
+		pickle.dump(route, open('backup.' + str(route_length_final(cities, route)) + '.p', 'wb'))
 		self.close()
 		self.t.stop()
 

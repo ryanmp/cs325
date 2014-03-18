@@ -39,18 +39,6 @@ def return_set(max):
 	#not done
 	return set[:max]
 
-def parse_input(file_name):
-	f = open(file_name)
-	lines_raw = f.readlines()
-	ret = []
-	for i in range(0,len(lines_raw)):
-		parsing_line = []
-		parsing_line = lines_raw[i].split()
-		parsing_line = map(int, parsing_line)
-		to_tuple = (parsing_line[1],parsing_line[2])
-		ret.append(to_tuple)
-	return ret
-
 # { algorithm to test, range for n (n0=smallest -> n1=largest) }
 def time_algo(f, n0, n1):
 	ret = []
@@ -120,25 +108,6 @@ def generate_test_set2(_seed,_n,_range):
 	for i in xrange(_n):
 		ret.append((random.randrange(1,_range),random.randrange(1,_range)))
 	return ret
-
-def format_output(cities, route, file_name):
-	#create a file
-	f = open(file_name, "wb")
-
-	#first line is the route length as an int
-	#i'm using a new route_length function, because tsp-verifier needs
-	#a lot of rounding
-	route_length_str = str(int(route_length_final(cities,route)))+"\n"
-	f.write(route_length_str)
-
-	#write each city in route as new line
-	for i in route:
-		f.write(str(i)+"\n")
-	f.close()
-
-def run_verifier(cities_txt,route_txt):
-	path = os.getcwd() + "/"
-	os.system("python tsp-verifier.py "+path+cities_txt+" "+path+route_txt)
 
 def algo_combo1(cities):
 	route = algo_greedy(cities)
