@@ -203,7 +203,12 @@ class SenderThread(threading.Thread):
 					format_output(cities, route, "out/" + str(shortest) + ".txt")
 					run_verifier("in/example-input-3.txt","out/" + str(shortest) + ".txt")
 			curses.endwin()
+			print "Exiting Monitor..."
 			self._stop = True
+			self.client.close()
+			sleep(1)
+			self.client.t.stop()
+			sleep(1)
 			exit()
 
 #Initialize by asking for remote host info
