@@ -31,7 +31,7 @@ def algo_greedy(cities):
 def algo_greedy_start(cities, _start):
 	_cities = cities[0:]		#create local copy (workaround)
 	_route = [_cities[_start]]	#initialize to starting city
-	_cities.pop(_start)			#pop off the starting city
+	_cities.pop(_start)		#pop off the starting city
 	unvisited = _cities[0:]		#Again, make sure we have a local copy
 	while unvisited:
 		closest_dist = sys.maxint
