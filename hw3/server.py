@@ -14,10 +14,10 @@ DEBUG = False	# 3= show all packet data.
 connectionClassList = []
 connectionSocketList = []
 connectionHandlerList = []
-shortest = sys.maxint	#Length of shortest path so far
-cities = []				#List of cities
-route = []				#Current best route
-mode = 0				#Operating Mode
+shortest = sys.maxint		#Length of shortest path so far
+cities = []			#List of cities
+route = []			#Current best route
+mode = 0			#Operating Mode
 curGreedy = 0			#Current Starting City for greedy
 curImprove = 1			#Current length for length improvements
 curBackup = 0
@@ -89,6 +89,8 @@ def dealRequest(self, payload):
 	elif (mode == 1):
 		self.sendPickle(S_WORK_GRE, curGreedy)
 		curGreedy = curGreedy + 1
+		if (curGreedy > len(cities)-1):
+			curGreedy = 0
 	elif (mode == 2):
 		_pickle = pickle.dumps([curImprove, curImprove+18, route])
 		dealMetaUpdate(self)
@@ -244,7 +246,7 @@ class PacketHandler(asynchat.async_chat):
 				#Monitor is asking for info
 			elif id == M_LOAD_FIL:
 				dealLoadFile(self, payload)
-				#Monitor says we should go to another mode.
+				#Monitor says we should load a point set file.
 			elif id == M_SET_MODE:
 				dealModeChange(self, payload)
 				#Monitor says we should go to another mode.
