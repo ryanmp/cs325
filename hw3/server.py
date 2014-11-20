@@ -11,18 +11,20 @@ DEBUG = False	# 3= show all packet data.
 #change these values only
 
 #Global Variables
-connectionClassList = []
-connectionSocketList = []
-connectionHandlerList = []
+connectionClassList = []	#List of Connection Objects
+connectionSocketList = []	#List of Connection Sockets
+connectionHandlerList = []	#List of Connection Handelers
+
 shortest = sys.maxint		#Length of shortest path so far
 cities = []			#List of cities
 route = []			#Current best route
 mode = 0			#Operating Mode
 curGreedy = 0			#Current Starting City for greedy
 curImprove = 1			#Current length for length improvements
-curBackup = 0
+curBackup = 0			#Current iteration of route backups
 
-#Packet Constants#
+#####PACKETS#####
+##Client Packets##
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
 C_SEND_RES = 2  #C -> S #Send result
@@ -47,7 +49,7 @@ M_LOAD_PIC = 46 #M -> S #Request server loads route from file
 ##Server (monitor) Reply Packets##
 S_SEND_STA = 50 #S -> M #Respond with current status
 
-#deal with signals
+#deal with kill signals
 def signal_handler(signum, frame):
 	server.sendKill();
 	if signum == 2:
@@ -55,11 +57,6 @@ def signal_handler(signum, frame):
 	print 'SHUTDOWN!  Reason:', signum
 	sleep(1)
 	exit()
-
-#helper method to Clear the screen
-def clear():
-	os.system('cls')
-	os.system('clear')
 
 #Returns a pickle-formatted string based on the packet ID and packet payload
 def createPickle(self, id, payload):
@@ -78,8 +75,7 @@ def dealKeepAlive(self, payload):
 	print 'Responding to keep-alive from:', self.addr
 	self.sendPickle(KEEP_ALIVE, payload + " reply")
 
-#Actually handles requests for work.
-#For now, this just sends a static packet, to test.
+#Actually handles the requests for work.
 def dealRequest(self, payload):
 	global curGreedy, curImprove, mode
 	if DEBUG:
@@ -136,6 +132,7 @@ def dealResult(self, payload):
 	except Exception:
 		print "got an invalid route!"
 
+#Loads a  city list from file.
 def dealLoadFile(self, payload):
 	global cities, shortest, route, mode, curGreedy, curImprove
 	print "Loading cities from file.", payload
@@ -153,6 +150,7 @@ def dealLoadFile(self, payload):
 			connectionHandlerList.remove(_handler)
 			pass
 
+#Loads a route from file.
 def dealRouteLoad(self, payload):
 	global cities, shortest, route, mode, curGreedy, curImprove
 	print "Loading route from file.", payload
@@ -169,10 +167,11 @@ def dealRouteLoad(self, payload):
 			connectionHandlerList.remove(_handler)
 			pass
 
+#Handles changing server mode.
 def dealModeChange(self, payload):
 	global mode, curImprove
 	mode = int(payload)
-	if (mode == 2):
+	if (mode == 2 || mode == 4):
 		curImprove = 1
 	elif (mode == 3):
 		curImprove = 0
@@ -191,6 +190,7 @@ def dealMonitorUpdate(self):
 	_pickle = pickle.dumps([curGreedy, curImprove, mode, addrList])
 	self.sendPickle(S_SEND_STA, _pickle)
 
+#Handles the monitor asking us to change positions.
 def dealPositionChange(self, payload):
 	global curGreedy, curImprove
 	curGreedy, curImprove = pickle.loads(payload)
