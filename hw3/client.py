@@ -15,12 +15,13 @@ DEBUG = True	# 3= show all packet data.
 #change these values only
 
 #Global Variables
-shortest = sys.maxint
-cities = []
-route = []
-working = False
+shortest = sys.maxint	#The length of the current shortest route
+cities = []		#The list of all cities
+route = []		#Our current route of cities that we are operating on
+working = False		#Are we currently working?
 
-#Packet Constants#
+#####PACKETS#####
+##Client Packets##
 KEEP_ALIVE = 0  #C -> S #Keep-alive
 C_REQ_WORK = 1  #C -> S #Request for work
 C_SEND_RES = 2  #C -> S #Rend result
@@ -40,15 +41,9 @@ S_IMP_SGT2 = 32 #S -> C #Send Improvement Work, swapping segments with wraparoun
 #deal with signals
 def signal_handler(signum, frame):
 	print "Closing socket..."
-	sleep(2)
 	client.t.stop()
 	sleep(2)
 	exit()
-
-#helper method to Clear the screen
-def clear():
-	os.system('cls')
-	os.system('clear')
 
 #Handles doing a run of greedy
 def dealGreedyWork(self, _start):
@@ -65,6 +60,7 @@ def dealGreedyWork(self, _start):
 		self.sendPickle(C_SEND_RES, result)
 	working = False
 
+#Handles doing a run of MST routing
 def dealMSTWork(self, payload):
 	global working
 	working = True
@@ -74,6 +70,7 @@ def dealMSTWork(self, payload):
 	working = False
 	self.sendPickle(C_SEND_RES, result)
 
+#Handles doing a run of prim's algorithm.
 def dealPrimWork(self, payload):
 	global working
 	working = True
@@ -83,6 +80,7 @@ def dealPrimWork(self, payload):
 	working = False
 	self.sendPickle(C_SEND_RES, result)
 
+#Handles running a set of segment swap
 def dealImproveSegment(self, payload):
 	global route, shortest, working
 	working = True
@@ -100,6 +98,7 @@ def dealImproveSegment(self, payload):
 	self.sendPickle(C_SEND_RES, new_route)
 	working = False
 
+#Handles running a set of Wrapping segment swap
 def dealImproveSegment2(self, payload):
 	global route, shortest, working
 	working = True
@@ -116,6 +115,7 @@ def dealImproveSegment2(self, payload):
 		self.sendPickle(C_SEND_RES, new_route)
 	working = False
 
+#Handles running city swap on a specified city
 def dealImproveCity(self, payload):
 	global route, shortest, working
 	working = True
@@ -132,6 +132,7 @@ def dealImproveCity(self, payload):
 		self.sendPickle(C_SEND_RES, new_route)
 	working = False
 
+#Handles updating local meta info.
 def dealMetaInfoUpdate(self, payload):
 	global shortest, cities, route
 	shortest, cities, route = pickle.loads(payload)
