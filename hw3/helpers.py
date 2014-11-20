@@ -1,5 +1,14 @@
-import math, random, os
+import math, random, os, platform
 
+#helper method to Clear the screen, on all OS's
+def clear():
+	if (platform.system() == "Windows"):
+		os.system('cls')
+	else:
+		os.system('clear')
+
+#Checks if a given route is valid for a given set of cities.
+#This is our own implementation, not the teacher's checker.
 def is_valid(cities,route):
 	if len(cities) != len(route):
 		return False
@@ -9,6 +18,7 @@ def is_valid(cities,route):
 		return False
 	return True
 
+#Reads in a list of cities to calculate a route on.
 def parse_input(file_name):
 	f = open(file_name)
 	lines_raw = f.readlines()
@@ -21,13 +31,16 @@ def parse_input(file_name):
 		ret.append(to_tuple)
 	return ret
 
+#Calculates the distance between 2 points.
 def distance(p1,p2):
 	return math.hypot(p2[1]-p1[1],p2[0]-p1[0])
 
+#Runs the teacher's route validity checker.
 def run_verifier(cities_txt,route_txt):
 	path = os.getcwd() + "/"
 	os.system("python tsp-verifier.py "+path+cities_txt+" "+path+route_txt)
 
+#Wites a route to the format that we need to turn in.
 def format_output(cities, route, file_name):
 	#create a file
 	f = open(file_name, "wb")
