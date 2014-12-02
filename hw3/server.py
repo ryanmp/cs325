@@ -171,7 +171,7 @@ def dealRouteLoad(self, payload):
 def dealModeChange(self, payload):
 	global mode, curImprove
 	mode = int(payload)
-	if (mode == 2 || mode == 4):
+	if (mode == 2 or mode == 4):
 		curImprove = 1
 	elif (mode == 3):
 		curImprove = 0
